@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ========================================================
+     This is the definition of the metadata element of 
+     Reuters Experimental NewsML DTD.
+
+     The metadata element allows the attachment of systematically
+     organized information about the newsobject the metadata is 
+     attached to.
+
+     Version 4
+     
+     Updated 12 October 1999 Jo Rabin
+     Updated 9 July 1999 Jo Rabin
+     Updated 2 July 1999 Jo Rabin
+     Updated 1 July 1999 Jo Rabin
+     Created 30 June 1999 Jo Rabin
+
+     Copyright (c) 1999 Reuters Limited All rights reserved
+
+     ======================================================== -->
+
+
+<!ELEMENT metadata	(codes|
+			things|
+			dc)*>
+
+
+<!-- intention is to have only one codes element for any
+     class/role combination  -->
+<!ELEMENT codes		(code*)>
+<!ATTLIST codes		id		ID	#IMPLIED
+			class		CDATA	#REQUIRED
+			role		CDATA	#IMPLIED
+			publisher	CDATA	#IMPLIED>
+
+<!ELEMENT code		(name|editdetail)*>
+<!ATTLIST code		id		ID	#IMPLIED
+			code		CDATA	#REQUIRED
+			confidence	CDATA	#IMPLIED
+			present		(true|false)	"true">
+
+
+<!ELEMENT editdetail	EMPTY>
+<!ATTLIST editdetail	id		ID	#IMPLIED
+			attribution	CDATA	#IMPLIED
+			action		(added|
+					removed|
+					confirmed)	"added"
+			date		CDATA	#IMPLIED
+			agent		(human|
+					auto|
+					map|
+					expansion|
+					unknown)	"unknown"
+			expansion	CDATA	#IMPLIED
+			confidence	CDATA	#IMPLIED
+			score		CDATA	#IMPLIED>
+
+<!ELEMENT altthings	(things*)>
+<!ATTLIST altthings     id		ID	#IMPLIED>
+
+<!ELEMENT things	(thing*)>
+<!ATTLIST things	id		ID	#IMPLIED
+			class		CDATA	#REQUIRED
+			publisher	CDATA	#IMPLIED>
+
+<!ELEMENT thing		(name|thinglocation|editdetail)*>
+<!ATTLIST thing		id		ID	#IMPLIED
+			codeclass	CDATA	#IMPLIED
+			code		CDATA	#IMPLIED
+			confidence	CDATA	#IMPLIED
+			present		(true|false)	"true">
+
+<!ELEMENT name		(#PCDATA)>
+<!ATTLIST name		id		ID	#IMPLIED
+			xml:lang	NMTOKEN	#IMPLIED>
+
+<!-- a candidate for XPointer -->
+<!ELEMENT thinglocation	EMPTY>
+<!ATTLIST thinglocation	id		ID	#IMPLIED
+			itemid		CDATA	#IMPLIED
+			idref		CDATA	#IMPLIED
+			offset		CDATA	#IMPLIED
+			text		CDATA	#IMPLIED
+			length		CDATA	#IMPLIED>
+
+<!ENTITY % dc SYSTEM "newsml.dc.dtd">
+%dc;
+

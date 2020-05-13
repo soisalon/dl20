@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ========================================================
+     This is the definition of the handling element of 
+     Reuters Experimental NewsML DTD.
+
+     The handling element contains information relating to the 
+     production or distrubution of the news rather than 
+     information that is more intrinsically part of the news.
+
+     The information can be expected to have a limited temporal
+     significance and hence is unlikely to be of significance
+     to end-users. 
+     
+     Version 3
+
+     Updated 9 July 1999 Jo Rabin
+     Updated 2 July 1999 Jo Rabin
+     Updated 1 July 1999 Jo Rabin
+     Created 30 June 1999 Jo Rabin
+
+     Copyright (c) Reuters Limited 1999 All rights reserved
+
+     ======================================================== -->
+
+<!ELEMENT handling	(routing | urgency | priority | slug | 
+                        action | status | product | service | 
+			instructions | permissions | cycle | outcue )*>
+
+<!ATTLIST handling	id	ID	#IMPLIED
+			xml:lang	NMTOKEN	#IMPLIED>
+
+<!ELEMENT routing	(#PCDATA)>
+<!ATTLIST routing	id	ID	#IMPLIED
+			xml:lang	NMTOKEN	#IMPLIED>
+
+<!ELEMENT priority	(#PCDATA)>
+<!ATTLIST priority	id	ID	#IMPLIED
+			xml:lang	NMTOKEN	#IMPLIED>
+
+<!ELEMENT slug		(#PCDATA)>
+<!ATTLIST slug		id	ID	#IMPLIED
+			xml:lang	NMTOKEN	#IMPLIED>
+
+<!ELEMENT urgency	(#PCDATA)>
+<!ATTLIST urgency	id	ID	#IMPLIED
+			xml:lang	NMTOKEN	#IMPLIED>
+
+<!ELEMENT status	(#PCDATA)> <!-- e.g. lead, correction -->
+<!ATTLIST status	id	ID	#IMPLIED
+			xml:lang	NMTOKEN	#IMPLIED>
+
+<!ELEMENT product	(#PCDATA)>
+<!ATTLIST product	id	ID	#IMPLIED
+			xml:lang	NMTOKEN	#IMPLIED>
+
+<!ELEMENT service	(#PCDATA)>
+<!ATTLIST service	id	ID	#IMPLIED
+			xml:lang	NMTOKEN	#IMPLIED>
+
+<!ELEMENT permissions	(#PCDATA)>
+<!ATTLIST permissions	id	ID	#IMPLIED
+			xml:lang	NMTOKEN	#IMPLIED>
+
+<!ELEMENT instructions	(#PCDATA)>
+<!ATTLIST instructions	id	ID	#IMPLIED
+			xml:lang	NMTOKEN	#IMPLIED>
+
+<!ELEMENT cycle		(#PCDATA)>
+<!ATTLIST cycle		id	ID	#IMPLIED
+			xml:lang	NMTOKEN	#IMPLIED>
+
+<!ELEMENT outcue	(#PCDATA)>
+<!ATTLIST outcue	id	ID	#IMPLIED
+			xml:lang	NMTOKEN	#IMPLIED>
+
+<!ELEMENT action	EMPTY>
+<!ATTLIST action	id	ID	#IMPLIED
+			action	(add| delete| replace)	"add"
+                        itemid  CDATA	#IMPLIED
+			newid	IDREF	#IMPLIED
+			oldid	IDREF	#IMPLIED
+			oldrev	CDATA	#IMPLIED
+			setrev	CDATA	#IMPLIED>
+

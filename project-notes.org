@@ -1,0 +1,39 @@
+* PROJECT
+
+** IMAGE:
+
+| project                  | image               |
+|--------------------------+---------------------|
+| training data + labels   | mats                |
+| test data                | mats                |
+| test TRUTH labels        | https://github.com/ |
+| instructions             | notebook            |
+| scoring scripts          | https://github.com/ |
+| model results (optional) | https://github.com/ |
+
+____________________________________________________________________________
+** TEXT
+
+| files            | what                                 |
+|------------------+--------------------------------------|
+| corpus/          | test source files                    |
+| get_data.py      | script to extract labels from corpus |
+| ground_truth.txt | test labels                          |
+| majority.py      | script to extract naive model        |
+| majority.txt     | naive "model"                        |
+| maj_scores.txt   | scoring output for naive model       |
+| modes            | ??? zeros only (not sure for what)   |
+| order.txt        | order of data files in TRUTH file    |
+| scores.txt       | output of score script               |
+| test_eval.py     | SCORING scrip                        |
+| topic_codes.txt  | explanation for RCV codes            |
+
+
+| project                | text                  |
+|------------------------+-----------------------|
+| training data + labels | from joel in notebook |
+| test data              |                       |
+| test labels            |                       |
+| instructions           | notebook              |
+| scoring scripts        | SAME ???              |
+| model results          |                       |

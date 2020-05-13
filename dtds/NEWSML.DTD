@@ -1,0 +1,174 @@
+<?xml version = "1.0" encoding="UTF-8"?>
+<!--                 ===  NewsML 1999-11-10 DTD ===
+
+   This is Reuters Experimental DTD for NewsML. 
+
+   NewsML is described in the accompanying document XN-5 . 
+   Version 7 of XN-5 accompanies this document.
+
+   The DTD has been iteratively developed between 28th May 1999 
+   and the present date.
+
+   by Jo Rabin
+    
+   Ninth Revision: 1999-11-10
+
+   Alter content model to remove ambiguities pointed out by Marc Moens
+
+   Eighth Revision: 1999-11-02
+
+   Remove incorect "alternatives" as content type for newsitempart
+
+   Seventh Revision: 1999-10-12  
+
+   1. Add alternatives attribute to newsitempart
+   2. Change content type of sourcedata to PCDATA 
+      add attributes of encoding and compression
+   
+   changed in metadata dtd
+   
+   3. add role attribute to codes element 
+   4. add comment about grouping of code elements in codes element
+   5. add confidence to editdetail
+   6. add ennumerated value of confirmed to action of editdetail
+   7. add confidence attribute to thing
+   8. add element <altthings> to allow descripition of uncertain 
+      interpretation of named entity [viz Britannia could refer to 
+      the building society or the airline]
+
+
+  Copyright (c) Reuters Limited 1999 All Rights Reserved
+  ================================================================ -->
+<!ENTITY % newslines		"(headline | caption | 
+				byline | dateline | tagline | 
+				copyright | citation | credit)*">
+
+<!ELEMENT newsitem   	(title+, 
+                       	 %newslines;,
+                       	((newsitempart+ | newsobject | text ), 
+			 %newslines;)?,
+                       	metadata?,
+			handling*,
+                        sourcedata?)>
+
+<!ATTLIST newsitem   	date		CDATA	#REQUIRED
+                       	itemid		CDATA	#REQUIRED
+                        id		ID	#IMPLIED
+                       	parts		CDATA	"1"
+                       	revision	CDATA	"0"
+                       	publisher	CDATA	#IMPLIED
+                       	href 		CDATA	#IMPLIED
+                       	xml:lang 	NMTOKEN	#IMPLIED>
+
+<!ELEMENT newsitempart	(%newslines;,
+			((newsitem | newsobject+ | newsitempart+),
+			%newslines;)?,
+			metadata?,
+                        sourcedata?)>
+
+<!ATTLIST newsitempart	id		ID	#IMPLIED
+			role		CDATA	#REQUIRED
+			order		CDATA	#IMPLIED
+			alternatives	(true|false)	"false">
+
+<!ELEMENT newsobject	(%newslines;,
+			((data|text),
+			%newslines;)?,
+			metadata?,
+                        sourcedata?)> 
+
+<!-- try to avoid adding an arbitrarily long list of 
+     features of interest as attributes -->
+<!ATTLIST newsobject	id		ID	#IMPLIED
+			mimetype	CDATA	#REQUIRED
+			mediatype	(video|
+					audio|
+					animated|
+					graphic|
+					image|
+					text)	#IMPLIED
+			variant		CDATA	#IMPLIED
+			xml:lang	NMTOKEN	#IMPLIED
+			href		CDATA	#IMPLIED
+			height		CDATA	#IMPLIED
+			width		CDATA	#IMPLIED
+			size		CDATA	#IMPLIED
+			duration	CDATA	#IMPLIED
+			characterset	CDATA	#IMPLIED
+			colordepth	CDATA	#IMPLIED
+			bandwidthtostream	CDATA	#IMPLIED>
+
+<!ELEMENT data		(#PCDATA)>
+<!ATTLIST data		id		ID	#IMPLIED
+			encoding	CDATA	#REQUIRED
+			compression	CDATA	#IMPLIED>
+
+<!ELEMENT text		(#PCDATA|p|link|records)* >
+<!ATTLIST text		id		ID	#IMPLIED>
+
+<!ELEMENT p		(#PCDATA|link)*>
+<!ATTLIST p		id		ID	#IMPLIED>
+
+<!ELEMENT link		(#PCDATA)>
+<!ATTLIST link		id		ID	#IMPLIED
+			href		CDATA	#REQUIRED>
+
+<!ELEMENT records	(record+)>
+<!ATTLIST records	id		ID	#IMPLIED>
+
+<!ELEMENT record	(field+)>
+<!ATTLIST record	id		ID	#IMPLIED>
+
+<!ELEMENT field		(#PCDATA)>
+<!ATTLIST field		id		ID	#IMPLIED
+			name		CDATA	#IMPLIED>
+				
+<!ELEMENT headline	(#PCDATA | p)*>
+<!ATTLIST headline	id		ID	#IMPLIED
+			xml:lang		NMTOKEN	#IMPLIED>
+
+<!ELEMENT caption	(#PCDATA | p)*>
+<!ATTLIST caption	id		ID	#IMPLIED
+			xml:lang		NMTOKEN	#IMPLIED>
+
+<!ELEMENT byline	(#PCDATA | p)*>
+<!ATTLIST byline	id		ID	#IMPLIED
+			xml:lang		NMTOKEN	#IMPLIED>
+
+<!ELEMENT dateline	(#PCDATA | p)*>
+<!ATTLIST dateline	id		ID	#IMPLIED
+			xml:lang		NMTOKEN	#IMPLIED>
+
+<!ELEMENT tagline	(#PCDATA | p)*>
+<!ATTLIST tagline	id		ID	#IMPLIED
+			xml:lang		NMTOKEN	#IMPLIED>
+
+<!ELEMENT copyright	(#PCDATA | p)*>
+<!ATTLIST copyright	id		ID	#IMPLIED
+			xml:lang		NMTOKEN	#IMPLIED>
+
+<!ELEMENT credit	(#PCDATA | p)*>
+<!ATTLIST credit	id		ID	#IMPLIED
+			xml:lang		NMTOKEN	#IMPLIED>
+
+<!ELEMENT citation	(#PCDATA | p)*>
+<!ATTLIST citation	id		ID	#IMPLIED
+			xml:lang		NMTOKEN	#IMPLIED>
+
+<!ELEMENT title		(#PCDATA)>
+<!ATTLIST title		id		ID	#IMPLIED
+			xml:lang		NMTOKEN	#IMPLIED>
+
+<!ENTITY % metadata SYSTEM "newsml.metadata.dtd">
+%metadata;
+
+<!ENTITY % handling SYSTEM "newsml.handling.dtd">
+%handling;
+
+<!ELEMENT sourcedata	(#PCDATA)>
+<!ATTLIST sourcedata	id		ID	#IMPLIED
+			encoding	CDATA	#IMPLIED
+			compression	CDATA	#IMPLIED>
+			
+
+

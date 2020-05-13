@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ========================================================
+     This is the definition of the dc element of 
+     Reuters Experimental NewsML DTD.
+
+     NewsML implements some Dublin Core elements implicitly in
+     other parts of the encoding, and hence does not repeat
+     those values in this part.    
+ 
+     The Dublin Core semantics supported are supported in a 
+     specialized way, and this is based on a scheme for 
+     "Reuters Web" developed by Misha Wolf and Charles Wicksteed.
+     It is not the same as that scheme.
+ 
+     There are undoubtedly better ways of encoding the 
+     Dublin Core - especially RDF. See XN-5 for why RDF was
+     not used in this revision.
+     
+     Version 3
+     
+     Updated 9 July 1999 Jo Rabin
+     Updated 2 July 1999 Jo Rabin
+     Updated 1 July 1999 Jo Rabin
+     Created 30 June 1999 Jo Rabin
+
+     Copyright (c) Reuters Limited 1999 All rights reserved
+     ======================================================== -->
+
+<!-- there follows a list of element names
+     to be used in the dc element attribute
+     see document XN-5 for description of the 
+     meaning of these names -->
+
+<!ENTITY % dc.elements 
+
+"(dc.title |
+
+dc.creator.name |
+dc.creator.title |
+dc.creator.location |
+dc.creator.location.city |
+dc.creator.location.sublocation |
+dc.creator.location.stateOrProvince |
+dc.creator.location.country.code |
+dc.creator.location.country.name |
+dc.creator.phone |
+dc.creator.email |
+dc.creator.program |
+
+dc.date.created |
+dc.date.lastModified |
+dc.date.converted |
+
+dc.publisher |
+dc.publisher.provider |
+dc.publisher.contact.name  |
+dc.publisher.contact.email  |
+dc.publisher.contact.phone  |
+dc.publisher.contact.title  |
+dc.publisher.location |
+dc.publisher.graphic  |
+
+dc.coverage.start      |
+dc.coverage.end        |
+dc.coverage.period     |
+
+dc.relation.obsoletes  |
+dc.relation.includes   |
+dc.relation.references |
+
+dc.date.published |
+dc.date.live |
+dc.date.statuschanges |
+dc.date.expires |
+
+dc.source |
+dc.source.contact   |
+dc.source.provider  |
+dc.source.location  |
+dc.source.graphic        |
+dc.source.date.published |
+dc.source.identifier  |     
+
+dc.contributor.editor.name |  
+dc.contributor.captionwriter.name )">
+
+<!ELEMENT dc EMPTY>
+<!ATTLIST dc	id	ID		#IMPLIED
+		element	%dc.elements;	#REQUIRED
+             	value	CDATA		#REQUIRED
+		xml:lang	CDATA	#IMPLIED>
+
+
+
+
