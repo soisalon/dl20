@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -J dl_train
 #SBATCH --export=WRKDIR,LD_LIBRARY_PATH
-#SBATCH --chdir=/wrk/users/eliel/projects/dl20/src
+#SBATCH --chdir=/wrk/users/eliel/projects/dl20/dl20/src
 #SBATCH -o /wrk/users/eliel/projects/dl20/jobs/res/%J.txt
 #SBATCH -e /wrk/users/eliel/projects/dl20/jobs/err/%J.txt
 #SBATCH -t 0-10:00:00
