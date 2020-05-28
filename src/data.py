@@ -7,6 +7,7 @@ import xmltodict
 import nltk
 import string
 import collections
+import random
 
 
 def embed_doc(words, width, embedding='elmo'):
@@ -33,13 +34,23 @@ def get_cum_docs_per_zip(zips):
     return docs_per_zip
 
 
-def get_doc_words(xmlfile, filter=None):
+def get_doc_words(xmlfile, filter=None, random_sample=None):
     """
     Extract words from doc: <title>, <headline>, and <text> (<p> sadasd </p>), and put the woords into a list.
+
+    Filtering out the following:
+    - words shorter than 4 characters
+    - non-alphabetic words
+
     :param xmlfile:
     :param filter:
     :return:
     """
+
+    # TODO: handle those three XMLs which lack a <text> field
+    # TODO: filter all words with length < 4, except ?
+    # TODO: filter out numeric words, they don't predict topic
+
     doc_dict = xmltodict.parse(xmlfile)
 
     keys1 = list(doc_dict.keys())
@@ -48,43 +59,34 @@ def get_doc_words(xmlfile, filter=None):
     k1 = keys1[0]
     keys2 = [k2 for k1 in doc_dict for k2 in doc_dict[k1]]
 
-    title = doc_dict[k1]['title'] if 'title' in keys2 else []
-    headline = doc_dict[k1]['headline'] if 'headline' in keys2 else []
-    text = doc_dict[k1]['text'] if 'text' in keys2 else []
+    title = doc_dict[k1]['title'] if 'title' in keys2 else ''
+    headline = doc_dict[k1]['headline'] if 'headline' in keys2 else ''
+    text = doc_dict[k1]['text'] if 'text' in keys2 else None
 
-    if type(text) != collections.OrderedDict:
-        print('Type of <text> is not ordered dict but: ', type(text))
-        print('in xmlfile: ', xmlfile)
-        sents = []
-    elif not doc_dict[k1]['text']['p']:
-        sents = []
-        print('no <p> in <text> for xmlfile: ', xmlfile)
-        print('text: ', text)
-    else:
-        sents = doc_dict[k1]['text']['p']
+    sents = text['p'] if text else ''           # text['p'] is a list
 
-    #if 'p' not in doc_dict[k1]['text']:
-    #    print('p missing from text, print text: ', doc_dict[k1]['text'])
-    #    sents = doc_dict[k1]['text']
-
-    title_tokens = nltk.word_tokenize(title) if title else []
-    headline_tokens = nltk.word_tokenize(headline) if headline else []
+    title_tokens = nltk.word_tokenize(title)
     try:
-        sents_tokens = [nltk.word_tokenize(s) for s in sents if s]
+        headline_tokens = nltk.word_tokenize(headline)
     except TypeError:
-        print('error with tkoenisation')
-
-    sents_tokens = [w for s in sents_tokens for w in s] if text else []
+        print('error with tokenising: {}'.format(headline))
+    sents_tokens = [nltk.word_tokenize(s) for s in sents if s]
+    sents_tokens = [w for s in sents_tokens for w in s]
 
     words = title_tokens + headline_tokens + sents_tokens
     if filter == 'punct':
         words = [w for w in words if w not in string.punctuation]
     elif filter == 'nonalph':
         words = [w for w in words if w.isalpha()]
+
     words = [w.lower() for w in words]
+    words = [w for w in words if not len(w) < 4]        # filter words with length < 4
     if not words:
         print('No words in xmlfile:  ', xmlfile)
         print('doc_dict: ', doc_dict)
+
+    if random_sample:
+        words = random.sample(words, k=random_sample) if len(words) > random_sample else words
 
     return words
 
