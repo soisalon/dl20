@@ -5,7 +5,7 @@ import torch
 
 if os.getcwd().split(os.sep)[1] == 'wrk':   # if working on Ukko2
     TESTING = False
-    PROJ_DIR = '/wrk/users/eliel/projects/dl20/dl20'
+    PROJ_DIR = '/wrk/users/eliel/projects/dl_course20/dl20'
 else:
     TESTING = True
     PROJ_DIR = '/Users/eliel/Projects/courses/DL20/project/dl20'
@@ -14,7 +14,7 @@ else:
 DATA_DIR = os.path.join(PROJ_DIR, 'corpus')
 MODEL_DIR = os.path.join(PROJ_DIR, 'models', 'trained')
 CACHE_DIR = os.path.join(PROJ_DIR, 'models', 'cache')
-paths = (DATA_DIR, MODEL_DIR, CACHE_DIR)
+paths = (MODEL_DIR, CACHE_DIR)
 for p in paths:
     if not os.path.exists(p):
         os.makedirs(p)
