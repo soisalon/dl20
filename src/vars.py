@@ -5,7 +5,7 @@ import torch
 
 if os.getcwd().split(os.sep)[1] == 'wrk':   # if working on Ukko2
     TESTING = False
-    PROJ_DIR = '/wrk/users/eliel/projects/dl_course20/dl20'
+    PROJ_DIR = '/wrk/users/eliel/projects/dl_course20/'
 else:
     TESTING = True
     PROJ_DIR = '/Users/eliel/Projects/courses/DL20/project/dl20'
