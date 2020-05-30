@@ -1,9 +1,9 @@
 #!/bin/bash
 #SBATCH -J dl_train
 #SBATCH --export=USERAPPL,WRKDIR,LD_LIBRARY_PATH
-#SBATCH --chdir=/wrk/users/eliel/projects/dl20/dl20
-#SBATCH -o /wrk/users/eliel/projects/dl20/jobs/res/%J.txt
-#SBATCH -e /wrk/users/eliel/projects/dl20/jobs/res/%J.txt
+#SBATCH --chdir=/wrk/users/eliel/projects/dl_course20/dl20
+#SBATCH -o /wrk/users/eliel/projects/dl_course20/jobs/res/%J.txt
+#SBATCH -e /wrk/users/eliel/projects/dl_course20/jobs/res/%J.txt
 #SBATCH -t 2-0
 #SBATCH --mem 10G
 #SBATCH -c 10
@@ -31,7 +31,7 @@ echo "training cnn for DL"
 
 
 # train model
-srun $USERAPPL/ve37/bin/python3 -m sentsim.src.main \
+srun $USERAPPL/ve37/bin/python3 src/train.py \
     --dev_ratio 0.1 \
     --seed 100 \
     --cv_folds 10 \
