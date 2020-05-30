@@ -1,22 +1,19 @@
-#!/usr/bin/env bash
 #!/bin/bash
 #SBATCH -J dl_train
-#SBATCH --export=WRKDIR,LD_LIBRARY_PATH
-#SBATCH --chdir=/wrk/users/eliel/projects/dl20/src
-#SBATCH -o /wrk/users/eliel/projects/embeddia/embeddia-experiments/jobs/res/%J.txt
-#SBATCH -e /wrk/users/eliel/projects/embeddia/embeddia-experiments/jobs/err/%J.txt
-#SBATCH -t 1-0
-#SBATCH -c 2
-#SBATCH --mem=5G
+#SBATCH --export=USERAPPL,WRKDIR,LD_LIBRARY_PATH
+#SBATCH --chdir=/wrk/users/eliel/projects/dl20/dl20
+#SBATCH -o /wrk/users/eliel/projects/dl20/jobs/res/%J.txt
+#SBATCH -e /wrk/users/eliel/projects/dl20/jobs/res/%J.txt
+#SBATCH -t 2-0
+#SBATCH --mem 10G
+#SBATCH -c 10
+#SBATCH -p gpu-short
+#SBATCH --gres=gpu:1
+#SBATCH --mail-type=END
+#SBATCH --mail-user=eliel.soisalon-soininen@helsinki.fi
 
-#-p gpu
-#--gres=gpu:1
-
-# --mem-per-cpu=10g
-
-
-# for interactive session:
-# srun -t 0-4:00:00 -c 2 --mem=5G -p gpu-short --gres=gpu:1 --pty bash
+# interactive
+# srun -t 10:00:00 --mem=10G -p gpu-short --gres=gpu:1 -c 10 --pty bash
 
 
 module purge
@@ -27,52 +24,34 @@ module load CUDA/10.1.105
 ### How to use GPU - download CUDA module ?
 
 
-echo "running train_cnn.sh"
+echo "training cnn for DL"
 
 # --array=0-5
 #ID=SLURM_ARRAY_TASK_ID
 
 
-EMB_FILES=(\
-finnish-elmo-sents.hdf5 \
-swedish-elmo-sents.hdf5 \
-english-elmo_2x1024_128_2048cnn_1xhighway-sents-train.hdf5 \
-)
-
-IND_FILES=(\
-finnish-0.2-1-arts.txt \
-swedish-0.2-1-arts.txt \
-english-0.2-1-arts.txt \
-)
-
-
-echo "running train_cnn.sh"
-
 # train model
-srun $WRKDIR/ve37/bin/python3 -m main \
-    --dev_ratio 0.2 \
-    --test_ind_file english-0.2-1-arts.txt \
-    --emb_file english-elmo_2x1024_128_2048cnn_1xhighway-tokens-train.hdf5 \
-    --model pair-cnn \
-    --elmo_dim 2 \
+srun $USERAPPL/ve37/bin/python3 -m sentsim.src.main \
+    --dev_ratio 0.1 \
+    --seed 100 \
+    --cv_folds 10 \
+    --emb_pars enc=elmo_2x1024_128_2048cnn_1xhighway dim=2 \
     --n_epochs 10 \
-    --batch_size 64 \
+    --batch_size 32 \
     --loss_fn bce \
     --optim adadelta \
-    --n_layers 1 \
-    --kernel_shapes Hx4 \
+    --opt_params lr=1.0 rho=0.95 eps=1e-6 \
+    --model_name BaseCNN \
+    --n_conv_layers 1 \
+    --kernel_shapes 256x2 \
     --strides 1x1 \
-    --pool_sizes 1x2 \
-    --input_width 30 \
-    --n_filters 10 \
+    --input_shape 256x50 \
+    --n_kernels 10 \
     --conv_act_fn relu \
-    --merge_fn abs \
-    --fc_units 64 \
+    --h_units 64 \
     --fc_act_fn relu \
     --out_act_fn sigmoid \
     --dropout 0.5
-
-
 
 
 
