@@ -18,16 +18,10 @@
 
 module purge
 module load Python/3.7.0-intel-2018b
-# which version of cuda to install? 10.2
 module load CUDA/10.1.105
-
-### How to use GPU - download CUDA module ?
 
 
 echo "training cnn for DL"
-
-# --array=0-5
-#ID=SLURM_ARRAY_TASK_ID
 
 
 # train model
