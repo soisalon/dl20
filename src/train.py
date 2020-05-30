@@ -2,12 +2,10 @@
 
 import os
 import argparse
-import glob
-import zipfile
-import collections
 
 import torch
 import numpy as np
+from sklearn.metrics import precision_recall_fscore_support
 
 from data import get_doc_words, get_docs, get_model_savepath
 from vars import LOSSES, OPTIMS, MODEL_DIR, TESTING, DEVICE, PROJ_DIR
@@ -152,6 +150,8 @@ for fold in range(params.cv_folds):
 
     rand_preds = (torch.rand(n_dev_docs, n_classes) >= 0.5).int()
     rand_accs[fold] = torch.sum(rand_preds == dev_labels.int()).float() / n_dev_docs
+
+    precs[fold], recs[fold], fs[fold], _ = precision_recall_fscore_support(dev_labels, dev_preds, average='micro')
 
 
 print('Scores for model: {}'.format(model_fname))

@@ -6,7 +6,6 @@ import glob
 import xmltodict
 import nltk
 import string
-import collections
 
 from vars import DATA_DIR
 
@@ -61,9 +60,9 @@ def get_cum_docs_per_zip(zips):
     return docs_per_zip
 
 
-def get_doc_words(xmlfile, filter=None):
+def get_doc_words(xmlfile, filter='nonalph'):
     """
-    Extract words from doc: <title>, <headline>, and <text> (<p> sadasd </p>), and put the woords into a list.
+    Extract words from doc: <title>, <headline>, and <text>, and put the woords into a list.
 
     Filtering out the following:
     - words shorter than 4 characters
@@ -73,8 +72,6 @@ def get_doc_words(xmlfile, filter=None):
     :param filter:
     :return:
     """
-
-    # TODO: handle those three XMLs which lack a <text> field
 
     doc_dict = xmltodict.parse(xmlfile)
 

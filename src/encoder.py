@@ -13,7 +13,6 @@ from vars import PROJ_DIR, DEVICE
 
 class Encoder(object):
 
-    # TODO: make sure encoder is initialised only once before a training loop
     def __init__(self, params):
 
         emb_pars = {par.split('=')[0]: par.split('=')[1] for par in params.emb_pars}
