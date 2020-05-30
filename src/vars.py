@@ -8,10 +8,9 @@ if os.getcwd().split(os.sep)[1] == 'wrk':   # if working on Ukko2
     PROJ_DIR = '/wrk/users/eliel/projects/dl_course20/'
 else:
     TESTING = True
-    PROJ_DIR = '/Users/eliel/Projects/courses/DL20/project/dl20'
+    PROJ_DIR = '/Users/eliel/Projects/courses/DL20/project/'
 
-# make sure you are in the project dir (parent of source)
-DATA_DIR = os.path.join(PROJ_DIR, 'corpus')
+DATA_DIR = os.path.join(PROJ_DIR, 'dl20', 'corpus')
 MODEL_DIR = os.path.join(PROJ_DIR, 'models', 'trained')
 CACHE_DIR = os.path.join(PROJ_DIR, 'models', 'cache')
 paths = (MODEL_DIR, CACHE_DIR)

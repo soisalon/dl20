@@ -8,6 +8,8 @@ import nltk
 import string
 import collections
 
+from vars import DATA_DIR
+
 
 def get_model_savepath(params, ext='.pt'):
 
@@ -32,8 +34,9 @@ def get_model_savepath(params, ext='.pt'):
 
 def get_docs(inds):
 
-    zips = sorted(glob.glob('../corpus/*.zip'))  # for reading input batches
-    cum_docs = get_cum_docs_per_zip(zips)  # cumulative num. of docs in zip files
+    pattern = os.path.join(DATA_DIR,'*.zip')
+    zips = sorted(glob.glob(pattern))       # for reading input batches
+    cum_docs = get_cum_docs_per_zip(zips)   # cumulative num. of docs in zip files
 
     batch_docs = []
     for i in inds:

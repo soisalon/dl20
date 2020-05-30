@@ -10,7 +10,7 @@ import torch
 import numpy as np
 
 from data import get_doc_words, get_docs, get_model_savepath
-from vars import LOSSES, OPTIMS, MODEL_DIR, TESTING, DEVICE
+from vars import LOSSES, OPTIMS, MODEL_DIR, TESTING, DEVICE, PROJ_DIR
 from encoder import Encoder
 import cnn
 
@@ -62,7 +62,7 @@ else:
 
 in_width = int(params.input_shape.split('x')[1])        # desired width of input
 
-labels = np.loadtxt('../ground_truth.txt')
+labels = np.loadtxt(os.path.join(PROJ_DIR, 'ground_truth.txt'))
 
 if TESTING:
     m_docs = 20
@@ -122,6 +122,9 @@ emb_encoder = Encoder(params=params)            # for encoding words with embedd
 
 accs = torch.zeros(params.cv_folds)             # for storing accuracies
 rand_accs = torch.zeros(params.cv_folds)        # accs of random guesses
+fs = torch.zeros(params.cv_folds)
+precs = torch.zeros(params.cv_folds)
+recs = torch.zeros(params.cv_folds)
 for fold in range(params.cv_folds):
 
     if params.cv_folds == 1:        # not doing CV, dev set from the end part of data
@@ -164,7 +167,8 @@ print('Avg. random guess: ', torch.mean(rand_accs))
 final_model = getattr(cnn, params.model_name)(params=params)
 final_model= final_model.to(DEVICE)
 all_inds = [i for i in range(n_docs)]
-model_to_save = train(final_model)
+labels = torch.tensor(labels)
+model_to_save = train(final_model, all_inds, labels)
 torch.save(model.state_dict(), model_path)
 
 

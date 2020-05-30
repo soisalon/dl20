@@ -3,7 +3,7 @@
 #SBATCH --export=USERAPPL,WRKDIR,LD_LIBRARY_PATH
 #SBATCH --chdir=/wrk/users/eliel/projects/dl_course20/
 #SBATCH -o /wrk/users/eliel/projects/dl_course20/jobs/res/%J.txt
-#SBATCH -e /wrk/users/eliel/projects/dl_course20/jobs/res/%J.txt
+#SBATCH -e /wrk/users/eliel/projects/dl_course20/jobs/err/%J.txt
 #SBATCH -t 2-0
 #SBATCH --mem 10G
 #SBATCH -c 10
