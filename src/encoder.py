@@ -95,7 +95,9 @@ class Encoder(object):
             if diff > 0:
                 lp = int(diff / 2) if diff % 2 == 0 else int(diff // 2)
                 rp = int(diff - lp)
-                embs += [F.pad(e, [0, 0, lp, rp], 'constant', 0)] # pad from last to first dim
+                embs += [F.pad(e, [0, 0, lp, rp], 'constant', 0)]       # pad from last to first dim
+            elif diff < 0:
+                embs += [e[:, :self.in_width]]
             else:
                 embs += [e]
 

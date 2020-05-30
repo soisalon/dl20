@@ -49,6 +49,7 @@ def get_docs(inds):
 
     return batch_docs
 
+
 def get_cum_docs_per_zip(zips):
 
     docs_per_zip = {}
@@ -85,10 +86,10 @@ def get_doc_words(xmlfile, filter='nonalph'):
 
     sents = text['p'] if text else ''           # text['p'] is a list
 
-    title_tokens = nltk.word_tokenize(title)
-    headline_tokens = nltk.word_tokenize(headline)
-    sents_tokens = [nltk.word_tokenize(s) for s in sents if s]
-    sents_tokens = [w for s in sents_tokens for w in s]
+    title_tokens = nltk.word_tokenize(title) if title else []
+    headline_tokens = nltk.word_tokenize(headline) if headline else []
+    sents_tokens = [nltk.word_tokenize(s) for s in sents if s] if sents else []
+    sents_tokens = [w for s in sents_tokens for w in s] if sents_tokens else []
 
     words = title_tokens + headline_tokens + sents_tokens
     if filter == 'punct':

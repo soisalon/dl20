@@ -2,6 +2,7 @@
 
 import os
 import argparse
+import random
 
 import torch
 import numpy as np
@@ -16,9 +17,10 @@ import cnn
 parser = argparse.ArgumentParser()
 
 # general params
+parser.add_argument('--tr_ratio', nargs='?', type=float)
 parser.add_argument('--dev_ratio', nargs='?', type=float, default=0.1)
 parser.add_argument('--seed', nargs='?', type=int, default=100)
-parser.add_argument('--cv_folds', nargs='?', type=int)
+parser.add_argument('--cv_folds', nargs='?', type=int, default=1)
 # params for sampling and encoding words from XMLs
 parser.add_argument('--word_filter', nargs='?', default='nonalph')
 parser.add_argument('--emb_pars', nargs='*', default=['enc=elmo_2x1024_128_2048cnn_1xhighway', 'dim=2'])
@@ -34,7 +36,7 @@ parser.add_argument('--n_conv_layers', nargs='?', type=int, default=1)
 parser.add_argument('--kernel_shapes', nargs='*', default=['256x2', '1x2'])
 parser.add_argument('--strides', nargs='*', default=['1x1'])
 parser.add_argument('--pool_sizes', nargs='*', default=['1x2'])
-parser.add_argument('--input_shape', nargs='?', default='256x50')
+parser.add_argument('--input_shape', nargs='?', default='256x200')
 parser.add_argument('--n_kernels', nargs='*', type=int, default=[10])
 parser.add_argument('--conv_act_fn', nargs='?', default='relu')
 parser.add_argument('--h_units', nargs='*', type=int, default=[64])
@@ -57,32 +59,61 @@ if params.cv_folds:
     n_tr_docs = n_docs - n_dev_docs
 else:
     params.cv_folds = 1
+if params.tr_ratio:
+    n_tr_docs = int(n_tr_docs * params.tr_ratio)
 
 in_width = int(params.input_shape.split('x')[1])        # desired width of input
 
-labels = np.loadtxt(os.path.join(PROJ_DIR, 'ground_truth.txt'))
+labels = np.loadtxt(os.path.join(PROJ_DIR, 'dl20', 'ground_truth.txt'))
 
 if TESTING:
-    m_docs = 20
+    n_docs, n_tr_docs, n_dev_docs = 20, 12, 8
     params.batch_size = 4
     params.n_epochs = 1
+    print('Testing code')
+
+print('Initialise embedding encoder')
+emb_encoder = Encoder(params=params)            # for encoding words with embeddings
+
+
+# get words representing newsitems into a text file
+if not os.path.exists(os.path.join(PROJ_DIR, 'dl20', 'sequences.txt')):
+    print('Sample word sequences from XMLs...')
+    all_docs = get_docs([i for i in range(n_docs)])
+    all_words = [get_doc_words(doc, filter=params.word_filter) for doc in all_docs]
+    all_seqs = emb_encoder.sample_sequences(all_words)
+    with open(os.path.join(PROJ_DIR, 'dl20', 'sequences.txt'), 'w') as f:
+        for s in all_seqs:
+            f.write('\t'.join(s) + '\n')
+    print('Words sampled!')
+
+else:
+    with open(os.path.join(PROJ_DIR, 'dl20', 'sequences.txt'), 'r') as f:
+        lines = [line.strip() for line in f]
+        all_seqs = [line.split() for line in lines]
+    print('Seqs read from file')
+
+# all_embs = emb_encoder.encode_batch(all_seqs)
 
 
 def train(mdl, input_inds, out_labels):
     # training loop
     n_iters = len(input_inds) // params.batch_size
+    losses = []
+    stop = False
     for epoch in range(params.n_epochs):
         for it in range(n_iters):
-            batch_inds = tr_inds[it * params.batch_size: (it + 1) * params.batch_size]
+            batch_inds = input_inds[it * params.batch_size: (it + 1) * params.batch_size]
 
-            batch_docs = get_docs(batch_inds)  # get xml files corresponding to indices
+            # batch_docs = get_docs(batch_inds)  # get xml files corresponding to indices
 
             # get words from docs, filtered
-            batch_words = [get_doc_words(doc, filter=params.word_filter) for doc in batch_docs]
+            # batch_words = [get_doc_words(doc, filter=params.word_filter) for doc in batch_docs]
 
-            seqs = emb_encoder.sample_sequences(batch_words)  # get sequences of given length
-
+            # seqs = emb_encoder.sample_sequences(batch_words)  # get sequences of given length
+            seqs = [all_seqs[i] for i in batch_inds]
             batch = emb_encoder.encode_batch(seqs)  # get encoded batch
+            # batch = torch.index_select(all_embs, dim=0, index=torch.tensor(batch_inds))
 
             opt.zero_grad()
 
@@ -97,6 +128,15 @@ def train(mdl, input_inds, out_labels):
 
             if it % 500 == 0:
                 print('at iter {}, loss =  {}'.format(it, loss))
+
+            losses += [loss]
+            # stop if loss is not changing
+            if len(losses) > 100:
+                if all(losses[j - 1] < losses[j] for j in range(len(losses) - 1, len(losses) - 11, -1)):
+                    stop = True
+                    break
+        if stop:
+            break
     return model
 
 
@@ -115,8 +155,7 @@ else:                                                           # or get optimis
     opt_params = {par.split('=')[0]: float(par.split('=')[1]) for par in params.opt_params}
     opt = OPTIMS[params.optim](model.parameters(), **opt_params)
 
-
-emb_encoder = Encoder(params=params)            # for encoding words with embeddings
+all_inds = [i for i in range(n_docs)]
 
 accs = torch.zeros(params.cv_folds)             # for storing accuracies
 rand_accs = torch.zeros(params.cv_folds)        # accs of random guesses
@@ -125,9 +164,10 @@ precs = torch.zeros(params.cv_folds)
 recs = torch.zeros(params.cv_folds)
 for fold in range(params.cv_folds):
 
-    if params.cv_folds == 1:        # not doing CV, dev set from the end part of data
-        tr_inds = [i for i in range(n_tr_docs)]
-        dev_inds = [i for i in range(n_tr_docs, n_docs)]
+    if params.cv_folds == 1:        # not doing CV, take random samples
+        tr_inds = random.sample(all_inds, k=n_tr_docs)
+        rest = [i for i in all_inds if i not in tr_inds]
+        dev_inds = random.sample(rest, k=n_dev_docs)
     else:
         dev_inds = [i for i in range(fold * n_dev_docs, (fold + 1) * n_dev_docs)]
         tr_inds = [i for i in range(n_docs) if i not in dev_inds]
@@ -138,37 +178,47 @@ for fold in range(params.cv_folds):
 
     model = train(model, tr_inds, tr_labels)
 
-    dev_docs = get_docs(dev_inds)
-    dev_words = [get_doc_words(doc, filter=params.word_filter) for doc in dev_docs]
-    dev_seqs = emb_encoder.sample_sequences(dev_words)
+    dev_seqs = [all_seqs[i] for i in dev_inds]
     dev_embs = emb_encoder.encode_batch(dev_seqs)
     dev_preds = model(dev_embs).squeeze()
 
+    # TODO: sample a few (strongly) misclassified newsitems
+
     # get accuracy on dev set
     dev_preds = (dev_preds >= 0.5).int()
-    accs[fold] = torch.sum(dev_preds == dev_labels.int()).float() / n_dev_docs
+    accs[fold] = torch.sum(dev_preds == dev_labels.int()).float() / (n_dev_docs * 126)
 
     rand_preds = (torch.rand(n_dev_docs, n_classes) >= 0.5).int()
-    rand_accs[fold] = torch.sum(rand_preds == dev_labels.int()).float() / n_dev_docs
+    rand_accs[fold] = torch.sum(rand_preds == dev_labels.int()).float() / (n_dev_docs * 126)
 
     precs[fold], recs[fold], fs[fold], _ = precision_recall_fscore_support(dev_labels, dev_preds, average='micro')
 
+    bad_preds = (torch.sum((dev_preds == dev_labels.int()), dim=1).float() / 126 < 0.5).nonzero().squeeze()
+    bad_preds = [p.item() for p in bad_preds]
+    print('Examples of badly classified docs: {}'.format(
+        [dev_inds[i] for i in random.sample(bad_preds, k=min(10, len(bad_preds)))]))
 
-print('Scores for model: {}'.format(model_fname))
-for f in range(params.cv_folds):
-    print('In fold {}/{}: '.format(f + 1, params.cv_folds))
-    print('Model accuracy = {}'.format(accs[f]))
-    print('Random guess: ', rand_accs[f])
+with open(os.path.join(PROJ_DIR, 'dl20', 'scores.txt'), 'w') as f:
+    f.write('Scores for model: {}\n'.format(model_fname))
+    for fld in range(params.cv_folds):
+        f.write('In fold {}/{}:\n'.format(fld + 1, params.cv_folds))
+        f.write('Model accuracy = {}\n'.format(accs[fld]))
+        f.write('Model precision = {}\n'.format(precs[fld]))
+        f.write('Model recall = {}\n'.format(recs[fld]))
+        f.write('Model F1= {}\n'.format(fs[fld]))
+        f.write('Random guess: {}\n'.format(rand_accs[fld]))
+    f.write('\n#####\n')
 
 print('Average model accuracy: ', torch.mean(accs))
 print('Avg. random guess: ', torch.mean(rand_accs))
 
+"""
 # train final model on the whole training dataset, and save to file
 final_model = getattr(cnn, params.model_name)(params=params)
 final_model= final_model.to(DEVICE)
-all_inds = [i for i in range(n_docs)]
+
 labels = torch.tensor(labels)
 final_model = train(final_model, all_inds, labels)
 torch.save(final_model.state_dict(), model_path)
-
+"""
 
