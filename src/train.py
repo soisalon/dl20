@@ -168,7 +168,7 @@ final_model = getattr(cnn, params.model_name)(params=params)
 final_model= final_model.to(DEVICE)
 all_inds = [i for i in range(n_docs)]
 labels = torch.tensor(labels)
-model_to_save = train(final_model, all_inds, labels)
-torch.save(model.state_dict(), model_path)
+final_model = train(final_model, all_inds, labels)
+torch.save(final_model.state_dict(), model_path)
 
 
