@@ -36,7 +36,9 @@ parser.add_argument('--n_conv_layers', nargs='?', type=int, default=1)
 parser.add_argument('--kernel_shapes', nargs='*', default=['256x2', '1x2'])
 parser.add_argument('--strides', nargs='*', default=['1x1'])
 parser.add_argument('--pool_sizes', nargs='*', default=['1x2'])
-parser.add_argument('--input_shape', nargs='?', default='256x200')
+parser.add_argument('--input_shape', nargs='?', default='256x1000')
+
+
 parser.add_argument('--n_kernels', nargs='*', type=int, default=[10])
 parser.add_argument('--conv_act_fn', nargs='?', default='relu')
 parser.add_argument('--h_units', nargs='*', type=int, default=[64])
