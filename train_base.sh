@@ -2,8 +2,8 @@
 #SBATCH -J dl_train
 #SBATCH --export=USERAPPL,WRKDIR,LD_LIBRARY_PATH
 #SBATCH --chdir=/wrk/users/eliel/projects/dl_course20/
-#SBATCH -o /wrk/users/eliel/projects/dl_course20/jobs/res/%A_%a.txt
-#SBATCH -e /wrk/users/eliel/projects/dl_course20/jobs/err/%A_%a.txt
+#SBATCH -o /wrk/users/eliel/projects/dl_course20/jobs/res/%J.txt
+#SBATCH -e /wrk/users/eliel/projects/dl_course20/jobs/err/%J.txt
 #SBATCH -t 2-0
 #SBATCH -c 2
 #SBATCH -p gpu-short
@@ -37,7 +37,7 @@ KS=(256X2 768x2)
 N_KS=(100)
 NC=(1)
 MODS=(BaseCNN)
-INS=(256x1000 768x1000)
+INS=(256x1000 768x100)
 BS=(32)
 OPTS=(adadelta)
 HS=(100)
