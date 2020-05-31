@@ -10,12 +10,13 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mail-type=END
 #SBATCH --mail-user=eliel.soisalon-soininen@helsinki.fi
+#SBATCH --mem 10G
 
 #--array=0-5
 #--mem-per-cpu=10G
 #--ntasks=6
 
-# --mem 10G
+
 
 # interactive
 # srun -t 10:00:00 --mem=10G -p gpu-short --gres=gpu:1 -c 10 --pty bash
