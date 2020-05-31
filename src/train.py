@@ -55,12 +55,7 @@ n_classes = 126
 n_docs = 299773                                 # docs (xml files) in total
 n_dev_docs = int(n_docs * params.dev_ratio)     # docs to use for dev set
 n_tr_docs = n_docs - n_dev_docs                 # docs to use for training set
-if params.cv_folds:
-    params.dev_ratio = 1 / params.cv_folds
-    n_dev_docs = int(n_docs * params.dev_ratio)
-    n_tr_docs = n_docs - n_dev_docs
-else:
-    params.cv_folds = 1
+
 if params.tr_ratio:
     n_tr_docs = int(n_tr_docs * params.tr_ratio)
 
@@ -75,25 +70,13 @@ if TESTING:
     print('Testing code')
 
 print('Initialise embedding encoder')
-emb_encoder = Encoder(params=params)            # for encoding words with embeddings
+emb_encoder = Encoder(params=params)
 
-
-# get words representing newsitems into a text file
-if not os.path.exists(os.path.join(PROJ_DIR, 'dl20', 'sequences.txt')):
-    print('Sample word sequences from XMLs...')
-    all_docs = get_docs([i for i in range(n_docs)])
-    all_words = [get_doc_words(doc, filter=params.word_filter) for doc in all_docs]
-    all_seqs = emb_encoder.sample_sequences(all_words)
-    with open(os.path.join(PROJ_DIR, 'dl20', 'sequences.txt'), 'w') as f:
-        for s in all_seqs:
-            f.write('\t'.join(s) + '\n')
-    print('Words sampled!')
-
-else:
-    with open(os.path.join(PROJ_DIR, 'dl20', 'sequences.txt'), 'r') as f:
-        lines = [line.strip() for line in f]
-        all_seqs = [line.split() for line in lines]
-    print('Seqs read from file')
+# get sequences corresponding to newsitems
+with open(os.path.join(PROJ_DIR, 'dl20', 'sequences.txt'), 'r') as f:
+    lines = [line.strip() for line in f]
+    all_seqs = [line.split() for line in lines]
+print('Seqs read from file')
 
 # all_embs = emb_encoder.encode_batch(all_seqs)
 
@@ -151,7 +134,7 @@ model = model(params=params)                  # init. model
 model = model.to(DEVICE)                      # make sure model is set to correct device
 
 loss_fn = LOSSES[params.loss_fn]()                              # get loss function
-if params.opt_params == 'default':
+if params.opt_params[0] == 'default':
     opt = OPTIMS[params.optim](model.parameters())              # use default params if opt_params not given
 else:                                                           # or get optimiser with given params
     opt_params = {par.split('=')[0]: float(par.split('=')[1]) for par in params.opt_params}
@@ -171,6 +154,7 @@ for fold in range(params.cv_folds):
         rest = [i for i in all_inds if i not in tr_inds]
         dev_inds = random.sample(rest, k=n_dev_docs)
     else:
+        assert params.cv_folds * params.dev_ratio == 1.0
         dev_inds = [i for i in range(fold * n_dev_docs, (fold + 1) * n_dev_docs)]
         tr_inds = [i for i in range(n_docs) if i not in dev_inds]
 
@@ -184,8 +168,6 @@ for fold in range(params.cv_folds):
     dev_embs = emb_encoder.encode_batch(dev_seqs)
     dev_preds = model(dev_embs).squeeze()
 
-    # TODO: sample a few (strongly) misclassified newsitems
-
     # get accuracy on dev set
     dev_preds = (dev_preds >= 0.5).int()
     accs[fold] = torch.sum(dev_preds == dev_labels.int()).float() / (n_dev_docs * 126)
@@ -195,6 +177,7 @@ for fold in range(params.cv_folds):
 
     precs[fold], recs[fold], fs[fold], _ = precision_recall_fscore_support(dev_labels, dev_preds, average='micro')
 
+    # sample a few (strongly) misclassified newsitems
     bad_preds = (torch.sum((dev_preds == dev_labels.int()), dim=1).float() / 126 < 0.5).nonzero().squeeze()
     bad_preds = [p.item() for p in bad_preds]
     print('Examples of badly classified docs: {}'.format(

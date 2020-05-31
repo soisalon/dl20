@@ -11,9 +11,11 @@ else:
     PROJ_DIR = '/Users/eliel/Projects/courses/DL20/project/'
 
 DATA_DIR = os.path.join(PROJ_DIR, 'dl20', 'corpus')
+TEST_DATA_DIR = os.path.join(PROJ_DIR, 'dl20', 'test-corpus')
 MODEL_DIR = os.path.join(PROJ_DIR, 'models', 'trained')
 CACHE_DIR = os.path.join(PROJ_DIR, 'models', 'cache')
-paths = (MODEL_DIR, CACHE_DIR)
+EMB_DIR = os.path.join(PROJ_DIR, 'embs')
+paths = (MODEL_DIR, CACHE_DIR, EMB_DIR)
 for p in paths:
     if not os.path.exists(p):
         os.makedirs(p)

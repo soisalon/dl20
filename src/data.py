@@ -6,8 +6,9 @@ import glob
 import xmltodict
 import nltk
 import string
+import random
 
-from vars import DATA_DIR
+from vars import DATA_DIR, PROJ_DIR
 
 
 def get_model_savepath(params, ext='.pt'):
@@ -106,3 +107,32 @@ def get_doc_words(xmlfile, filter='nonalph'):
     return words
 
 
+def sample_sequences(word_batch, max_width):
+
+    seqs = []
+    for wordlist in word_batch:
+        diff = len(wordlist) - max_width
+        if diff > 0:
+            start = random.randint(0, diff)
+            end = start + max_width
+            seqs += [wordlist[start:end]]
+        else:
+            seqs += [wordlist]
+    return seqs
+
+
+if __name__ == '__main__':
+
+    # get words representing newsitems into a text file
+
+    n_classes = 126
+    n_docs = 299773  # docs (xml files) in total
+
+    print('Sample word sequences from XMLs...')
+    all_docs = get_docs([i for i in range(n_docs)])
+    all_words = [get_doc_words(doc, filter='nonalph') for doc in all_docs]
+    all_seqs = sample_sequences(all_words, max_width=1000)
+    with open(os.path.join(PROJ_DIR, 'dl20', 'sequences.txt'), 'w') as f:
+        for s in all_seqs:
+            f.write('\t'.join(s) + '\n')
+    print('Words sampled!')
