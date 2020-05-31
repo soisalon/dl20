@@ -30,13 +30,13 @@ echo "training cnn for DL"
 
 ID=SLURM_ARRAY_TASK_ID
 
-EMBS=("elmo_2x1024_128_2048cnn_1xhighway dim=2" enc=bert-base-uncased)
+EMBS=("enc=elmo_2x1024_128_2048cnn_1xhighway dim=2" enc=bert-base-uncased)
 KS=(256X2 768x2)
-N_KS=(10)
-NC=(1)
+N_KS=(100)
+NC=(2 2 3 3)
 MODS=(BaseCNN)
 INS=(256x100 768x100)
-BS=(32 32 64 64 128 128)
+BS=(32)
 OPTS=(adadelta)
 HS=(100)
 DROPS=(0.5)
