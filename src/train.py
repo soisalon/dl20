@@ -70,7 +70,7 @@ kh = int(params.kernel_shapes[0].split('x')[0])
 assert kh == in_height
 
 labels = np.loadtxt(os.path.join(PROJ_DIR, 'dl20', 'ground_truth.txt'))
-labels = torch.tensor(labels, device=DEVICE, dtype=torch.float32)
+# labels = torch.tensor(labels, device=DEVICE, dtype=torch.float32)
 
 
 if TESTING:
