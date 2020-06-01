@@ -30,7 +30,7 @@ module load CUDA/10.1.105
 echo "training cnn for DL"
 
 # ID=SLURM_ARRAY_TASK_ID
-ID=0
+ID=1
 
 EMBS=("enc=elmo_2x1024_128_2048cnn_1xhighway dim=2" enc=bert-base-uncased)
 KS=(256x2 768x2)
