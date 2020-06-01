@@ -25,7 +25,7 @@ parser.add_argument('--cv_folds', nargs='?', type=int, default=1)
 parser.add_argument('--word_filter', nargs='?', default='nonalph')
 # parser.add_argument('--emb_pars', nargs='*', default=['enc=elmo_2x1024_128_2048cnn_1xhighway', 'dim=2'])
 # parser.add_argument('--emb_pars', nargs='*', default=['enc=bert-base-uncased'])
-parser.add_argument('--emb_pars', nargs='*', default=['enc=glove'])
+parser.add_argument('--emb_pars', nargs='*', default=['enc=word2vec'])
 # training params
 parser.add_argument('--n_epochs', nargs='?', type=int, default=20)
 parser.add_argument('--batch_size', nargs='?', type=int, default=32)
