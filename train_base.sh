@@ -11,7 +11,6 @@
 #SBATCH --mail-type=END
 #SBATCH --mail-user=eliel.soisalon-soininen@helsinki.fi
 #SBATCH --mem=10G
-#SBATCH --array=0-3
 
 
 #--mem-per-cpu=10G
@@ -45,8 +44,8 @@ OPTS=(adadelta)
 HS=(100)
 DROPS=(0.5)
 # train model
-srun -n 4 --exclusive $USERAPPL/ve37/bin/python3 dl20/src/train.py \
-# srun $USERAPPL/ve37/bin/python3 dl20/src/train.py \
+# srun -n 4 --exclusive $USERAPPL/ve37/bin/python3 dl20/src/train.py \
+srun $USERAPPL/ve37/bin/python3 dl20/src/train.py \
     --tr_ratio 0.2 \
     --dev_ratio 0.1 \
     --seed 100 \
