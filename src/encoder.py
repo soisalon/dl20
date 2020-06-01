@@ -10,7 +10,7 @@ from gensim.models.keyedvectors import KeyedVectors
 from allennlp.commands.elmo import ElmoEmbedder
 from transformers import BertModel, BertTokenizer
 
-from vars import PROJ_DIR, DEVICE, EMB_DIR
+from vars import PROJ_DIR, DEVICE, EMB_DIR, TESTING
 
 
 class Encoder(object):
@@ -61,12 +61,11 @@ class Encoder(object):
 
         elif self.enc_name == 'glove' or self.enc_name == 'word2vec':
             embs = []
-            e_seq = [torch.tensor(self.model[w]).squeeze() if w in self.model else torch.randn(self.in_height) for w in s]
-            print('e_seq[0]: ', e_seq[0])
             for s in seqs:
-                e_seq = [torch.tensor(self.model[w]).squeeze() if w in self.model else torch.randn(self.in_height) for w in s]
-                print('e_seq:[0] ', e_seq[0])
-                embs += torch.stack(e_seq)
+                e = torch.empty(len(s), self.in_height)
+                for i, w in enumerate(s):
+                    e[i, :] = torch.tensor(self.model[w]) if w in self.model else torch.randn(self.in_height)
+                embs += [e]
 
         else:   # random
             embs = [torch.randn(self.in_height, len(s)) for s in seqs]
@@ -102,7 +101,8 @@ class Encoder(object):
 def get_glove_embs(vec_path=os.path.join(EMB_DIR, 'glove', 'vecs.txt')):
     print('Loading Glove embeddings...')
     if not os.path.exists(vec_path):
-        glove2word2vec(glove_input_file=os.path.join(EMB_DIR, 'glove', 'glove.840B.300d.txt'),
+        glove_fname = 'glove.840B.300d.txt' if not TESTING else 'glove.6B.300d.txt'
+        glove2word2vec(glove_input_file=os.path.join(EMB_DIR, 'glove', glove_fname),
                        word2vec_output_file=vec_path)
 
     glove_model = KeyedVectors.load_word2vec_format(vec_path, binary=False)

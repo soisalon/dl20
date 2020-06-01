@@ -23,8 +23,9 @@ parser.add_argument('--seed', nargs='?', type=int, default=100)
 parser.add_argument('--cv_folds', nargs='?', type=int, default=1)
 # params for sampling and encoding words from XMLs
 parser.add_argument('--word_filter', nargs='?', default='nonalph')
-parser.add_argument('--emb_pars', nargs='*', default=['enc=elmo_2x1024_128_2048cnn_1xhighway', 'dim=2'])
+# parser.add_argument('--emb_pars', nargs='*', default=['enc=elmo_2x1024_128_2048cnn_1xhighway', 'dim=2'])
 # parser.add_argument('--emb_pars', nargs='*', default=['enc=bert-base-uncased'])
+parser.add_argument('--emb_pars', nargs='*', default=['enc=glove'])
 # training params
 parser.add_argument('--n_epochs', nargs='?', type=int, default=20)
 parser.add_argument('--batch_size', nargs='?', type=int, default=32)
@@ -34,10 +35,10 @@ parser.add_argument('--opt_params', nargs='*', default=['lr=1.0'])
 # CNN params
 parser.add_argument('--model_name', nargs='?', default='BaseCNN')          # BaseCNN / DocCNN
 parser.add_argument('--n_conv_layers', nargs='?', type=int, default=1)
-parser.add_argument('--kernel_shapes', nargs='*', default=['256x4', '1x2'])
+parser.add_argument('--kernel_shapes', nargs='*', default=['300x4', '1x2'])
 parser.add_argument('--strides', nargs='*', default=['1x1'])
 parser.add_argument('--pool_sizes', nargs='*', default=['1x2'])
-parser.add_argument('--input_shape', nargs='?', default='256x100')
+parser.add_argument('--input_shape', nargs='?', default='300x100')
 
 
 parser.add_argument('--n_kernels', nargs='*', type=int, default=[10])
@@ -137,10 +138,10 @@ def train(mdl, input_inds, out_labels):
             val_loss = loss_fn(val_preds, dev_labels)
             val_preds = (val_preds >= 0.5).int()
 
-            p, r, f, _ = precision_recall_fscore_support(dev_labels, dev_preds, average='micro')
+            p, r, f, _ = precision_recall_fscore_support(dev_labels.numpy(), val_preds.numpy(), average='micro')
 
-            acc = torch.sum(val_preds == dev_labels.int()).float() / (n_dev_docs * 126)
-            print('After epoch {}/{}\nDev loss = {}'.format(epoch, params.n_epochs, val_loss))
+            # acc = torch.sum(val_preds == dev_labels.int()).float() / (n_dev_docs * 126)
+            print('After epoch {}/{}\nDev loss = {}'.format(epoch + 1, params.n_epochs, val_loss))
             print('Metrics: P - {}, R - {}, F1 - {}'.format(p, r, f))
             mdl.train()
         if stop:
@@ -228,7 +229,7 @@ for fold in range(params.cv_folds):
     rand_accs += [(torch.sum(rand_preds == dev_labels.int()).float() / (n_dev_docs * 126)).item()]
 
     # other metrics
-    p, r, f, _ = precision_recall_fscore_support(dev_labels, dev_preds, average='micro')
+    p, r, f, _ = precision_recall_fscore_support(dev_labels.numpy(), dev_preds.numpy(), average='micro')
     precs += [p]
     recs += [r]
     fs += [f]
@@ -250,8 +251,8 @@ with open(os.path.join(PROJ_DIR, 'dl20', 'scores.txt'), 'w') as f:
         f.write('Random guess: {}\n'.format(rand_accs[fld]))
     f.write('\n#####\n')
 
-print('Average model accuracy: ', torch.mean(accs))
-print('Avg. random guess: ', torch.mean(rand_accs))
+print('Average model accuracy: ', np.mean(accs))
+print('Avg. random guess: ', np.mean(rand_accs))
 
 """
 # train final model on the whole training dataset, and save to file

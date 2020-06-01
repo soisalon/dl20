@@ -62,7 +62,7 @@ def get_cum_docs_per_zip(zips):
     return docs_per_zip
 
 
-def get_doc_words(xmlfile, filter='nonalph'):
+def get_doc_words(xmlfile, filter='unique'):
     """
     Extract words from doc: <title>, <headline>, and <text>, and put the woords into a list.
 
@@ -95,11 +95,15 @@ def get_doc_words(xmlfile, filter='nonalph'):
     words = title_tokens + headline_tokens + sents_tokens
     if filter == 'punct':
         words = [w for w in words if w not in string.punctuation]
-    elif filter == 'nonalph':
-        words = [w for w in words if w.isalpha()]        # filter out numeric words, they don't predict topic
+
+    words = [w for w in words if w.isalpha()]        # filter out numeric words, they don't predict topic
 
     words = [w.lower() for w in words]
     words = [w for w in words if not len(w) < 4]        # filter words with length < 4
+
+    if filter == 'unique':
+        words = list(set(words))
+
     if not words:
         print('No words in xmlfile:  ', xmlfile)
         print('doc_dict: ', doc_dict)
