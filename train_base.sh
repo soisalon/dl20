@@ -10,7 +10,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mail-type=END
 #SBATCH --mail-user=eliel.soisalon-soininen@helsinki.fi
-#SBATCH --mem 100G
+#SBATCH --mem 10G
 
 #--array=0-5
 #--mem-per-cpu=10G
