@@ -6,12 +6,12 @@
 #SBATCH -e /wrk/users/eliel/projects/dl_course20/jobs/err/%A_%a.txt
 #SBATCH -t 2-0
 #SBATCH -c 10
-#SBATCH -p gpu-short
-#SBATCH --gres=gpu:1
 #SBATCH --mail-type=END
 #SBATCH --mail-user=eliel.soisalon-soininen@helsinki.fi
 #SBATCH --mem=10G
 
+# --gres=gpu:1
+# -p gpu-short
 
 #--mem-per-cpu=10G
 
