@@ -5,16 +5,18 @@
 #SBATCH -o /wrk/users/eliel/projects/dl_course20/jobs/res/%J.txt
 #SBATCH -e /wrk/users/eliel/projects/dl_course20/jobs/err/%J.txt
 #SBATCH -t 2-0
-#SBATCH -c 10
+#SBATCH -c 1
 #SBATCH -p gpu-short
-#SBATCH --gres=gpu:1
+#SBATCH --gres=gpu:4
 #SBATCH --mail-type=END
 #SBATCH --mail-user=eliel.soisalon-soininen@helsinki.fi
-#SBATCH --mem 10G
+#SBATCH --mem=10G
+#SBATCH --array=0-3
 
-#--array=0-5
+
 #--mem-per-cpu=10G
-#--ntasks=6
+
+# --ntasks=6
 
 
 
@@ -29,8 +31,8 @@ module load CUDA/10.1.105
 
 echo "training cnn for DL"
 
-# ID=SLURM_ARRAY_TASK_ID
-ID=2
+ID=SLURM_ARRAY_TASK_ID
+# ID=2
 
 EMBS=("enc=elmo_2x1024_128_2048cnn_1xhighway dim=2" enc=bert-base-uncased enc=word2vec enc=glove)
 KS=(256x2 768x2 300x2 300x2)
@@ -43,8 +45,8 @@ OPTS=(adadelta)
 HS=(100)
 DROPS=(0.5)
 # train model
-# srun -n 10 --exclusive $USERAPPL/ve37/bin/python3 dl20/src/train.py \
-srun $USERAPPL/ve37/bin/python3 dl20/src/train.py \
+srun -n 4 --exclusive $USERAPPL/ve37/bin/python3 dl20/src/train.py \
+# srun $USERAPPL/ve37/bin/python3 dl20/src/train.py \
     --tr_ratio 0.2 \
     --dev_ratio 0.1 \
     --seed 100 \
