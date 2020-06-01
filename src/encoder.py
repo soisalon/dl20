@@ -1,7 +1,6 @@
 
 import os
 
-import numpy as np
 import torch
 import torch.nn.functional as F
 
@@ -43,7 +42,6 @@ class Encoder(object):
             self.model.eval()
             self.model.to(DEVICE)
 
-        # TODO: add word2vec, Glove
         elif self.encoder == 'word2vec':
             self.model = get_w2v_embs()
         elif self.encoder == 'glove':
@@ -82,19 +80,20 @@ class Encoder(object):
 
     def concat_embs(self, emb_list):
 
-        embs = []
-        for e in emb_list:
+        embs = torch.zeros(len(emb_list), self.in_width, self.in_height)
+        for i, e in enumerate(emb_list):
             diff = self.in_width - e.shape[0]
             if diff > 0:
-                lp = int(diff / 2) if diff % 2 == 0 else int(diff // 2)
+                lp = int(diff // 2)
                 rp = int(diff - lp)
-                embs += [F.pad(e, [0, 0, lp, rp], 'constant', 0)]       # pad from last to first dim
+                # embs += [F.pad(e, [0, 0, lp, rp], 'constant', 0)]       # pad from last to first dim
+                embs[i, lp:self.in_width - rp, :] = e
             elif diff < 0:
-                embs += [e[:self.in_width, :]]
+                embs[i] = e[:self.in_width, :]
             else:
-                embs += [e]
+                embs[i] = e
 
-        return torch.stack(embs)
+        return embs
 
 
 def get_glove_embs(vec_path=os.path.join(EMB_DIR, 'glove', 'vecs.txt')):
