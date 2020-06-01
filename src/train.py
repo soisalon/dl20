@@ -52,7 +52,7 @@ params = parser.parse_args()
 
 torch.manual_seed(params.seed)
 
-if not TESTING:
+if DEVICE == torch.device('cuda'):
     print('Cuda mem. stats:')
     print(torch.cuda.memory_summary(device=DEVICE))
     print('mem allocated: ')
@@ -92,7 +92,7 @@ all_seqs = sample_sequences(all_seqs, max_width=in_width)
 
 
 # all_embs = emb_encoder.encode_batch(all_seqs)
-if not TESTING:
+if DEVICE == torch.device('cuda'):
     print('mem allocated after loading labels and init. encoder: ')
     print(torch.cuda.memory_allocated(device=DEVICE))
     print(torch.cuda.memory_summary(device=DEVICE))
@@ -158,7 +158,7 @@ model = getattr(cnn, params.model_name)
 model = model(params=params)                  # init. model
 model = model.to(DEVICE)                      # make sure model is set to correct device
 
-if not TESTING:
+if DEVICE == torch.device('cuda'):
     print('mem allocated after initialising CNN: ')
     print(torch.cuda.memory_allocated(device=DEVICE))
     print(torch.cuda.memory_summary(device=DEVICE))
@@ -197,19 +197,18 @@ for fold in range(params.cv_folds):
     dev_labels = torch.tensor(np.take(labels, dev_inds, axis=0), device=DEVICE, dtype=torch.float32)
     print('Done.')
 
-    if not TESTING:
+    if DEVICE == torch.device('cuda'):
         print('mem allocated / reserved after setting labels to device: ')
         print(torch.cuda.memory_allocated(device=DEVICE))
         print(torch.cuda.memory_reserved(device=DEVICE))
         print(torch.cuda.memory_summary(device=DEVICE))
-
-    if not TESTING:
         torch.cuda.empty_cache()
+
     # for validation
     dev_seqs = [all_seqs[i] for i in dev_inds]
     dev_embs = emb_encoder.encode_batch(dev_seqs)
 
-    if not TESTING:
+    if DEVICE == torch.device('cuda'):
         print('mem allocated / reserved after getting dev_embs: ')
         print(torch.cuda.memory_allocated(device=DEVICE))
         print(torch.cuda.memory_reserved(device=DEVICE))
