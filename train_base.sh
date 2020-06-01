@@ -5,7 +5,7 @@
 #SBATCH -o /wrk/users/eliel/projects/dl_course20/jobs/res/%J.txt
 #SBATCH -e /wrk/users/eliel/projects/dl_course20/jobs/err/%J.txt
 #SBATCH -t 2-0
-#SBATCH -c 2
+#SBATCH -c 10
 #SBATCH -p gpu-short
 #SBATCH --gres=gpu:1
 #SBATCH --mail-type=END
