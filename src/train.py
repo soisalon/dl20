@@ -8,7 +8,7 @@ import torch
 import numpy as np
 from sklearn.metrics import precision_recall_fscore_support
 
-from data import get_doc_words, get_docs, get_model_savepath
+from data import sample_sequences, get_model_savepath
 from vars import LOSSES, OPTIMS, MODEL_DIR, TESTING, DEVICE, PROJ_DIR
 from encoder import Encoder
 import cnn
@@ -23,7 +23,8 @@ parser.add_argument('--seed', nargs='?', type=int, default=100)
 parser.add_argument('--cv_folds', nargs='?', type=int, default=1)
 # params for sampling and encoding words from XMLs
 parser.add_argument('--word_filter', nargs='?', default='nonalph')
-parser.add_argument('--emb_pars', nargs='*', default=['enc=elmo_2x1024_128_2048cnn_1xhighway', 'dim=2'])
+# parser.add_argument('--emb_pars', nargs='*', default=['enc=elmo_2x1024_128_2048cnn_1xhighway', 'dim=2'])
+parser.add_argument('--emb_pars', nargs='*', default=['enc=bert-base-uncased'])
 # training params
 parser.add_argument('--n_epochs', nargs='?', type=int, default=20)
 parser.add_argument('--batch_size', nargs='?', type=int, default=32)
@@ -33,10 +34,10 @@ parser.add_argument('--opt_params', nargs='*', default=['lr=1.0'])
 # CNN params
 parser.add_argument('--model_name', nargs='?', default='BaseCNN')          # BaseCNN / DocCNN
 parser.add_argument('--n_conv_layers', nargs='?', type=int, default=1)
-parser.add_argument('--kernel_shapes', nargs='*', default=['256x2', '1x2'])
+parser.add_argument('--kernel_shapes', nargs='*', default=['768x4', '1x2'])
 parser.add_argument('--strides', nargs='*', default=['1x1'])
 parser.add_argument('--pool_sizes', nargs='*', default=['1x2'])
-parser.add_argument('--input_shape', nargs='?', default='256x1000')
+parser.add_argument('--input_shape', nargs='?', default='768x100')
 
 
 parser.add_argument('--n_kernels', nargs='*', type=int, default=[10])
@@ -50,6 +51,11 @@ params = parser.parse_args()
 
 torch.manual_seed(params.seed)
 
+if not TESTING:
+    print('Cuda mem. stats:')
+    print(torch.cuda.memory_summary(device=DEVICE))
+    print('mem allocated: ')
+    print(torch.cuda.memory_allocated(device=DEVICE))
 
 n_classes = 126
 n_docs = 299773                                 # docs (xml files) in total
@@ -59,9 +65,14 @@ n_tr_docs = n_docs - n_dev_docs                 # docs to use for training set
 if params.tr_ratio:
     n_tr_docs = int(n_tr_docs * params.tr_ratio)
 
-in_width = int(params.input_shape.split('x')[1])        # desired width of input
+in_height, in_width = tuple(map(int, params.input_shape.split('x')))        # desired width of input
+kh = int(params.kernel_shapes[0].split('x')[0])
+assert kh == in_height
 
 labels = np.loadtxt(os.path.join(PROJ_DIR, 'dl20', 'ground_truth.txt'))
+
+# labels = torch.tensor(labels, device=DEVICE)
+
 
 if TESTING:
     n_docs, n_tr_docs, n_dev_docs = 20, 12, 8
@@ -77,8 +88,13 @@ with open(os.path.join(PROJ_DIR, 'dl20', 'sequences.txt'), 'r') as f:
     lines = [line.strip() for line in f]
     all_seqs = [line.split() for line in lines]
 print('Seqs read from file')
+all_seqs = sample_sequences(all_seqs, max_width=in_width)
+
 
 # all_embs = emb_encoder.encode_batch(all_seqs)
+if not TESTING:
+    print('mem allocated after loading labels and init. encoder: ')
+    print(torch.cuda.memory_allocated(device=DEVICE))
 
 
 def train(mdl, input_inds, out_labels):
@@ -90,15 +106,8 @@ def train(mdl, input_inds, out_labels):
         for it in range(n_iters):
             batch_inds = input_inds[it * params.batch_size: (it + 1) * params.batch_size]
 
-            # batch_docs = get_docs(batch_inds)  # get xml files corresponding to indices
-
-            # get words from docs, filtered
-            # batch_words = [get_doc_words(doc, filter=params.word_filter) for doc in batch_docs]
-
-            # seqs = emb_encoder.sample_sequences(batch_words)  # get sequences of given length
             seqs = [all_seqs[i] for i in batch_inds]
             batch = emb_encoder.encode_batch(seqs)  # get encoded batch
-            # batch = torch.index_select(all_embs, dim=0, index=torch.tensor(batch_inds))
 
             opt.zero_grad()
 
@@ -111,15 +120,25 @@ def train(mdl, input_inds, out_labels):
             loss.backward()
             opt.step()
 
-            if it % 500 == 0:
+            if it % 100 == 0:
                 print('at iter {}, loss =  {}'.format(it, loss))
 
             losses += [loss]
             # stop if loss is not changing
             if len(losses) > 100:
-                if all(losses[j - 1] < losses[j] for j in range(len(losses) - 1, len(losses) - 11, -1)):
+                if all(abs(losses[j - 1] - losses[j]) < 1e-1 for j in range(len(losses) - 1, len(losses) - 11, -1)):
                     stop = True
                     break
+
+        # for other than the last epoch, print loss and acc for the dev set
+        if epoch < params.n_epochs - 1:
+            mdl.eval()
+            val_preds = model(dev_embs).squeeze()
+            val_preds = (val_preds >= 0.5).int()
+            val_loss = loss_fn(val_preds, dev_labels)
+            acc = torch.sum(val_preds == dev_labels.int()).float() / (n_dev_docs * 126)
+            print('After epoch {}/{}\nDev loss = {} - Accuracy = {}'.format(epoch, params.n_epochs, val_loss, acc))
+            mdl.train()
         if stop:
             break
     return model
@@ -129,9 +148,14 @@ def train(mdl, input_inds, out_labels):
 model_fname = get_model_savepath(params, ext='.pt')
 model_path = os.path.join(MODEL_DIR, model_fname)       # path where trained model is saved
 
+# initialise CNN
 model = getattr(cnn, params.model_name)
 model = model(params=params)                  # init. model
 model = model.to(DEVICE)                      # make sure model is set to correct device
+
+if not TESTING:
+    print('mem allocated after initialising CNN: ')
+    print(torch.cuda.memory_allocated(device=DEVICE))
 
 loss_fn = LOSSES[params.loss_fn]()                              # get loss function
 if params.opt_params[0] == 'default':
@@ -142,6 +166,7 @@ else:                                                           # or get optimis
 
 all_inds = [i for i in range(n_docs)]
 
+print('Start training / cross-validation with {} folds'.format(params.cv_folds))
 accs = torch.zeros(params.cv_folds)             # for storing accuracies
 rand_accs = torch.zeros(params.cv_folds)        # accs of random guesses
 fs = torch.zeros(params.cv_folds)
@@ -162,19 +187,35 @@ for fold in range(params.cv_folds):
     tr_labels = torch.tensor(np.take(labels, tr_inds, axis=0), device=DEVICE, dtype=torch.float32)
     dev_labels = torch.tensor(np.take(labels, dev_inds, axis=0), device=DEVICE, dtype=torch.float32)
 
-    model = train(model, tr_inds, tr_labels)
+    if not TESTING:
+        print('mem allocated / reserved after setting labels to device: ')
+        print(torch.cuda.memory_allocated(device=DEVICE))
+        print(torch.cuda.memory_reserved(device=DEVICE))
 
+    # for validation
     dev_seqs = [all_seqs[i] for i in dev_inds]
     dev_embs = emb_encoder.encode_batch(dev_seqs)
-    dev_preds = model(dev_embs).squeeze()
 
-    # get accuracy on dev set
+    if not TESTING:
+        print('mem allocated / reserved after getting dev_embs: ')
+        print(torch.cuda.memory_allocated(device=DEVICE))
+        print(torch.cuda.memory_reserved(device=DEVICE))
+
+    # train model
+    if not TESTING:
+        torch.cuda.empty_cache()
+    model = train(model, tr_inds, tr_labels)
+
+    # get accuracy on dev set, having trianed with whole trainiing fold
+    dev_preds = model(dev_embs).squeeze()
     dev_preds = (dev_preds >= 0.5).int()
     accs[fold] = torch.sum(dev_preds == dev_labels.int()).float() / (n_dev_docs * 126)
 
+    # random choice
     rand_preds = (torch.rand(n_dev_docs, n_classes) >= 0.5).int()
     rand_accs[fold] = torch.sum(rand_preds == dev_labels.int()).float() / (n_dev_docs * 126)
 
+    # other metrics
     precs[fold], recs[fold], fs[fold], _ = precision_recall_fscore_support(dev_labels, dev_preds, average='micro')
 
     # sample a few (strongly) misclassified newsitems

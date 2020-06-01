@@ -1,14 +1,17 @@
 
 import os
-import random
 
+import numpy as np
 import torch
 import torch.nn.functional as F
-import nltk
-from allennlp.commands.elmo import ElmoEmbedder
-from transformers import BertModel, BertTokenizer, AutoModel, AutoTokenizer, BertConfig, AutoConfig
 
-from vars import PROJ_DIR, DEVICE
+from gensim.scripts.glove2word2vec import glove2word2vec
+from gensim.models.keyedvectors import KeyedVectors
+
+from allennlp.commands.elmo import ElmoEmbedder
+from transformers import BertModel, BertTokenizer
+
+from vars import PROJ_DIR, DEVICE, EMB_DIR
 
 
 class Encoder(object):
@@ -19,6 +22,7 @@ class Encoder(object):
         self.encoder = emb_pars['enc']
         self.elmo_dim = int(emb_pars['dim']) if 'dim' in emb_pars else None
 
+        self.in_height = int(params.input_shape.split('x')[0])
         self.in_width = int(params.input_shape.split('x')[1])          # max. number of words from a doc
         self.enc_name = self.encoder[:4] if self.encoder[:4] == 'elmo' or self.encoder[:4] == 'bert' else self.encoder
         model_path = os.path.join(PROJ_DIR, 'models', self.enc_name)
@@ -41,22 +45,9 @@ class Encoder(object):
 
         # TODO: add word2vec, Glove
         elif self.encoder == 'word2vec':
-            pass
+            self.model = get_w2v_embs()
         elif self.encoder == 'glove':
-            pass
-
-    def sample_sequences(self, word_batch):
-
-        seqs = []
-        for wordlist in word_batch:
-            diff = len(wordlist) - self.in_width
-            if diff > 0:
-                start = random.randint(0, diff)
-                end = start + self.in_width
-                seqs += [wordlist[start:end]]
-            else:
-                seqs += [wordlist]
-        return seqs
+            self.model = get_glove_embs()
 
     def encode_batch(self, seqs):
 
@@ -70,12 +61,14 @@ class Encoder(object):
                 outputs = [self.model(i) for i in inds]
             embs = [tup[0].squeeze() for tup in outputs]
 
-        elif self.enc_name == 'word2vec':
-            # TODO: handle word2vec, glove et al.
-            embs = None
-        else:   # random
+        elif self.enc_name == 'glove' or self.enc_name == 'word2vec':
+            embs = []
+            for s in seqs:
+                e_seq = [torch.tensor(self.model[w]) if w in self.model else torch.randn(self.in_height) for w in s]
+                embs += torch.stack(e_seq)
 
-            embs = [torch.randn(len(s)) for s in seqs]
+        else:   # random
+            embs = [torch.randn(self.in_height, len(s)) for s in seqs]
 
         embs = self.concat_embs(embs)
         # add channel dimension, and transpose last two dims for CNNs
@@ -97,8 +90,24 @@ class Encoder(object):
                 rp = int(diff - lp)
                 embs += [F.pad(e, [0, 0, lp, rp], 'constant', 0)]       # pad from last to first dim
             elif diff < 0:
-                embs += [e[:, :self.in_width]]
+                embs += [e[:self.in_width, :]]
             else:
                 embs += [e]
 
         return torch.stack(embs)
+
+
+def get_glove_embs(vec_path=os.path.join(EMB_DIR, 'glove', 'vecs.txt')):
+    print('Loading Glove embeddings...')
+    if not os.path.exists(vec_path):
+        glove2word2vec(glove_input_file=os.path.join(EMB_DIR, 'glove', 'glove.840B.300d.txt'),
+                       word2vec_output_file=vec_path)
+
+    glove_model = KeyedVectors.load_word2vec_format(vec_path, binary=False)
+    return glove_model
+
+
+def get_w2v_embs(vec_path=os.path.join(EMB_DIR, 'word2vec', 'GoogleNews-vectors-negative300.bin')):
+    print('Loading w2vembeddings...')
+    w2v_model = KeyedVectors.load_word2vec_format(vec_path, binary=True)
+    return w2v_model
