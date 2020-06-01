@@ -76,7 +76,7 @@ labels = np.loadtxt(os.path.join(PROJ_DIR, 'dl20', 'ground_truth.txt'))
 if TESTING:
     n_docs, n_tr_docs, n_dev_docs = 20, 12, 8
     params.batch_size = 4
-    params.n_epochs = 1
+    params.n_epochs = 2
     print('Testing code')
 
 print('Initialise embedding encoder')
@@ -134,10 +134,14 @@ def train(mdl, input_inds, out_labels):
         if epoch < params.n_epochs - 1:
             mdl.eval()
             val_preds = mdl(dev_embs).squeeze()
-            val_preds = (val_preds >= 0.5).int()
             val_loss = loss_fn(val_preds, dev_labels)
+            val_preds = (val_preds >= 0.5).int()
+
+            p, r, f, _ = precision_recall_fscore_support(dev_labels, dev_preds, average='micro')
+
             acc = torch.sum(val_preds == dev_labels.int()).float() / (n_dev_docs * 126)
-            print('After epoch {}/{}\nDev loss = {} - Accuracy = {}'.format(epoch, params.n_epochs, val_loss, acc))
+            print('After epoch {}/{}\nDev loss = {}'.format(epoch, params.n_epochs, val_loss))
+            print('Metrics: P - {}, R - {}, F1 - {}'.format(p, r, f))
             mdl.train()
         if stop:
             break
@@ -179,7 +183,7 @@ for fold in range(params.cv_folds):
     print('Get tr and dev inds...')
     if params.cv_folds == 1:        # not doing CV, take random samples
         tr_inds = all_inds[:n_tr_docs]
-        dev_inds = tr_inds[n_tr_docs:]
+        dev_inds = all_inds[n_tr_docs:]
     else:
         assert params.cv_folds * params.dev_ratio == 1.0
         dev_inds = [all_inds[i] for i in range(fold * n_dev_docs, (fold + 1) * n_dev_docs)]

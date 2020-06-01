@@ -61,8 +61,11 @@ class Encoder(object):
 
         elif self.enc_name == 'glove' or self.enc_name == 'word2vec':
             embs = []
+            e_seq = [torch.tensor(self.model[w]).squeeze() if w in self.model else torch.randn(self.in_height) for w in s]
+            print('e_seq[0]: ', e_seq[0])
             for s in seqs:
-                e_seq = [torch.tensor(self.model[w]) if w in self.model else torch.randn(self.in_height) for w in s]
+                e_seq = [torch.tensor(self.model[w]).squeeze() if w in self.model else torch.randn(self.in_height) for w in s]
+                print('e_seq:[0] ', e_seq[0])
                 embs += torch.stack(e_seq)
 
         else:   # random
