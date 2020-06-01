@@ -166,27 +166,31 @@ else:                                                           # or get optimis
     opt = OPTIMS[params.optim](model.parameters(), **opt_params)
 
 all_inds = [i for i in range(n_docs)]
+random.shuffle(all_inds)
 
-print('Start training / cross-validation with {} folds'.format(params.cv_folds))
-accs = torch.zeros(params.cv_folds)             # for storing accuracies
-rand_accs = torch.zeros(params.cv_folds)        # accs of random guesses
-fs = torch.zeros(params.cv_folds)
-precs = torch.zeros(params.cv_folds)
-recs = torch.zeros(params.cv_folds)
+print('Start training / cross-validation with {} fold(s)'.format(params.cv_folds))
+accs = []             # for storing accuracies
+rand_accs = []        # accs of random guesses
+fs = []
+precs = []
+recs = []
 for fold in range(params.cv_folds):
 
+    print('Get tr and dev inds...')
     if params.cv_folds == 1:        # not doing CV, take random samples
-        tr_inds = random.sample(all_inds, k=n_tr_docs)
-        rest = [i for i in all_inds if i not in tr_inds]
-        dev_inds = random.sample(rest, k=n_dev_docs)
+        tr_inds = all_inds[:n_tr_docs]
+        dev_inds = tr_inds[n_tr_docs:]
     else:
         assert params.cv_folds * params.dev_ratio == 1.0
-        dev_inds = [i for i in range(fold * n_dev_docs, (fold + 1) * n_dev_docs)]
-        tr_inds = [i for i in range(n_docs) if i not in dev_inds]
+        dev_inds = [all_inds[i] for i in range(fold * n_dev_docs, (fold + 1) * n_dev_docs)]
+        tr_inds = [i for i in all_inds if i not in dev_inds]
 
+    print('got tr and dev inds')
     # get training and dev. labels
-    tr_labels = torch.index_select(labels, dim=0, index=torch.tensor(tr_inds))
-    dev_labels = torch.index_select(labels, dim=0, index=torch.tensor(dev_inds))
+    print('get tr, dev labels...')
+    tr_labels = torch.index_select(labels, dim=0, index=torch.tensor(tr_inds, device=DEVICE))
+    dev_labels = torch.index_select(labels, dim=0, index=torch.tensor(dev_inds, device=DEVICE))
+    print('get tr, dev labels...')
 
     if not TESTING:
         print('mem allocated / reserved after setting labels to device: ')
@@ -213,14 +217,17 @@ for fold in range(params.cv_folds):
     # get accuracy on dev set, having trianed with whole trainiing fold
     dev_preds = model(dev_embs).squeeze()
     dev_preds = (dev_preds >= 0.5).int()
-    accs[fold] = torch.sum(dev_preds == dev_labels.int()).float() / (n_dev_docs * 126)
+    accs += [(torch.sum(dev_preds == dev_labels.int()).float() / (n_dev_docs * 126)).item()]
 
     # random choice
     rand_preds = (torch.rand(n_dev_docs, n_classes) >= 0.5).int()
-    rand_accs[fold] = torch.sum(rand_preds == dev_labels.int()).float() / (n_dev_docs * 126)
+    rand_accs += [(torch.sum(rand_preds == dev_labels.int()).float() / (n_dev_docs * 126)).item()]
 
     # other metrics
-    precs[fold], recs[fold], fs[fold], _ = precision_recall_fscore_support(dev_labels, dev_preds, average='micro')
+    p, r, f, _ = precision_recall_fscore_support(dev_labels, dev_preds, average='micro')
+    precs += [p]
+    recs += [r]
+    fs += [f]
 
     # sample a few (strongly) misclassified newsitems
     bad_preds = (torch.sum((dev_preds == dev_labels.int()), dim=1).float() / 126 < 0.5).nonzero().squeeze()
