@@ -188,8 +188,8 @@ for fold in range(params.cv_folds):
     print('got tr and dev inds')
     # get training and dev. labels
     print('get tr, dev labels...')
-    tr_labels = torch.index_select(labels, dim=0, index=torch.tensor(tr_inds, device=DEVICE))
-    dev_labels = torch.index_select(labels, dim=0, index=torch.tensor(dev_inds, device=DEVICE))
+    tr_labels = torch.tensor(np.take(labels, tr_inds, axis=0), device=DEVICE, dtype=torch.float32)
+    dev_labels = torch.tensor(np.take(labels, dev_inds, axis=0), device=DEVICE, dtype=torch.float32)
     print('get tr, dev labels...')
 
     if not TESTING:
