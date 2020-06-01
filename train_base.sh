@@ -33,7 +33,7 @@ echo "training cnn for DL"
 ID=0
 
 EMBS=("enc=elmo_2x1024_128_2048cnn_1xhighway dim=2" enc=bert-base-uncased)
-KS=(256X2 768x2)
+KS=(256x2 768x2)
 N_KS=(100)
 NC=(1)
 MODS=(BaseCNN)
