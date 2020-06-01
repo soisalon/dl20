@@ -133,7 +133,7 @@ def train(mdl, input_inds, out_labels):
         # for other than the last epoch, print loss and acc for the dev set
         if epoch < params.n_epochs - 1:
             mdl.eval()
-            val_preds = model(dev_embs).squeeze()
+            val_preds = mdl(dev_embs).squeeze()
             val_preds = (val_preds >= 0.5).int()
             val_loss = loss_fn(val_preds, dev_labels)
             acc = torch.sum(val_preds == dev_labels.int()).float() / (n_dev_docs * 126)
@@ -185,12 +185,12 @@ for fold in range(params.cv_folds):
         dev_inds = [all_inds[i] for i in range(fold * n_dev_docs, (fold + 1) * n_dev_docs)]
         tr_inds = [i for i in all_inds if i not in dev_inds]
 
-    print('got tr and dev inds')
+    print('Done.')
     # get training and dev. labels
     print('get tr, dev labels...')
     tr_labels = torch.tensor(np.take(labels, tr_inds, axis=0), device=DEVICE, dtype=torch.float32)
     dev_labels = torch.tensor(np.take(labels, dev_inds, axis=0), device=DEVICE, dtype=torch.float32)
-    print('get tr, dev labels...')
+    print('Done.')
 
     if not TESTING:
         print('mem allocated / reserved after setting labels to device: ')
