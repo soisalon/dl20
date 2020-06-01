@@ -2,8 +2,8 @@
 #SBATCH -J dl_train
 #SBATCH --export=USERAPPL,WRKDIR,LD_LIBRARY_PATH
 #SBATCH --chdir=/wrk/users/eliel/projects/dl_course20/
-#SBATCH -o /wrk/users/eliel/projects/dl_course20/jobs/res/%J.txt
-#SBATCH -e /wrk/users/eliel/projects/dl_course20/jobs/err/%J.txt
+#SBATCH -o /wrk/users/eliel/projects/dl_course20/jobs/res/%A_%a.txt
+#SBATCH -e /wrk/users/eliel/projects/dl_course20/jobs/err/%A_%a.txt
 #SBATCH -t 2-0
 #SBATCH -c 1
 #SBATCH -p gpu-short
