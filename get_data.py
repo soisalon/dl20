@@ -7,7 +7,7 @@ import zipfile
 from bs4 import BeautifulSoup
 import numpy as np
 
-np.set_printoptions(threshold=float('nan'))
+# np.set_printoptions(threshold=float('nan'))
 
 
 def get_codes(codefile):
