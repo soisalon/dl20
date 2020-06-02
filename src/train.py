@@ -173,6 +173,7 @@ def validate(lossv, pv, rv, fv):
     print('\nDev set: Average loss: {:.4f}, Precision: {:.0f}%, Recall: {}%, F1: {}%\n'.format(
         val_loss, ps, rs, fs))
 
+
 # get model path for saving
 model_fname = get_model_savepath(params, ext='.pt')
 model_path = os.path.join(MODEL_DIR, model_fname)       # path where trained model is saved
