@@ -33,7 +33,7 @@ class DocDataset(torch.utils.data.Dataset):
             data = torch.empty(n_docs_test, 1, in_height, in_width, device=DEVICE)
             n_parts = 10
         else:
-            data = torch.empty(n_docs, 1, in_height, in_width, device=DEVICE)
+            data = torch.zeros(n_docs, 1, in_height, in_width, device=DEVICE)
             n_parts = 100 if not TESTING else 10
         i = 0
         for fi in range(n_parts):
