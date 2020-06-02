@@ -23,8 +23,8 @@ parser.add_argument('--dev_ratio', nargs='?', type=float, default=0.1)
 parser.add_argument('--seed', nargs='?', type=int, default=100)
 parser.add_argument('--final', nargs='?', type=bool, default=False)  # whether to train with whole dataset
 # params for sampling and encoding words from XMLs
-parser.add_argument('--emb_pars', nargs='*', default=['enc=elmo_2x1024_128_2048cnn_1xhighway', 'dim=2'])
-# parser.add_argument('--emb_pars', nargs='*', default=['enc=bert-base-uncased'])
+# parser.add_argument('--emb_pars', nargs='*', default=['enc=elmo_2x1024_128_2048cnn_1xhighway', 'dim=2'])
+parser.add_argument('--emb_pars', nargs='*', default=['enc=bert-base-uncased'])
 # parser.add_argument('--emb_pars', nargs='*', default=['enc=word2vec'])
 # training params
 parser.add_argument('--n_epochs', nargs='?', type=int, default=20)
@@ -35,10 +35,10 @@ parser.add_argument('--opt_params', nargs='*', default=['lr=1.0'])
 # CNN params
 parser.add_argument('--model_name', nargs='?', default='BaseCNN')          # BaseCNN / DocCNN
 parser.add_argument('--n_conv_layers', nargs='?', type=int, default=1)
-parser.add_argument('--kernel_shapes', nargs='*', default=['256x4', '1x2'])
+parser.add_argument('--kernel_shapes', nargs='*', default=['768x4', '1x2'])
 parser.add_argument('--strides', nargs='*', default=['1x1'])
 parser.add_argument('--pool_sizes', nargs='*', default=['1x2'])
-parser.add_argument('--input_shape', nargs='?', default='256x100')
+parser.add_argument('--input_shape', nargs='?', default='768x100')
 parser.add_argument('--n_kernels', nargs='*', type=int, default=[10])
 parser.add_argument('--conv_act_fn', nargs='?', default='relu')
 parser.add_argument('--h_units', nargs='*', type=int, default=[64])
@@ -58,6 +58,7 @@ if DEVICE == torch.device('cuda'):
 
 n_classes = 126
 n_docs = 299773                                 # docs (xml files) in total
+n_docs_test = 33142
 n_dev_docs = int(n_docs * params.dev_ratio)     # docs to use for dev set
 n_tr_docs = n_docs - n_dev_docs                 # docs to use for training set
 
@@ -83,21 +84,40 @@ print('Seqs read from file')
 all_seqs = sample_sequences(all_seqs, max_width=100)
 print('Initialise embedding encoder')
 emb_encoder = Encoder(params=params)
-
-print('Get embedded data...')
-n_parts = 100
-pinds = [0] + [n_docs // n_parts for _ in range(n_parts)]
-diff = n_docs - sum(pinds)
+if enc_name == 'bert':
+    print('Get embedded data...')
+    n_parts = 100
+    pinds = [0] + [n_docs // n_parts for _ in range(n_parts)]
+    diff = n_docs - sum(pinds)
+    if diff > 0:
+        pinds[-1] += diff
+    assert n_docs == sum(pinds)
+    for p in range(n_parts):
+        p_seqs = all_seqs[pinds[p]:pinds[p + 1]]
+        p_embs = emb_encoder.encode_batch(p_seqs)
+        fpath = os.path.join(emb_data_dir, str(p) + '.pt')
+        torch.save(p_embs, fpath)
+        del p_embs
+        print('Part {} encoded!'.format(p))
+with open(os.path.join(PROJ_DIR, 'dl20', 'test_sequences.txt'), 'r') as f:
+    lines = [line.strip() for line in f]
+    te_seqs = [line.split() for line in lines]
+print('Test seqs read from file')
+te_seqs = sample_sequences(all_seqs, max_width=100)
+print('Get embedded test data...')
+n_parts = 10
+pinds = [0] + [n_docs_test // n_parts for _ in range(n_parts)]
+diff = n_docs_test - sum(pinds)
 if diff > 0:
     pinds[-1] += diff
-assert n_docs == sum(pinds)
+assert n_docs_test == sum(pinds)
 for p in range(n_parts):
-    p_seqs = all_seqs[pinds[p]:pinds[p + 1]]
+    p_seqs = te_seqs[pinds[p]:pinds[p + 1]]
     p_embs = emb_encoder.encode_batch(p_seqs)
-    fpath = os.path.join(emb_data_dir, str(p) + '.pt')
+    fpath = os.path.join(emb_data_dir, 'te_' + str(p) + '.pt')
     torch.save(p_embs, fpath)
     del p_embs
-    print('Part {} encoded!'.format(p))
+    print('Part {} (test) encoded!'.format(p))
 
 
 if TESTING:
