@@ -11,7 +11,7 @@ import nltk
 import torch
 import numpy as np
 
-from vars import PROJ_DIR
+from vars import PROJ_DIR, TESTING
 
 
 class DocDataset(torch.utils.data.Dataset):
@@ -20,6 +20,8 @@ class DocDataset(torch.utils.data.Dataset):
 
         self.train = train
         self.all = params.final
+
+        in_height, in_width = tuple(map(int, params.input_shape.split('x')))
         n_docs = 299773
         n_docs_test = 33142
         n_dev = int(n_docs * params.dev_ratio)
@@ -28,11 +30,11 @@ class DocDataset(torch.utils.data.Dataset):
         data_path = os.path.join(PROJ_DIR, 'dl20', root_dir)
 
         if not self.train and self.all: # test data
-            data = torch.empty(n_docs_test, params.in_height, params.in_width)
+            data = torch.empty(n_docs_test, 1, in_height, in_width)
             n_parts = 10
         else:
-            data = torch.empty(n_docs, params.in_height, params.in_width)
-            n_parts = 100
+            data = torch.empty(n_docs, 1, in_height, in_width)
+            n_parts = 100 if not TESTING else 10
         i = 0
         for fi in range(n_parts):
             fn = 'te_' + str(fi) + '.pt' if not self.train and self.all else str(fi) + '.pt'
