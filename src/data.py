@@ -43,7 +43,7 @@ class DocDataset(torch.utils.data.Dataset):
             print('t.shape: ', t.shape)
             print('data.shape: ', data.shape)
             tlen = t.shape[0]
-            data[i:tlen] = t
+            data[i:i + tlen] = t
             i += tlen
         print('data[-1, :10, :10]: ', data[-1, :10, :10])
 
@@ -186,10 +186,26 @@ def sample_sequences(word_batch, max_width):
 if __name__ == '__main__':
 
     # get words representing newsitems into a text file
-    import sys
+    import argparse
     from encoder import Encoder
     n_classes = 126
     n_docs = 299773  # docs (xml files) in total
     # n_docs_test = 33142
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--emb_pars', nargs='*', default=['enc=elmo_2x1024_128_2048cnn_1xhighway', 'dim=2'])
+    parser.add_argument('--input_shape', nargs='?', default='256x100')
+    params = parser.parse_args()
+
+    emb_encoder = Encoder(params=params)
+
+    # get sequences corresponding to newsitems
+    with open(os.path.join(PROJ_DIR, 'dl20', 'sequences.txt'), 'r') as f:
+        lines = [line.strip() for line in f]
+        all_seqs = [line.split() for line in lines]
+    print('Seqs read from file')
+    all_seqs = sample_sequences(all_seqs, max_width=100)
+
+    print('len(all_seqs): ', len(all_seqs))
 
 
