@@ -91,6 +91,35 @@ print('Seqs read from file')
 all_seqs = sample_sequences(all_seqs, max_width=in_width)
 
 
+# TODO: get all embs into 20 files, which are used by a DataLoader
+enc_name = params.emb_pars[0].split('=')[1]
+enc_name = enc_name[:4] if enc_name[:4] == 'bert' or enc_name[:4] == 'elmo' else enc_name
+emb_data_dir = os.path.join(PROJ_DIR, 'dl20', enc_name + '_data')
+fpath = os.path.join(emb_data_dir, 'all.pt')
+if not os.path.exists(emb_data_dir):
+    os.makedirs(emb_data_dir)
+    """
+    n_parts = 20
+    pinds = [0] + [n_docs // n_parts for _ in range(n_parts)]
+    diff = n_docs - sum(pinds)
+    if diff > 0:
+        pinds[-1] += diff
+    assert n_docs == sum(pinds)
+    pinds = [pinds[i + 1] + pinds[i] for i in range(n_parts)]
+    assert pinds[-1] == n_docs
+    d_seqs = {k + 1: [] for k in range(n_parts)}
+    for p in range(n_parts):
+        p_seqs = all_seqs[pinds[p]:pinds[p + 1]]
+        p_embs = emb_encoder.encode_batch(p_seqs)
+        fpath = os.path.join(emb_data_dir, str(p) + '.pt')
+        torch.save(p_embs, fpath)
+    """
+    p_embs = emb_encoder.encode_batch(all_seqs)
+    torch.save(p_embs, fpath)
+
+else:
+    all_embs = torch.load(fpath)
+
 # all_embs = emb_encoder.encode_batch(all_seqs)
 if DEVICE == torch.device('cuda'):
     print('mem allocated after loading labels and init. encoder: ')
@@ -109,6 +138,7 @@ def train(mdl, input_inds, out_labels):
 
             seqs = [all_seqs[i] for i in batch_inds]
             batch = emb_encoder.encode_batch(seqs)  # get encoded batch
+            batch.requires_grad = True
 
             opt.zero_grad()
 
@@ -124,7 +154,7 @@ def train(mdl, input_inds, out_labels):
             if it % 100 == 0:
                 print('at iter {}, loss =  {}'.format(it, loss))
 
-            losses += [loss]
+            losses += [float(loss)]
             # stop if loss is not changing
             if len(losses) > 100:
                 if all(abs(losses[j - 1] - losses[j]) < 1e-1 for j in range(len(losses) - 1, len(losses) - 11, -1)):
@@ -141,7 +171,7 @@ def train(mdl, input_inds, out_labels):
             p, r, f, _ = precision_recall_fscore_support(dev_labels.numpy(), val_preds.numpy(), average='micro')
 
             # acc = torch.sum(val_preds == dev_labels.int()).float() / (n_dev_docs * 126)
-            print('After epoch {}/{}\nDev loss = {}'.format(epoch + 1, params.n_epochs, val_loss))
+            print('After epoch {}/{}\nDev loss = {}'.format(epoch + 1, params.n_epochs, float(val_loss)))
             print('Metrics: P - {}, R - {}, F1 - {}'.format(p, r, f))
             mdl.train()
         if stop:
