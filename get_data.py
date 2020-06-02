@@ -50,5 +50,11 @@ def get_doc_labels(corpus_dir):
     return vecs
 
 
-result = get_doc_labels('corpus')
-np.savetxt('ground_truth.txt', result, fmt='%i')
+result = get_doc_labels('test-corpus')
+print('result.shape: ', result.shape)
+np.savetxt('test_truth.txt', result, fmt='%i')
+
+
+
+
+
