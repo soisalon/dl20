@@ -11,7 +11,7 @@ import nltk
 import torch
 import numpy as np
 
-from vars import DATA_DIR, PROJ_DIR
+from vars import DATA_DIR, PROJ_DIR, TEST_DATA_DIR
 
 
 class DocDataset(torch.utils.data.Dataset):
@@ -19,25 +19,29 @@ class DocDataset(torch.utils.data.Dataset):
     def __init__(self, root_dir, params, train=True):
 
         self.train = train
+        self.all = params.final
 
         data_path = os.path.join(PROJ_DIR, 'dl20', root_dir, 'all.pt')
         labels_path = os.path.join(PROJ_DIR, 'dl20', 'ground_truth.txt')
+        test_path = os.path.join(PROJ_DIR, 'dl20', root_dir, 'test.pt')
 
-        data = torch.load(data_path)
+        data = torch.load(test_path) if not self.train and self.all else torch.load(data_path)
         labels = torch.tensor(np.loadtxt(labels_path))
-
         n_docs = data.shape[0]
-        print('n_docs in DocDataset: ', n_docs)
-
         n_dev = int(n_docs * params.dev_ratio)
         n_tr = n_docs - n_dev
 
-        if self.train:
+        if self.train and not self.all:
             self.tr_data = data[:n_tr, ...]
             self.tr_labels = labels[:n_tr, ...]
-        else:
+        elif not self.train and not self.all:
             self.dev_data = data[n_tr:, ...]
             self.dev_labels = labels[n_tr:, ...]
+        elif self.train and self.all:
+            self.tr_data = data
+            self.tr_labels = labels
+        else:
+            self.dev_data = data
 
     def __len__(self):
         if self.train:
@@ -45,9 +49,13 @@ class DocDataset(torch.utils.data.Dataset):
         else:
             return len(self.dev_data)
 
-    def __getitem__(self, item):
-        pass
-
+    def __getitem__(self, idx):
+        if self.train:
+            item, target = self.tr_data[idx], self.tr_labels[idx]
+            return item, target
+        elif not self.train and not self.all:
+            item, target = self.dev_data[idx], self.dev_labels[idx]
+            return item, target
 
 
 def get_model_savepath(params, ext='.pt'):
@@ -71,14 +79,11 @@ def get_model_savepath(params, ext='.pt'):
                                          bs, ne, op, op_pars, ls])) + ext
 
 
-def get_docs(inds):
+def get_docs(cum_docs, zips):
 
-    pattern = os.path.join(DATA_DIR,'*.zip')
-    zips = sorted(glob.glob(pattern))       # for reading input batches
-    cum_docs = get_cum_docs_per_zip(zips)   # cumulative num. of docs in zip files
-
+    inds = max(list(cum_docs.values()))
     batch_docs = []
-    for i in inds:
+    for i in range(inds):
         for zi, zip in enumerate(zips):
             if i < cum_docs[zip]:
                 file_i = i if zi == 0 else i - cum_docs[zips[zi - 1]]
@@ -101,7 +106,7 @@ def get_cum_docs_per_zip(zips):
     return docs_per_zip
 
 
-def get_doc_words(xmlfile, filter='unique'):
+def get_doc_words(xmlfile):
     """
     Extract words from doc: <title>, <headline>, and <text>, and put the woords into a list.
 
@@ -132,16 +137,11 @@ def get_doc_words(xmlfile, filter='unique'):
     sents_tokens = [w for s in sents_tokens for w in s] if sents_tokens else []
 
     words = title_tokens + headline_tokens + sents_tokens
-    if filter == 'punct':
-        words = [w for w in words if w not in string.punctuation]
 
     words = [w for w in words if w.isalpha()]        # filter out numeric words, they don't predict topic
 
     words = [w.lower() for w in words]
     words = [w for w in words if not len(w) < 4]        # filter words with length < 4
-
-    if filter == 'unique':
-        words = list(set(words))
 
     if not words:
         print('No words in xmlfile:  ', xmlfile)
@@ -169,13 +169,16 @@ if __name__ == '__main__':
     # get words representing newsitems into a text file
 
     n_classes = 126
-    n_docs = 299773  # docs (xml files) in total
+    # n_docs = 299773  # docs (xml files) in total
+    pattern = os.path.join(TEST_DATA_DIR, '*.zip')
+    zips = sorted(glob.glob(pattern))  # for reading input batches
+    cum_docs = get_cum_docs_per_zip(zips)  # cumulative num. of docs in zip files
 
     print('Sample word sequences from XMLs...')
-    all_docs = get_docs([i for i in range(n_docs)])
-    all_words = [get_doc_words(doc, filter='nonalph') for doc in all_docs]
-    all_seqs = sample_sequences(all_words, max_width=1000)
-    with open(os.path.join(PROJ_DIR, 'dl20', 'sequences.txt'), 'w') as f:
+    all_docs = get_docs(cum_docs, zips)
+    all_words = [get_doc_words(doc) for doc in all_docs]
+    all_seqs = sample_sequences(all_words, max_width=100)
+    with open(os.path.join(PROJ_DIR, 'dl20', 'test_sequences.txt'), 'w') as f:
         for s in all_seqs:
             f.write('\t'.join(s) + '\n')
     print('Words sampled!')

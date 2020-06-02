@@ -110,3 +110,25 @@ def get_w2v_embs(vec_path=os.path.join(EMB_DIR, 'word2vec', 'GoogleNews-vectors-
     print('Loading w2vembeddings...')
     w2v_model = KeyedVectors.load_word2vec_format(vec_path, binary=True)
     return w2v_model
+
+
+if __name__ == '__main__':
+
+    pass
+
+    """
+    n_parts = 20
+    pinds = [0] + [n_docs // n_parts for _ in range(n_parts)]
+    diff = n_docs - sum(pinds)
+    if diff > 0:
+        pinds[-1] += diff
+    assert n_docs == sum(pinds)
+    pinds = [pinds[i + 1] + pinds[i] for i in range(n_parts)]
+    assert pinds[-1] == n_docs
+    d_seqs = {k + 1: [] for k in range(n_parts)}
+    for p in range(n_parts):
+        p_seqs = all_seqs[pinds[p]:pinds[p + 1]]
+        p_embs = emb_encoder.encode_batch(p_seqs)
+        fpath = os.path.join(emb_data_dir, str(p) + '.pt')
+        torch.save(p_embs, fpath)
+    """
