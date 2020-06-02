@@ -11,7 +11,7 @@ import nltk
 import torch
 import numpy as np
 
-from vars import PROJ_DIR, TESTING, DEVICE
+from vars import PROJ_DIR, TESTING, DEVICE, DATA_DIR
 
 
 class DocDataset(torch.utils.data.Dataset):
@@ -192,6 +192,19 @@ if __name__ == '__main__':
     n_docs = 299773  # docs (xml files) in total
     n_docs_test = 33142
 
+    pattern = os.path.join(DATA_DIR, '*.zip')
+    zips = sorted(glob.glob(pattern))  # for reading input batches
+    cum_docs = get_cum_docs_per_zip(zips)  # cumulative num. of docs in zip files
+
+    print('Sample word sequences from XMLs...')
+    all_docs = get_docs(cum_docs, zips)
+    all_words = [get_doc_words(doc) for doc in all_docs]
+    all_seqs = sample_sequences(all_words, max_width=100)
+    with open(os.path.join(PROJ_DIR, 'dl20', 'sequences.txt'), 'w') as f:
+        for s in all_seqs:
+            f.write('\t'.join(s) + '\n')
+    print('Words sampled!')
+
     parser = argparse.ArgumentParser()
     parser.add_argument('--emb_pars', nargs='*', default=['enc=elmo_2x1024_128_2048cnn_1xhighway', 'dim=2'])
     parser.add_argument('--input_shape', nargs='?', default='256x100')
@@ -210,12 +223,10 @@ if __name__ == '__main__':
     fpath = os.path.join(PROJ_DIR, 'dl20', fname)
     print('get sequences from file: ', fname)
     with open(fpath, 'r', encoding='utf-8') as f:
+        print('f[0]: ', f[0])
         lines = [line.strip() for line in f]
         seqs = [line.split() for line in lines]
     print('Seqs read from file.')
-    if params.set == 'train':
-        print('truncate seqs to 100')
-        seqs = sample_sequences(seqs, max_width=100)
     print('len(seqs): ', len(seqs))
     print('seqs[-1]: ', seqs[-1])
     n_parts = 10 if params.set == 'test' else 100
