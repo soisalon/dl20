@@ -11,7 +11,7 @@ import nltk
 import torch
 import numpy as np
 
-from vars import DATA_DIR, PROJ_DIR, TEST_DATA_DIR
+from vars import PROJ_DIR
 
 
 class DocDataset(torch.utils.data.Dataset):
@@ -20,23 +20,38 @@ class DocDataset(torch.utils.data.Dataset):
 
         self.train = train
         self.all = params.final
-
-        data_path = os.path.join(PROJ_DIR, 'dl20', root_dir, 'all.pt')
-        labels_path = os.path.join(PROJ_DIR, 'dl20', 'ground_truth.txt')
-        test_path = os.path.join(PROJ_DIR, 'dl20', root_dir, 'test.pt')
-
-        data = torch.load(test_path) if not self.train and self.all else torch.load(data_path)
-        labels = torch.tensor(np.loadtxt(labels_path))
-        n_docs = data.shape[0]
+        n_docs = 299773
+        n_docs_test = 33142
         n_dev = int(n_docs * params.dev_ratio)
         n_tr = n_docs - n_dev
 
+        data_path = os.path.join(PROJ_DIR, 'dl20', root_dir)
+
+        if not self.train and self.all: # test data
+            data = torch.empty(n_docs_test, params.in_height, params.in_width)
+            n_parts = 10
+        else:
+            data = torch.empty(n_docs, params.in_height, params.in_width)
+            n_parts = 100
+        i = 0
+        for fi in range(n_parts):
+            fn = 'te_' + str(fi) + '.pt' if not self.train and self.all else str(fi) + '.pt'
+            fp = os.path.join(data_path, fn)
+            t = torch.load(fp)
+            tlen = t.shape[0]
+            data[i:tlen] = t
+            i += tlen
+        print('data[-1, :10, :10]: ', data[-1, :10, :10])
+
+        labels_path = os.path.join(PROJ_DIR, 'dl20', 'ground_truth.txt')
+        labels = torch.tensor(np.loadtxt(labels_path))
+
         if self.train and not self.all:
-            self.tr_data = data[:n_tr, ...]
-            self.tr_labels = labels[:n_tr, ...]
+            self.tr_data = data[:n_tr]
+            self.tr_labels = labels[:n_tr]
         elif not self.train and not self.all:
-            self.dev_data = data[n_tr:, ...]
-            self.dev_labels = labels[n_tr:, ...]
+            self.dev_data = data[n_tr:]
+            self.dev_labels = labels[n_tr:]
         elif self.train and self.all:
             self.tr_data = data
             self.tr_labels = labels
@@ -167,18 +182,10 @@ def sample_sequences(word_batch, max_width):
 if __name__ == '__main__':
 
     # get words representing newsitems into a text file
-
+    import sys
+    from encoder import Encoder
     n_classes = 126
-    # n_docs = 299773  # docs (xml files) in total
-    pattern = os.path.join(TEST_DATA_DIR, '*.zip')
-    zips = sorted(glob.glob(pattern))  # for reading input batches
-    cum_docs = get_cum_docs_per_zip(zips)  # cumulative num. of docs in zip files
+    n_docs = 299773  # docs (xml files) in total
+    # n_docs_test = 33142
 
-    print('Sample word sequences from XMLs...')
-    all_docs = get_docs(cum_docs, zips)
-    all_words = [get_doc_words(doc) for doc in all_docs]
-    all_seqs = sample_sequences(all_words, max_width=100)
-    with open(os.path.join(PROJ_DIR, 'dl20', 'test_sequences.txt'), 'w') as f:
-        for s in all_seqs:
-            f.write('\t'.join(s) + '\n')
-    print('Words sampled!')
+
