@@ -49,7 +49,6 @@ srun $USERAPPL/ve37/bin/python3 dl20/src/train.py \
     --tr_ratio 0.2 \
     --dev_ratio 0.1 \
     --seed 100 \
-    --cv_folds 1 \
     --emb_pars ${EMBS[$ID % ${#EMBS[@]}]} \
     --n_epochs 10 \
     --batch_size ${BS[$ID % ${#BS[@]}]} \
