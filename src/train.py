@@ -72,6 +72,8 @@ enc_name = params.emb_pars[0].split('=')[1]
 enc_name = enc_name[:4] if enc_name[:4] == 'bert' or enc_name[:4] == 'elmo' else enc_name
 
 emb_data_dir = os.path.join(PROJ_DIR, 'dl20', enc_name + '_data')
+if not os.path.exists(emb_data_dir):
+    os.makedirs(emb_data_dir)
 
 # get sequences corresponding to newsitems
 with open(os.path.join(PROJ_DIR, 'dl20', 'sequences.txt'), 'r') as f:
