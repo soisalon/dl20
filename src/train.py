@@ -23,8 +23,8 @@ parser.add_argument('--dev_ratio', nargs='?', type=float, default=0.1)
 parser.add_argument('--seed', nargs='?', type=int, default=100)
 parser.add_argument('--final', nargs='?', type=bool, default=False)  # whether to train with whole dataset
 # params for sampling and encoding words from XMLs
-# parser.add_argument('--emb_pars', nargs='*', default=['enc=elmo_2x1024_128_2048cnn_1xhighway', 'dim=2'])
-parser.add_argument('--emb_pars', nargs='*', default=['enc=bert-base-uncased'])
+parser.add_argument('--emb_pars', nargs='*', default=['enc=elmo_2x1024_128_2048cnn_1xhighway', 'dim=2'])
+# parser.add_argument('--emb_pars', nargs='*', default=['enc=bert-base-uncased'])
 # parser.add_argument('--emb_pars', nargs='*', default=['enc=word2vec'])
 # training params
 parser.add_argument('--n_epochs', nargs='?', type=int, default=20)
@@ -35,10 +35,10 @@ parser.add_argument('--opt_params', nargs='*', default=['lr=1.0'])
 # CNN params
 parser.add_argument('--model_name', nargs='?', default='BaseCNN')          # BaseCNN / DocCNN
 parser.add_argument('--n_conv_layers', nargs='?', type=int, default=1)
-parser.add_argument('--kernel_shapes', nargs='*', default=['768x4', '1x2'])
+parser.add_argument('--kernel_shapes', nargs='*', default=['256x4', '1x2'])
 parser.add_argument('--strides', nargs='*', default=['1x1'])
 parser.add_argument('--pool_sizes', nargs='*', default=['1x2'])
-parser.add_argument('--input_shape', nargs='?', default='768x100')
+parser.add_argument('--input_shape', nargs='?', default='256x100')
 parser.add_argument('--n_kernels', nargs='*', type=int, default=[10])
 parser.add_argument('--conv_act_fn', nargs='?', default='relu')
 parser.add_argument('--h_units', nargs='*', type=int, default=[64])
