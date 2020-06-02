@@ -5,10 +5,11 @@ import argparse
 import random
 
 import torch
+from torch.utils.data import DataLoader
 import numpy as np
 from sklearn.metrics import precision_recall_fscore_support
 
-from data import sample_sequences, get_model_savepath
+from data import sample_sequences, get_model_savepath, DocDataset
 from vars import LOSSES, OPTIMS, MODEL_DIR, TESTING, DEVICE, PROJ_DIR
 from encoder import Encoder
 import cnn
@@ -39,8 +40,6 @@ parser.add_argument('--kernel_shapes', nargs='*', default=['768x4', '1x2'])
 parser.add_argument('--strides', nargs='*', default=['1x1'])
 parser.add_argument('--pool_sizes', nargs='*', default=['1x2'])
 parser.add_argument('--input_shape', nargs='?', default='768x100')
-
-
 parser.add_argument('--n_kernels', nargs='*', type=int, default=[10])
 parser.add_argument('--conv_act_fn', nargs='?', default='relu')
 parser.add_argument('--h_units', nargs='*', type=int, default=[64])
@@ -70,9 +69,8 @@ in_height, in_width = tuple(map(int, params.input_shape.split('x')))        # de
 kh = int(params.kernel_shapes[0].split('x')[0])
 assert kh == in_height
 
-labels = np.loadtxt(os.path.join(PROJ_DIR, 'dl20', 'ground_truth.txt'))
+# labels = np.loadtxt(os.path.join(PROJ_DIR, 'dl20', 'ground_truth.txt'))
 # labels = torch.tensor(labels, device=DEVICE, dtype=torch.float32)
-
 
 if TESTING:
     n_docs, n_tr_docs, n_dev_docs = 20, 12, 8
@@ -90,35 +88,34 @@ with open(os.path.join(PROJ_DIR, 'dl20', 'sequences.txt'), 'r') as f:
 print('Seqs read from file')
 all_seqs = sample_sequences(all_seqs, max_width=in_width)
 
-
-# TODO: get all embs into 20 files, which are used by a DataLoader
+print('Encode all seqs to embs')
+# TODO: get all embs into one / several files, which are used by a DataLoader
 enc_name = params.emb_pars[0].split('=')[1]
 enc_name = enc_name[:4] if enc_name[:4] == 'bert' or enc_name[:4] == 'elmo' else enc_name
 emb_data_dir = os.path.join(PROJ_DIR, 'dl20', enc_name + '_data')
 fpath = os.path.join(emb_data_dir, 'all.pt')
-if not os.path.exists(emb_data_dir):
-    os.makedirs(emb_data_dir)
-    """
-    n_parts = 20
-    pinds = [0] + [n_docs // n_parts for _ in range(n_parts)]
-    diff = n_docs - sum(pinds)
-    if diff > 0:
-        pinds[-1] += diff
-    assert n_docs == sum(pinds)
-    pinds = [pinds[i + 1] + pinds[i] for i in range(n_parts)]
-    assert pinds[-1] == n_docs
-    d_seqs = {k + 1: [] for k in range(n_parts)}
-    for p in range(n_parts):
-        p_seqs = all_seqs[pinds[p]:pinds[p + 1]]
-        p_embs = emb_encoder.encode_batch(p_seqs)
-        fpath = os.path.join(emb_data_dir, str(p) + '.pt')
-        torch.save(p_embs, fpath)
-    """
-    p_embs = emb_encoder.encode_batch(all_seqs)
-    torch.save(p_embs, fpath)
 
-else:
-    all_embs = torch.load(fpath)
+"""
+n_parts = 20
+pinds = [0] + [n_docs // n_parts for _ in range(n_parts)]
+diff = n_docs - sum(pinds)
+if diff > 0:
+    pinds[-1] += diff
+assert n_docs == sum(pinds)
+pinds = [pinds[i + 1] + pinds[i] for i in range(n_parts)]
+assert pinds[-1] == n_docs
+d_seqs = {k + 1: [] for k in range(n_parts)}
+for p in range(n_parts):
+    p_seqs = all_seqs[pinds[p]:pinds[p + 1]]
+    p_embs = emb_encoder.encode_batch(p_seqs)
+    fpath = os.path.join(emb_data_dir, str(p) + '.pt')
+    torch.save(p_embs, fpath)
+"""
+p_embs = emb_encoder.encode_batch(all_seqs)
+torch.save(p_embs, fpath)
+print('all_embs saved!')
+
+all_embs = torch.load(fpath)
 
 # all_embs = emb_encoder.encode_batch(all_seqs)
 if DEVICE == torch.device('cuda'):
@@ -127,57 +124,54 @@ if DEVICE == torch.device('cuda'):
     print(torch.cuda.memory_summary(device=DEVICE))
 
 
-def train(mdl, input_inds, out_labels):
-    # training loop
-    n_iters = len(input_inds) // params.batch_size
-    losses = []
-    stop = False
-    for epoch in range(params.n_epochs):
-        for it in range(n_iters):
-            batch_inds = input_inds[it * params.batch_size: (it + 1) * params.batch_size]
+def train(epoch):
+    model.train()
+    for bi, (data, target) in enumerate(tr_loader):
+        data = data.to(DEVICE)
+        target = target.to(DEVICE)
 
-            seqs = [all_seqs[i] for i in batch_inds]
-            batch = emb_encoder.encode_batch(seqs)  # get encoded batch
-            batch.requires_grad = True
+        opt.zero_grad()
 
-            opt.zero_grad()
+        preds = model(data)
+        loss = loss_fn(preds, target)
+        loss.backward()
+        opt.step()
 
-            preds = mdl(batch)
-            preds = preds.squeeze()
-            actual = out_labels[it * params.batch_size: (it + 1) * params.batch_size]
+        if bi % 100 == 0:
+            print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
+                epoch, bi * len(data), len(tr_loader.dataset), 100. * bi / len(tr_loader), float(loss)))
 
-            loss = loss_fn(preds, actual)
 
-            loss.backward()
-            opt.step()
+def validate(lossv, pv, rv, fv):
+    model.eval()
+    val_loss, ps, rs, fs = 0, 0, 0, 0
+    for data, target in dev_loader:
+        data = data.to(DEVICE)
+        target = target.to(DEVICE)
+        output = model(data)
+        val_loss += loss_fn(output, target).data.item()
+        preds = (output >= 0.5).int()  # get the index of the max log-probability
+        p, r, f, _ = precision_recall_fscore_support(target.numpy(), preds.numpy(), average='micro')
+        ps += p
+        rs += r
+        fs += f
 
-            if it % 100 == 0:
-                print('at iter {}, loss =  {}'.format(it, loss))
+    val_loss /= len(dev_loader)
+    ps /= len(dev_loader)
+    rs /= len(dev_loader)
+    fs /= len(dev_loader)
 
-            losses += [float(loss)]
-            # stop if loss is not changing
-            if len(losses) > 100:
-                if all(abs(losses[j - 1] - losses[j]) < 1e-1 for j in range(len(losses) - 1, len(losses) - 11, -1)):
-                    stop = True
-                    break
+    lossv += [val_loss]
+    pv += [ps]
+    rv += [rs]
+    fv += [fs]
 
-        # for other than the last epoch, print loss and acc for the dev set
-        if epoch < params.n_epochs - 1:
-            mdl.eval()
-            val_preds = mdl(dev_embs).squeeze()
-            val_loss = loss_fn(val_preds, dev_labels)
-            val_preds = (val_preds >= 0.5).int()
+    ps = 100. * ps
+    rs = 100. * rs
+    fs = 100. * fs
 
-            p, r, f, _ = precision_recall_fscore_support(dev_labels.numpy(), val_preds.numpy(), average='micro')
-
-            # acc = torch.sum(val_preds == dev_labels.int()).float() / (n_dev_docs * 126)
-            print('After epoch {}/{}\nDev loss = {}'.format(epoch + 1, params.n_epochs, float(val_loss)))
-            print('Metrics: P - {}, R - {}, F1 - {}'.format(p, r, f))
-            mdl.train()
-        if stop:
-            break
-    return model
-
+    print('\nDev set: Average loss: {:.4f}, Precision: {:.0f}%, Recall: {}%, F1: {}%\n'.format(
+        val_loss, ps, rs, fs))
 
 # get model path for saving
 model_fname = get_model_savepath(params, ext='.pt')
@@ -209,65 +203,65 @@ rand_accs = []        # accs of random guesses
 fs = []
 precs = []
 recs = []
-for fold in range(params.cv_folds):
 
-    print('Get tr and dev inds...')
-    if params.cv_folds == 1:        # not doing CV, take random samples
-        tr_inds = all_inds[:n_tr_docs]
-        dev_inds = all_inds[n_tr_docs:]
-    else:
-        assert params.cv_folds * params.dev_ratio == 1.0
-        dev_inds = [all_inds[i] for i in range(fold * n_dev_docs, (fold + 1) * n_dev_docs)]
-        tr_inds = [i for i in all_inds if i not in dev_inds]
 
-    print('Done.')
-    # get training and dev. labels
-    print('get tr, dev labels...')
-    tr_labels = torch.tensor(np.take(labels, tr_inds, axis=0), device=DEVICE, dtype=torch.float32)
-    dev_labels = torch.tensor(np.take(labels, dev_inds, axis=0), device=DEVICE, dtype=torch.float32)
-    print('Done.')
+# TODO: load dataset
+print('load training and dev set...')
 
-    if DEVICE == torch.device('cuda'):
-        print('mem allocated / reserved after setting labels to device: ')
-        print(torch.cuda.memory_allocated(device=DEVICE))
-        print(torch.cuda.memory_reserved(device=DEVICE))
-        print(torch.cuda.memory_summary(device=DEVICE))
-        torch.cuda.empty_cache()
+tr_dset = DocDataset(enc_name + '_data', params, train=True)
+dev_dset = DocDataset(enc_name + '_data', params, train=False)
 
-    # for validation
-    dev_seqs = [all_seqs[i] for i in dev_inds]
-    dev_embs = emb_encoder.encode_batch(dev_seqs)
+tr_loader = DataLoader(dataset=tr_dset, batch_size=params.batch_size, shuffle=True)
+dev_loader = DataLoader(dataset=dev_dset, batch_size=params.batch_size, shuffle=False)
 
-    if DEVICE == torch.device('cuda'):
-        print('mem allocated / reserved after getting dev_embs: ')
-        print(torch.cuda.memory_allocated(device=DEVICE))
-        print(torch.cuda.memory_reserved(device=DEVICE))
-        print(torch.cuda.memory_summary(device=DEVICE))
+print('Get tr and dev inds...')
+tr_inds = all_inds[:n_tr_docs]
+dev_inds = all_inds[n_tr_docs:]
 
-    # train model
+print('Done.')
+# get training and dev. labels
+print('get tr, dev labels...')
+tr_labels = torch.tensor(np.take(labels, tr_inds, axis=0), device=DEVICE, dtype=torch.float32)
+dev_labels = torch.tensor(np.take(labels, dev_inds, axis=0), device=DEVICE, dtype=torch.float32)
+print('Done.')
 
-    model = train(model, tr_inds, tr_labels)
+if DEVICE == torch.device('cuda'):
+    print('mem allocated / reserved after setting labels to device: ')
+    print(torch.cuda.memory_allocated(device=DEVICE))
+    print(torch.cuda.memory_reserved(device=DEVICE))
+    print(torch.cuda.memory_summary(device=DEVICE))
+    torch.cuda.empty_cache()
 
-    # get accuracy on dev set, having trianed with whole trainiing fold
-    dev_preds = model(dev_embs).squeeze()
-    dev_preds = (dev_preds >= 0.5).int()
-    accs += [(torch.sum(dev_preds == dev_labels.int()).float() / (n_dev_docs * 126)).item()]
+# for validation
+dev_seqs = [all_seqs[i] for i in dev_inds]
+dev_embs = emb_encoder.encode_batch(dev_seqs)
 
-    # random choice
-    rand_preds = (torch.rand(n_dev_docs, n_classes) >= 0.5).int()
-    rand_accs += [(torch.sum(rand_preds == dev_labels.int()).float() / (n_dev_docs * 126)).item()]
+if DEVICE == torch.device('cuda'):
+    print('mem allocated / reserved after getting dev_embs: ')
+    print(torch.cuda.memory_allocated(device=DEVICE))
+    print(torch.cuda.memory_reserved(device=DEVICE))
+    print(torch.cuda.memory_summary(device=DEVICE))
 
-    # other metrics
-    p, r, f, _ = precision_recall_fscore_support(dev_labels.numpy(), dev_preds.numpy(), average='micro')
-    precs += [p]
-    recs += [r]
-    fs += [f]
+# train model
 
-    # sample a few (strongly) misclassified newsitems
-    bad_preds = (torch.sum((dev_preds == dev_labels.int()), dim=1).float() / 126 < 0.5).nonzero().squeeze()
-    bad_preds = [p.item() for p in bad_preds]
-    print('Examples of badly classified docs: {}'.format(
-        [dev_inds[i] for i in random.sample(bad_preds, k=min(10, len(bad_preds)))]))
+model = train(model, tr_inds, tr_labels)
+
+# get accuracy on dev set, having trianed with whole trainiing fold
+dev_preds = model(dev_embs).squeeze()
+dev_preds = (dev_preds >= 0.5).int()
+accs += [(torch.sum(dev_preds == dev_labels.int()).float() / (n_dev_docs * 126)).item()]
+
+# random choice
+rand_preds = (torch.rand(n_dev_docs, n_classes) >= 0.5).int()
+rand_accs += [(torch.sum(rand_preds == dev_labels.int()).float() / (n_dev_docs * 126)).item()]
+
+# other metrics
+p, r, f, _ = precision_recall_fscore_support(dev_labels.numpy(), dev_preds.numpy(), average='micro')
+
+# sample a few (strongly) misclassified newsitems
+bad_preds = (torch.sum((dev_preds == dev_labels.int()), dim=1).float() / 126 < 0.5).nonzero().squeeze()
+bad_preds = [p.item() for p in bad_preds]
+print('Examples of badly classified docs: {}'.format([dev_inds[i] for i in bad_preds[:10]]))
 
 with open(os.path.join(PROJ_DIR, 'dl20', 'scores.txt'), 'w') as f:
     f.write('Scores for model: {}\n'.format(model_fname))
