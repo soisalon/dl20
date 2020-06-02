@@ -190,22 +190,48 @@ if __name__ == '__main__':
     from encoder import Encoder
     n_classes = 126
     n_docs = 299773  # docs (xml files) in total
-    # n_docs_test = 33142
+    n_docs_test = 33142
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--emb_pars', nargs='*', default=['enc=elmo_2x1024_128_2048cnn_1xhighway', 'dim=2'])
     parser.add_argument('--input_shape', nargs='?', default='256x100')
+    parser.add_argument('--set', nargs='?', default='train')
     params = parser.parse_args()
 
     emb_encoder = Encoder(params=params)
 
-    # get sequences corresponding to newsitems
-    with open(os.path.join(PROJ_DIR, 'dl20', 'sequences.txt'), 'r') as f:
+    if params.set == 'train':
+        fname= 'sequences.txt'
+        N = n_docs
+    else:
+        fname = 'test_sequences.txt'
+        N = n_docs_test
+
+    fpath = os.path.join(PROJ_DIR, 'dl20', fname)
+    print('get sequences from file: ', fname)
+    with open(fpath, 'r') as f:
         lines = [line.strip() for line in f]
-        all_seqs = [line.split() for line in lines]
-    print('Seqs read from file')
-    all_seqs = sample_sequences(all_seqs, max_width=100)
+        seqs = [line.split() for line in lines]
+    print('Seqs read from file.')
+    if params.set == 'train':
+        print('truncate seqs to 100')
+        seqs = sample_sequences(seqs, max_width=100)
+    print('len(seqs): ', len(seqs))
+    print('seqs[-1]: ', seqs[-1])
+    n_parts = 10 if params.set == 'test' else 100
 
-    print('len(all_seqs): ', len(all_seqs))
-
+    pinds = [0] + [N // n_parts for _ in range(n_parts)]
+    pinds = [0] + [pinds[i] + sum(pinds[:i]) for i in range(1, len(pinds))]
+    diff = N - pinds[-1]
+    if diff > 0:
+        pinds[-1] += diff
+    assert N == pinds[-1]
+    for p in range(n_parts):
+        p_seqs = seqs[pinds[p]:pinds[p + 1]]
+        p_embs = emb_encoder.encode_batch(p_seqs)
+        dname = 'te_' + str(p) + '.pt' if params.set == 'test' else str(p) + '.pt'
+        dpath = os.path.join(PROJ_DIR, 'dl20', emb_encoder.enc_name + '_data', 'te_' + str(p) + '.pt')
+        torch.save(p_embs, fpath)
+        del p_embs
+        print('Part {} (test) encoded!'.format(p))
 
