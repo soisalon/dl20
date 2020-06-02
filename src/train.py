@@ -138,7 +138,8 @@ def validate(lossv, pv, rv, fv):
         data = data.to(DEVICE)
         target = target.to(DEVICE)
         target = target.squeeze()
-        output = model(data)
+        with torch.no_grad():
+            output = model(data)
         output = output.squeeze()
 
         val_loss += loss_fn(output, target).data.item()
@@ -217,7 +218,8 @@ else:
 
     # get predictions on final test data
     test_data = dev_dset.dev_data
-    test_preds = model(test_data).squeeze()
+    with torch.no_grad():
+        test_preds = model(test_data).squeeze()
     test_preds = test_preds.data.cpu().numpy()
     test_preds = (test_preds >= 0.5).astype('int')
     np.savetxt(os.path.join(PROJ_DIR, 'dl20', 'test_preds.txt'), test_preds, fmt='%i')
