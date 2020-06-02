@@ -21,7 +21,7 @@
 
 # interactive
 # srun -t 10:00:00 --mem=10G -p gpu-short --gres=gpu:1 -c 10 --pty bash
-
+# srun -t 10:00:00 --mem=10G -c 10 --pty bash
 
 module purge
 module load Python/3.7.0-intel-2018b

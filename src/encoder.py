@@ -75,9 +75,6 @@ class Encoder(object):
         embs = torch.unsqueeze(embs, 1)
         embs = torch.transpose(embs, dim0=2, dim1=3)
 
-        embs = embs.to(device=DEVICE)
-        embs.requires_grad = True
-
         return embs
 
     def concat_embs(self, emb_list):

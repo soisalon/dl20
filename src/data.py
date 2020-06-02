@@ -3,12 +3,51 @@
 import os
 import zipfile
 import glob
-import xmltodict
-import nltk
 import string
 import random
 
+import xmltodict
+import nltk
+import torch
+import numpy as np
+
 from vars import DATA_DIR, PROJ_DIR
+
+
+class DocDataset(torch.utils.data.Dataset):
+
+    def __init__(self, root_dir, params, train=True):
+
+        self.train = train
+
+        data_path = os.path.join(PROJ_DIR, 'dl20', root_dir, 'all.pt')
+        labels_path = os.path.join(PROJ_DIR, 'dl20', 'ground_truth.txt')
+
+        data = torch.load(data_path)
+        labels = torch.tensor(np.loadtxt(labels_path))
+
+        n_docs = data.shape[0]
+        print('n_docs in DocDataset: ', n_docs)
+
+        n_dev = int(n_docs * params.dev_ratio)
+        n_tr = n_docs - n_dev
+
+        if self.train:
+            self.tr_data = data[:n_tr, ...]
+            self.tr_labels = labels[:n_tr, ...]
+        else:
+            self.dev_data = data[n_tr:, ...]
+            self.dev_labels = labels[n_tr:, ...]
+
+    def __len__(self):
+        if self.train:
+            return len(self.tr_data)
+        else:
+            return len(self.dev_data)
+
+    def __getitem__(self, item):
+        pass
+
 
 
 def get_model_savepath(params, ext='.pt'):
