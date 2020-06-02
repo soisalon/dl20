@@ -11,7 +11,7 @@ import nltk
 import torch
 import numpy as np
 
-from vars import PROJ_DIR, TESTING
+from vars import PROJ_DIR, TESTING, DEVICE
 
 
 class DocDataset(torch.utils.data.Dataset):
@@ -30,10 +30,10 @@ class DocDataset(torch.utils.data.Dataset):
         data_path = os.path.join(PROJ_DIR, 'dl20', root_dir)
 
         if not self.train and self.all: # test data
-            data = torch.empty(n_docs_test, 1, in_height, in_width)
+            data = torch.empty(n_docs_test, 1, in_height, in_width, device=DEVICE)
             n_parts = 10
         else:
-            data = torch.empty(n_docs, 1, in_height, in_width)
+            data = torch.empty(n_docs, 1, in_height, in_width, device=DEVICE)
             n_parts = 100 if not TESTING else 10
         i = 0
         for fi in range(n_parts):
@@ -78,7 +78,7 @@ class DocDataset(torch.utils.data.Dataset):
 def get_model_savepath(params, ext='.pt'):
 
     mod = params.model_name[:3]
-    encoder = params.emb_pars[0][:4]
+    encoder = params.emb_pars[0].split('=')[1][:4]
     nl = params.n_conv_layers
     ks = '+'.join(params.kernel_shapes)
     pls = '+'.join(params.pool_sizes)
