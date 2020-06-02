@@ -171,6 +171,7 @@ def get_doc_words(xmlfile):
 
 def sample_sequences(word_batch, max_width):
 
+    random.seed(100)
     seqs = []
     for wordlist in word_batch:
         diff = len(wordlist) - max_width
