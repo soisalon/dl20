@@ -8,7 +8,7 @@
 #SBATCH -c 10
 #SBATCH --mail-type=END
 #SBATCH --mail-user=eliel.soisalon-soininen@helsinki.fi
-#SBATCH --mem=10G
+#SBATCH --mem=100G
 
 # --gres=gpu:1
 # -p gpu-short
