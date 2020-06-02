@@ -223,7 +223,6 @@ if __name__ == '__main__':
     fpath = os.path.join(PROJ_DIR, 'dl20', fname)
     print('get sequences from file: ', fname)
     with open(fpath, 'r', encoding='utf-8') as f:
-        print('f[0]: ', f[0])
         lines = [line.strip() for line in f]
         seqs = [line.split() for line in lines]
     print('Seqs read from file.')

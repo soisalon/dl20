@@ -116,11 +116,19 @@ def validate(lossv, pv, rv, fv):
         output = output.squeeze()
 
         val_loss += loss_fn(output, target).data.item()
+        target = target.numpy()
         preds = (output >= 0.5).int().numpy()  # get the index of the max log-probability
-        p, r, f, _ = precision_recall_fscore_support(target.numpy(), preds, average='micro')
+        p, r, f, _ = precision_recall_fscore_support(target, preds, average='micro')
         ps += p
         rs += r
         fs += f
+
+        if bi == 100:
+            print('Predicions for inds {}-{} in sequences.txt.'.format(n_tr_docs + params.batch_size * 100,
+                                                                       n_tr_docs + params.batch_size * 101))
+            np.savetxt(os.path.join(PROJ_DIR, 'dl20', 'eyeball_preds.txt'), preds, fmt='%i')
+            np.savetxt(os.path.join(PROJ_DIR, 'dl20', 'eyeball_targt.txt'), target, fmt='%i')
+            # TODO: write topics predicted + true topics of this batch
 
     val_loss /= len(dev_loader)
     ps /= len(dev_loader)
@@ -203,7 +211,7 @@ else:
     torch.save(model.state_dict(), model_path)
 
 # write some resulst into file
-with open(os.path.join(PROJ_DIR, 'dl20', 'scores.txt'), 'w') as f:
+with open(os.path.join(PROJ_DIR, 'dl20', 'scores.txt'), 'a') as f:
     f.write('Scores for model after training: {}\n'.format(model_fname))
     f.write('Model precision = {}\n'.format(precs[-1]))
     f.write('Model recall = {}\n'.format(recs[-1]))
