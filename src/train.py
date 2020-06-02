@@ -71,40 +71,7 @@ assert kh == in_height
 
 enc_name = params.emb_pars[0].split('=')[1]
 enc_name = enc_name[:4] if enc_name[:4] == 'bert' or enc_name[:4] == 'elmo' else enc_name
-
 emb_data_dir = os.path.join(PROJ_DIR, 'dl20', enc_name + '_data')
-if not os.path.exists(emb_data_dir):
-    os.makedirs(emb_data_dir)
-
-# get sequences corresponding to newsitems
-with open(os.path.join(PROJ_DIR, 'dl20', 'sequences.txt'), 'r') as f:
-    lines = [line.strip() for line in f]
-    all_seqs = [line.split() for line in lines]
-print('Seqs read from file')
-all_seqs = sample_sequences(all_seqs, max_width=100)
-print('Initialise embedding encoder')
-emb_encoder = Encoder(params=params)
-with open(os.path.join(PROJ_DIR, 'dl20', 'test_sequences.txt'), 'r') as f:
-    lines = [line.strip() for line in f]
-    te_seqs = [line.split() for line in lines]
-print('Test seqs read from file')
-if TESTING:
-    te_seqs = te_seqs[:100]
-print('Get embedded test data...')
-n_parts = 10
-pinds = [0] + [n_docs_test // n_parts for _ in range(n_parts)]
-diff = n_docs_test - sum(pinds)
-if diff > 0:
-    pinds[-1] += diff
-assert n_docs_test == sum(pinds)
-for p in range(n_parts):
-    p_seqs = te_seqs[pinds[p]:pinds[p + 1]]
-    p_embs = emb_encoder.encode_batch(p_seqs)
-    fpath = os.path.join(emb_data_dir, 'te_' + str(p) + '.pt')
-    torch.save(p_embs, fpath)
-    del p_embs
-    print('Part {} (test) encoded!'.format(p))
-
 
 if TESTING:
     n_docs, n_tr_docs, n_dev_docs = 20, 12, 8
