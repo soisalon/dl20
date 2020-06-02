@@ -40,11 +40,11 @@ class DocDataset(torch.utils.data.Dataset):
             fn = 'te_' + str(fi) + '.pt' if not self.train and self.all else str(fi) + '.pt'
             fp = os.path.join(data_path, fn)
             t = torch.load(fp)
-            print('t.shape: ', t.shape)
-            print('data.shape: ', data.shape)
             tlen = t.shape[0]
             data[i:i + tlen] = t
             i += tlen
+        print('t.shape: ', t.shape)
+        print('data.shape: ', data.shape)
         print('data[-1, :10, :10]: ', data[-1, :10, :10])
 
         labels_path = os.path.join(PROJ_DIR, 'dl20', 'ground_truth.txt')
