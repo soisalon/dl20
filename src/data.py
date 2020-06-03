@@ -12,8 +12,58 @@ import torch
 import numpy as np
 
 from vars import PROJ_DIR, TESTING, DEVICE, DATA_DIR
+from encoder import Encoder
 
-import torchvision
+
+class SeqDataset(torch.utils.data.Dataset):
+
+    def __init__(self, fpath, params, train=True):
+
+        self.train = train
+        self.use_whole = params.final
+
+        self.encoder = Encoder(params=params)
+
+        n_docs = 299773
+        n_docs_test = 33142
+        n_dev = int(n_docs * params.dev_ratio)
+        n_tr = n_docs - n_dev
+
+        with open(fpath, 'r') as f:
+            lines = [l.strip() for l in f]
+        seqs = [l.split() for l in lines]
+
+        labels_path = os.path.join(PROJ_DIR, 'dl20', 'ground_truth.txt')
+        labels = torch.tensor(np.loadtxt(labels_path))
+
+        if self.train and not self.use_whole:
+            self.tr_seqs = seqs[:n_tr]
+            self.tr_labels = labels[:n_tr]
+        elif not self.train and not self.use_whole:
+            self.dev_seqs = seqs[n_tr:]
+            self.dev_labels = labels[n_tr:]
+        elif self.train and self.use_whole:
+            self.tr_seqs = seqs
+            self.tr_labels = labels
+        else:
+            self.dev_seqs = seqs
+
+    def __getitem__(self, idx):
+        if self.train:
+            item, target = self.transform(self.tr_seqs[idx]), self.tr_labels[idx]
+            return item, target
+        elif not self.train and not self.use_whole:
+            item, target = self.transform(self.dev_seqs[idx]), self.dev_labels[idx]
+            return item, target
+
+    def __len__(self):
+        if self.train:
+            return len(self.tr_seqs)
+        else:
+            return len(self.dev_seqs)
+
+    def transform(self, seq):
+        return self.encoder.encode_seq(seq)
 
 
 class DocDataset(torch.utils.data.Dataset):
@@ -195,11 +245,10 @@ if __name__ == '__main__':
 
     # get words representing newsitems into a text file
     import argparse
-    from encoder import Encoder
+
     n_classes = 126
     n_docs = 299773  # docs (xml files) in total
     n_docs_test = 33142
-
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--emb_pars', nargs='*', default=['enc=elmo_2x1024_128_2048cnn_1xhighway', 'dim=2'])
@@ -221,7 +270,6 @@ if __name__ == '__main__':
                 f.write('\t'.join(s) + '\n')
         print('Words sampled!')
 
-
     emb_encoder = Encoder(params=params)
 
     if params.set == 'train':
@@ -231,9 +279,9 @@ if __name__ == '__main__':
         fname = 'test_sequences.txt'
         N = n_docs_test
 
-    fpath = os.path.join(PROJ_DIR, 'dl20', fname)
+    seq_fpath = os.path.join(PROJ_DIR, 'dl20', fname)
     print('get sequences from file: ', fname)
-    with open(fpath, 'r', encoding='utf-8') as f:
+    with open(seq_fpath, 'r', encoding='utf-8') as f:
         lines = [line.strip() for line in f]
         seqs = [line.split() for line in lines]
     print('Seqs read from file.')
@@ -253,6 +301,6 @@ if __name__ == '__main__':
         p_embs = emb_encoder.encode_batch(p_seqs)
         dname = 'te_' + str(p) + '.pt' if params.set == 'test' else str(p) + '.pt'
         dpath = os.path.join(PROJ_DIR, 'dl20', emb_encoder.enc_name + '_data', dname)
-        torch.save(p_embs, fpath)
+        torch.save(p_embs, dpath)
         del p_embs
         print('Part {} (test) encoded!'.format(p))
