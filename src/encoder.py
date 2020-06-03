@@ -40,7 +40,7 @@ class Encoder(object):
             self.tokeniser = BertTokenizer.from_pretrained(self.encoder, cache_dir=cache_dir)
             self.model = BertModel.from_pretrained(self.encoder, cache_dir=cache_dir)
             self.model.eval()
-            self.model.to(DEVICE)
+            # self.model.to(DEVICE)
 
         elif self.encoder == 'word2vec':
             self.model = get_w2v_embs()
