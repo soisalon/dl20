@@ -96,7 +96,6 @@ class DocDataset(torch.utils.data.Dataset):
             i += tlen
         print('t.shape: ', t.shape)
         print('data.shape: ', data.shape)
-        print('data[-1, :10, :10]: ', data[-1, :10, :10])
 
         labels_path = os.path.join(PROJ_DIR, 'dl20', 'ground_truth.txt')
         labels = torch.tensor(np.loadtxt(labels_path))
