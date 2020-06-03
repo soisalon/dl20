@@ -4,14 +4,13 @@
 #SBATCH --chdir=/wrk/users/eliel/projects/dl_course20/
 #SBATCH -o /wrk/users/eliel/projects/dl_course20/jobs/res/%A_%a.txt
 #SBATCH -e /wrk/users/eliel/projects/dl_course20/jobs/err/%A_%a.txt
-#SBATCH -t 0-10:00:00
+#SBATCH -t 0-16:00:00
 #SBATCH -c 10
 #SBATCH -p gpu-short
 #SBATCH --gres=gpu:1
 #SBATCH --mail-type=END
 #SBATCH --mail-user=eliel.soisalon-soininen@helsinki.fi
 #SBATCH --mem=100G
-
 
 #--mem-per-cpu=10G
 
@@ -46,7 +45,6 @@ DROPS=(0.5)
 # train model
 # srun -n 4 --exclusive $USERAPPL/ve37/bin/python3 dl20/src/train.py \
 srun $USERAPPL/ve37/bin/python3 dl20/src/train.py \
-    --tr_ratio 0.2 \
     --dev_ratio 0.1 \
     --seed 100 \
     --emb_pars ${EMBS[$ID % ${#EMBS[@]}]} \
