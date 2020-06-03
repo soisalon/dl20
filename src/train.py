@@ -85,8 +85,8 @@ def train(epoch):
         opt.step()
 
         if bi % 100 == 0:
-            print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
-                epoch, bi * len(data), len(tr_loader.dataset), 100. * bi / len(tr_loader), float(loss)))
+            print('Train Epoch: {}/{} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
+                epoch + 1, params.n_epochs, bi * len(data), len(tr_loader.dataset), 100. * bi / len(tr_loader), float(loss)))
 
 
 def validate(lossv, pv, rv, fv):
@@ -184,9 +184,8 @@ losses, precs, recs, fs = [], [], [], []
 if not params.final:
     for e in range(params.n_epochs):
         train(e)
-        print('After train, torch.utils.data.get_worker_info(): ', torch.utils.data.get_worker_info())
         validate(losses, precs, recs, fs)
-        print('After valid., torch.utils.data.get_worker_info(): ', torch.utils.data.get_worker_info())
+
 else:
     for e in range(params.n_epochs):
         train(e)
