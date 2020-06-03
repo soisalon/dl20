@@ -124,7 +124,7 @@ def validate(lossv, pv, rv, fv):
         rs += r
         fs += f
 
-        if bi == 50:
+        if bi == 10:
             print('Predicions for inds {}-{} in sequences.txt.'.format(n_tr_docs + params.batch_size * 100,
                                                                        n_tr_docs + params.batch_size * 101))
             np.savetxt(os.path.join(PROJ_DIR, 'dl20', 'eyeball_preds.txt'), preds, fmt='%i')
