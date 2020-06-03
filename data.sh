@@ -34,7 +34,7 @@ INS=(256x1000 768x100 300x100 300x100)
 srun $USERAPPL/ve37/bin/python3 dl20/src/data.py \
     --emb_pars ${EMBS[$ID % ${#EMBS[@]}]} \
     --input_shape ${INS[$ID % ${#INS[@]}]} \
-    --set train
+    --set test
 
 
 
