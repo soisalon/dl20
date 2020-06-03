@@ -207,7 +207,7 @@ else:
 
 # write some resulst into file
 with open(os.path.join(PROJ_DIR, 'dl20', 'scores.txt'), 'a') as f:
-    f.write('Scores for model after training: {}\n'.format(model_fname))
+    f.write('Scores for model after training for {} epochs: {}\n'.format(params.n_epochs, model_fname))
     f.write('Model precision = {}\n'.format(precs[-1]))
     f.write('Model recall = {}\n'.format(recs[-1]))
     f.write('Model F1= {}\n'.format(fs[-1]))
