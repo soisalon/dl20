@@ -113,7 +113,7 @@ def validate(lossv, pv, rv, fv):
         target = target.to(DEVICE)
         target = target.squeeze()
         with torch.no_grad():
-            output = model(data)
+            output = model(data).double()
         output = output.squeeze()
 
         val_loss += loss_fn(output, target).data.item()
