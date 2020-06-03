@@ -5,15 +5,12 @@
 #SBATCH -o /wrk/users/eliel/projects/dl_course20/jobs/res/%A_%a.txt
 #SBATCH -e /wrk/users/eliel/projects/dl_course20/jobs/err/%A_%a.txt
 #SBATCH -t 2-0
-#SBATCH -c 2
+#SBATCH -c 10
 #SBATCH -p gpu-short
 #SBATCH --gres=gpu:1
+#SBATCH --mem=50G
 #SBATCH --mail-type=END
 #SBATCH --mail-user=eliel.soisalon-soininen@helsinki.fi
-
-#SBATCH --array=0-5
-#SBATCH --mem-per-cpu=10G
-#SBATCH --ntasks=6
 
 # --mem 10G
 
@@ -30,24 +27,25 @@ echo "training cnn for DL"
 
 ID=SLURM_ARRAY_TASK_ID
 
-EMBS=("enc=elmo_2x1024_128_2048cnn_1xhighway dim=2" enc=bert-base-uncased)
-KS=(256X2 768x2)
+EMBS=(enc=word2vec)
+KS=("100X10 3x2" "150x10 2x2" "50x10 6x2")
+PS=("1x9 1x5" "1x9 1x5" "1x9 1x5")
+STS=("1x1" "1x1" "1x1")
 N_KS=(100)
-NC=(2 2 3 3)
-MODS=(BaseCNN)
-INS=(256x100 768x100)
-BS=(32)
+NC=(2)
+MODS=(DocCNN)
+INS=(300x100 300x100 768x100)
+BS=(64)
 OPTS=(adadelta)
 HS=(100)
 DROPS=(0.5)
 # train model
-srun -n 10 --exclusive $USERAPPL/ve37/bin/python3 dl20/src/train.py \
-    --tr_ratio 0.2 \
+srun $USERAPPL/ve37/bin/python3 dl20/src/train.py \
     --dev_ratio 0.1 \
     --seed 100 \
-    --cv_folds 1 \
+    --use_seqs 1 \
     --emb_pars ${EMBS[$ID % ${#EMBS[@]}]} \
-    --n_epochs 10 \
+    --n_epochs 30 \
     --batch_size ${BS[$ID % ${#BS[@]}]} \
     --loss_fn bce \
     --optim ${OPTS[$ID % ${#OPTS[@]}]}\
@@ -55,7 +53,8 @@ srun -n 10 --exclusive $USERAPPL/ve37/bin/python3 dl20/src/train.py \
     --model_name ${MODS[$ID % ${#MODS[@]}]}\
     --n_conv_layers ${NC[$ID % ${#NC[@]}]} \
     --kernel_shapes ${KS[$ID % ${#KS[@]}]} \
-    --strides 1x1 \
+    --pool_sizes ${PS[$ID % ${#PS[@]}]} \
+    --strides ${STS[$ID % ${#STS[@]}]} \
     --input_shape ${INS[$ID % ${#INS[@]}]} \
     --n_kernels ${N_KS[$ID % ${#N_KS[@]}]} \
     --conv_act_fn relu \
