@@ -8,7 +8,7 @@
 #SBATCH -c 10
 #SBATCH --mail-type=END
 #SBATCH --mail-user=eliel.soisalon-soininen@helsinki.fi
-#SBATCH --mem=100G
+#SBATCH --mem=50G
 #SBATCH --gres=gpu:1
 #SBATCH -p gpu-short
 
@@ -31,23 +31,22 @@ echo "training cnn for DL"
 ID=SLURM_ARRAY_TASK_ID
 # ID=2
 
-EMBS=("enc=elmo_2x1024_128_2048cnn_1xhighway dim=2" enc=bert-base-uncased enc=word2vec enc=glove)
-KS=(256x2 768x2 300x2 300x2)
+EMBS=(enc=word2vec)
+KS=(300x2 300x4 300x6 300x8 300x10 300x12 300x14)
 N_KS=(100)
 NC=(1)
 MODS=(BaseCNN)
-INS=(256x1000 768x100 300x100 300x100)
-BS=(32)
+INS=(300x100)
+BS=(64)
 OPTS=(adadelta)
 HS=(100)
 DROPS=(0.5)
 # train model
 # srun -n 4 --exclusive $USERAPPL/ve37/bin/python3 dl20/src/train.py \
 srun $USERAPPL/ve37/bin/python3 dl20/src/train.py \
-    --tr_ratio 0.2 \
-    --dev_ratio 0.1 \
+    --dev_ratio 0.2 \
     --seed 100 \
-    --use_seqs True \
+    --use_seqs 1 \
     --emb_pars ${EMBS[$ID % ${#EMBS[@]}]} \
     --n_epochs 10 \
     --batch_size ${BS[$ID % ${#BS[@]}]} \
