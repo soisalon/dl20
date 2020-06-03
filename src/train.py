@@ -11,7 +11,6 @@ from sklearn.metrics import precision_recall_fscore_support
 
 from data import sample_sequences, get_model_savepath, DocDataset, SeqDataset
 from vars import LOSSES, OPTIMS, MODEL_DIR, TESTING, DEVICE, PROJ_DIR
-from encoder import Encoder
 import cnn
 
 
@@ -49,13 +48,9 @@ parser.add_argument('--dropout', nargs='?', type=float, default=0.5)
 
 params = parser.parse_args()
 
-torch.manual_seed(params.seed)
+print('params.use_seqs: ', params.use_seqs)
 
-if DEVICE == torch.device('cuda'):
-    print('Cuda mem. stats:')
-    print(torch.cuda.memory_summary(device=DEVICE))
-    print('mem allocated: ')
-    print(torch.cuda.memory_allocated(device=DEVICE))
+torch.manual_seed(params.seed)
 
 n_classes = 126
 n_docs = 299773                                 # docs (xml files) in total
@@ -79,12 +74,6 @@ if TESTING:
     params.batch_size = 4
     params.n_epochs = 2
     print('Testing code')
-
-# all_embs = emb_encoder.encode_batch(all_seqs)
-if DEVICE == torch.device('cuda'):
-    print('mem allocated after loading labels and init. encoder: ')
-    print(torch.cuda.memory_allocated(device=DEVICE))
-    print(torch.cuda.memory_summary(device=DEVICE))
 
 
 def train(epoch):
@@ -153,11 +142,6 @@ def validate(lossv, pv, rv, fv):
 model = getattr(cnn, params.model_name)
 model = model(params=params)                  # init. model
 model = model.to(DEVICE)                      # make sure model is set to correct device
-
-if DEVICE == torch.device('cuda'):
-    print('mem allocated after initialising CNN: ')
-    print(torch.cuda.memory_allocated(device=DEVICE))
-    print(torch.cuda.memory_summary(device=DEVICE))
 
 loss_fn = LOSSES[params.loss_fn]()                              # get loss function
 if params.opt_params[0] == 'default':
