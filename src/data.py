@@ -255,6 +255,7 @@ if __name__ == '__main__':
     parser.add_argument('--set', nargs='?', default='train')
     params = parser.parse_args()
 
+    # sample sequences from zip files
     if params.set == 'seqs':
         pattern = os.path.join(DATA_DIR, '*.zip')
         zips = sorted(glob.glob(pattern))  # for reading input batches
@@ -271,9 +272,11 @@ if __name__ == '__main__':
 
     emb_encoder = Encoder(params=params)
 
+    # encode training sequences into tensors
     if params.set == 'train':
         fname= 'sequences.txt'
         N = n_docs
+    # or encode test seqences into tensors
     else:
         fname = 'test_sequences.txt'
         N = n_docs_test
