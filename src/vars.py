@@ -21,7 +21,8 @@ for p in paths:
         os.makedirs(p)
 
 LOSSES = {'mse': torch.nn.MSELoss, 'bce': torch.nn.BCELoss, 'nll': torch.nn.NLLLoss, 'cre': torch.nn.CrossEntropyLoss}
-OPTIMS = {'sgd': torch.optim.SGD, 'adadelta': torch.optim.Adadelta, 'adam': torch.optim.Adam}
+OPTIMS = {'sgd': torch.optim.SGD, 'adadelta': torch.optim.Adadelta, 'adam': torch.optim.Adam,
+          'adagrad': torch.optim.Adagrad}
 
 ACTIVATIONS = {'relu': torch.nn.ReLU(), 'sigmoid': torch.nn.Sigmoid(), 'tanh': torch.nn.Tanh(),
                'softmax': torch.nn.Softmax()}
