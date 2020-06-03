@@ -22,7 +22,7 @@ parser.add_argument('--tr_ratio', nargs='?', type=float)
 parser.add_argument('--dev_ratio', nargs='?', type=float, default=0.1)
 parser.add_argument('--seed', nargs='?', type=int, default=100)
 parser.add_argument('--final', nargs='?', type=bool, default=False)  # whether to train with whole dataset
-parser.add_argument('--use_seqs', nargs='?', type=bool, default=True)
+parser.add_argument('--use_seqs', nargs='?', type=bool, default=False)
 # params for sampling and encoding words from XMLs
 # parser.add_argument('--emb_pars', nargs='*', default=['enc=elmo_2x1024_128_2048cnn_1xhighway', 'dim=2'])
 # parser.add_argument('--emb_pars', nargs='*', default=['enc=bert-base-uncased'])
