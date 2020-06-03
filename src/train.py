@@ -36,7 +36,7 @@ parser.add_argument('--model_name', nargs='?', default='DocCNN')          # Base
 parser.add_argument('--n_conv_layers', nargs='?', type=int, default=2)
 parser.add_argument('--kernel_shapes', nargs='*', default=['150x10', '2x2'])
 parser.add_argument('--strides', nargs='*', default=['1x1', '1x1'])
-parser.add_argument('--pool_sizes', nargs='*', default=['1x10', '1x9'])
+parser.add_argument('--pool_sizes', nargs='*', default=['1x9', '1x5'])
 parser.add_argument('--input_shape', nargs='?', default='256x100')
 parser.add_argument('--n_kernels', nargs='*', type=int, default=[10, 10])
 parser.add_argument('--conv_act_fn', nargs='?', default='relu')
