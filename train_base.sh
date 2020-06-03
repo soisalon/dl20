@@ -48,7 +48,7 @@ srun $USERAPPL/ve37/bin/python3 dl20/src/train.py \
     --seed 100 \
     --use_seqs 1 \
     --emb_pars ${EMBS[$ID % ${#EMBS[@]}]} \
-    --n_epochs 10 \
+    --n_epochs 50 \
     --batch_size ${BS[$ID % ${#BS[@]}]} \
     --loss_fn bce \
     --optim ${OPTS[$ID % ${#OPTS[@]}]}\
