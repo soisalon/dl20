@@ -53,7 +53,7 @@ class DocCNN(nn.Module):
 
         n_classes = 126
 
-        in_height, in_width = [tuple(map(int, s.split('x'))) for s in params.input_shape]
+        in_height, in_width = tuple(map(int, params.input_shape.split('x')))
 
         n_conv_layers = params.n_conv_layers
         n_kernels = params.n_kernels
