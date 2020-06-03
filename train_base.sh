@@ -32,7 +32,7 @@ ID=SLURM_ARRAY_TASK_ID
 # ID=2
 
 EMBS=(enc=word2vec)
-KS=(300x2 300x4 300x6 300x8 300x10 300x12 300x14)
+KS=(300x2 300x3 300x4 300x5 300x6 300x8 300x10 300x12 300x14)
 N_KS=(100)
 NC=(1)
 MODS=(BaseCNN)
@@ -48,7 +48,7 @@ srun $USERAPPL/ve37/bin/python3 dl20/src/train.py \
     --seed 100 \
     --use_seqs 1 \
     --emb_pars ${EMBS[$ID % ${#EMBS[@]}]} \
-    --n_epochs 50 \
+    --n_epochs 30 \
     --batch_size ${BS[$ID % ${#BS[@]}]} \
     --loss_fn bce \
     --optim ${OPTS[$ID % ${#OPTS[@]}]}\
