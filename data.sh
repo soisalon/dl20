@@ -9,9 +9,8 @@
 #SBATCH --mail-type=END
 #SBATCH --mail-user=eliel.soisalon-soininen@helsinki.fi
 #SBATCH --mem=20G
-
-# --gres=gpu:1
-# -p gpu-short
+#SBATCH --gres=gpu:1
+#SBATCH -p gpu-short
 
 #--mem-per-cpu=10G
 
@@ -20,7 +19,7 @@
 
 
 # interactive
-# srun -t 10:00:00 --mem=10G -p gpu-short --gres=gpu:1 -c 10 --pty bash
+# srun -t 10:00:00 --mem=20G -p gpu-short --gres=gpu:1 -c 10 --pty bash
 
 
 module purge
