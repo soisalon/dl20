@@ -4,23 +4,21 @@
 #SBATCH --chdir=/wrk/users/eliel/projects/dl_course20/
 #SBATCH -o /wrk/users/eliel/projects/dl_course20/jobs/res/%A_%a.txt
 #SBATCH -e /wrk/users/eliel/projects/dl_course20/jobs/err/%A_%a.txt
-#SBATCH -t 1-0
+#SBATCH -t 0-16:00:00
 #SBATCH -c 10
 #SBATCH --mail-type=END
 #SBATCH --mail-user=eliel.soisalon-soininen@helsinki.fi
-#SBATCH --mem=100G
-
-# --gres=gpu:1
-# -p gpu-short
+#SBATCH --mem=50G
+#SBATCH --gres=gpu:1
+#SBATCH -p gpu-short
 
 #--mem-per-cpu=10G
 
 # --ntasks=6
 
 
-
 # interactive
-# srun -t 10:00:00 --mem=10G -p gpu-short --gres=gpu:1 -c 10 --pty bash
+# srun -t 10:00:00 --mem=20G -p gpu-short --gres=gpu:1 -c 10 --pty bash
 
 
 module purge
@@ -49,6 +47,7 @@ srun $USERAPPL/ve37/bin/python3 dl20/src/train.py \
     --tr_ratio 0.2 \
     --dev_ratio 0.1 \
     --seed 100 \
+    --use_seqs \
     --emb_pars ${EMBS[$ID % ${#EMBS[@]}]} \
     --n_epochs 10 \
     --batch_size ${BS[$ID % ${#BS[@]}]} \
