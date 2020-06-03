@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -J dl_train
+#SBATCH -J dl_tr_doc
 #SBATCH --export=USERAPPL,WRKDIR,LD_LIBRARY_PATH
 #SBATCH --chdir=/wrk/users/eliel/projects/dl_course20/
 #SBATCH -o /wrk/users/eliel/projects/dl_course20/jobs/res/%A_%a.txt
