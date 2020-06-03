@@ -238,10 +238,11 @@ if __name__ == '__main__':
         pinds[-1] += diff
     assert N == pinds[-1]
     for p in range(n_parts):
+        print('Get embs for range: {}--{}'.format(pinds[p], pinds[p + 1]))
         p_seqs = seqs[pinds[p]:pinds[p + 1]]
         p_embs = emb_encoder.encode_batch(p_seqs)
         dname = 'te_' + str(p) + '.pt' if params.set == 'test' else str(p) + '.pt'
-        dpath = os.path.join(PROJ_DIR, 'dl20', emb_encoder.enc_name + '_data', 'te_' + str(p) + '.pt')
+        dpath = os.path.join(PROJ_DIR, 'dl20', emb_encoder.enc_name + '_data', dname)
         torch.save(p_embs, fpath)
         del p_embs
         print('Part {} (test) encoded!'.format(p))
