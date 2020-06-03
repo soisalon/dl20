@@ -77,6 +77,44 @@ class Encoder(object):
 
         return embs
 
+    def encode_seq(self, seq):
+
+        emb = torch.zeros(self.in_width, self.in_height)
+
+        if self.enc_name == 'elmo':
+            e = torch.tensor(self.model.embed_sentence(seq))
+            e = emb[self.elmo_dim, ...]
+
+        elif self.enc_name == 'bert':
+            inds = torch.tensor(self.tokeniser.encode(' '.join(seq)), device=DEVICE).unsqueeze(0)
+            with torch.no_grad():
+                output = self.model(inds)
+            e = output[0].squeeze()
+
+        elif self.enc_name == 'glove' or self.enc_name == 'word2vec':
+
+            e = torch.empty(len(seq), self.in_height)
+            for i, w in enumerate(seq):
+                e[i, :] = torch.tensor(self.model[w]) if w in self.model else torch.randn(self.in_height)
+
+        else:   # random
+            e = torch.randn(len(seq), self.in_height)
+
+        elen = e.shape[0]
+        diff = self.in_width - elen
+        if diff > 0:
+            lp = int(diff // 2)
+            rp = int(diff - lp)
+            emb[lp:self.in_width - rp] = e
+        elif diff < 0:
+            emb = e[:self.in_width]
+        else:
+            emb = e
+        # add channel dimension, and transpose last two dims for CNNs
+        emb = emb.T
+        emb = torch.unsqueeze(emb, 0)
+        return emb
+
     def concat_embs(self, emb_list):
 
         embs = torch.zeros(len(emb_list), self.in_width, self.in_height)

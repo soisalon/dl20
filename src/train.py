@@ -9,7 +9,7 @@ from torch.utils.data import DataLoader
 import numpy as np
 from sklearn.metrics import precision_recall_fscore_support
 
-from data import sample_sequences, get_model_savepath, DocDataset
+from data import sample_sequences, get_model_savepath, DocDataset, SeqDataset
 from vars import LOSSES, OPTIMS, MODEL_DIR, TESTING, DEVICE, PROJ_DIR
 from encoder import Encoder
 import cnn
@@ -22,10 +22,11 @@ parser.add_argument('--tr_ratio', nargs='?', type=float)
 parser.add_argument('--dev_ratio', nargs='?', type=float, default=0.1)
 parser.add_argument('--seed', nargs='?', type=int, default=100)
 parser.add_argument('--final', nargs='?', type=bool, default=False)  # whether to train with whole dataset
+parser.add_argument('--use_seqs', nargs='?', type=bool, default=True)
 # params for sampling and encoding words from XMLs
-parser.add_argument('--emb_pars', nargs='*', default=['enc=elmo_2x1024_128_2048cnn_1xhighway', 'dim=2'])
+# parser.add_argument('--emb_pars', nargs='*', default=['enc=elmo_2x1024_128_2048cnn_1xhighway', 'dim=2'])
 # parser.add_argument('--emb_pars', nargs='*', default=['enc=bert-base-uncased'])
-# parser.add_argument('--emb_pars', nargs='*', default=['enc=word2vec'])
+parser.add_argument('--emb_pars', nargs='*', default=['enc=glove'])
 # training params
 parser.add_argument('--n_epochs', nargs='?', type=int, default=20)
 parser.add_argument('--batch_size', nargs='?', type=int, default=32)
@@ -35,10 +36,10 @@ parser.add_argument('--opt_params', nargs='*', default=['lr=1.0'])
 # CNN params
 parser.add_argument('--model_name', nargs='?', default='BaseCNN')          # BaseCNN / DocCNN
 parser.add_argument('--n_conv_layers', nargs='?', type=int, default=1)
-parser.add_argument('--kernel_shapes', nargs='*', default=['256x4', '1x2'])
+parser.add_argument('--kernel_shapes', nargs='*', default=['300x4', '1x2'])
 parser.add_argument('--strides', nargs='*', default=['1x1'])
 parser.add_argument('--pool_sizes', nargs='*', default=['1x2'])
-parser.add_argument('--input_shape', nargs='?', default='256x100')
+parser.add_argument('--input_shape', nargs='?', default='300x100')
 parser.add_argument('--n_kernels', nargs='*', type=int, default=[10])
 parser.add_argument('--conv_act_fn', nargs='?', default='relu')
 parser.add_argument('--h_units', nargs='*', type=int, default=[64])
@@ -123,7 +124,7 @@ def validate(lossv, pv, rv, fv):
         rs += r
         fs += f
 
-        if bi == 100:
+        if bi == 1000:
             print('Predicions for inds {}-{} in sequences.txt.'.format(n_tr_docs + params.batch_size * 100,
                                                                        n_tr_docs + params.batch_size * 101))
             np.savetxt(os.path.join(PROJ_DIR, 'dl20', 'eyeball_preds.txt'), preds, fmt='%i')
@@ -167,16 +168,23 @@ else:                                                           # or get optimis
 
 # load datasets
 print('Initialise Datasets...')
-if not params.final:
-    tr_dset = DocDataset(enc_name + '_data', params, train=True)
-    dev_dset = DocDataset(enc_name + '_data', params, train=False)
+seq_fpath = os.path.join(PROJ_DIR, 'dl20', 'sequences.txt')
+te_seq_fpath = os.path.join(PROJ_DIR, 'dl20', 'test_sequences.txt')
+if params.use_seqs:
+    tr_dset = SeqDataset(seq_fpath, params, train=True) if not params.final \
+        else SeqDataset(seq_fpath, params, train=True)
+    dev_dset = SeqDataset(seq_fpath, params, train=False) if not params.final \
+        else SeqDataset(te_seq_fpath, params, train=False)
 else:
     tr_dset = DocDataset(enc_name + '_data', params, train=True)
     dev_dset = DocDataset(enc_name + '_data', params, train=False)
+
 print('Done.')
+
 print('Initialise DataLoaders...')
-tr_loader = DataLoader(dataset=tr_dset, batch_size=params.batch_size, shuffle=True)
-dev_loader = DataLoader(dataset=dev_dset, batch_size=params.batch_size, shuffle=False)
+tr_loader = DataLoader(dataset=tr_dset, batch_size=params.batch_size, shuffle=True, num_workers=10)
+dev_loader = DataLoader(dataset=dev_dset, batch_size=params.batch_size, shuffle=False, num_workers=10)
+print('After init, torch.utils.data.get_worker_info(): ', torch.utils.data.get_worker_info())
 print('Done.')
 
 if DEVICE == torch.device('cuda'):
@@ -192,7 +200,9 @@ losses, precs, recs, fs = [], [], [], []
 if not params.final:
     for e in range(params.n_epochs):
         train(e)
+        print('After train, torch.utils.data.get_worker_info(): ', torch.utils.data.get_worker_info())
         validate(losses, precs, recs, fs)
+        print('After valid., torch.utils.data.get_worker_info(): ', torch.utils.data.get_worker_info())
 else:
     for e in range(params.n_epochs):
         train(e)

@@ -3,7 +3,6 @@
 import os
 import zipfile
 import glob
-import string
 import random
 
 import xmltodict
@@ -24,8 +23,8 @@ class SeqDataset(torch.utils.data.Dataset):
 
         self.encoder = Encoder(params=params)
 
-        n_docs = 299773
         n_docs_test = 33142
+        n_docs = 299773 if not TESTING else n_docs_test
         n_dev = int(n_docs * params.dev_ratio)
         n_tr = n_docs - n_dev
 
