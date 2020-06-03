@@ -117,7 +117,7 @@ def validate(lossv, pv, rv, fv):
         output = output.squeeze()
 
         val_loss += loss_fn(output, target).data.item()
-        target = target.numpy()
+        target = target.cpu().numpy()
         preds = (output >= 0.5).int().numpy()  # get the index of the max log-probability
         p, r, f, _ = precision_recall_fscore_support(target, preds, average='micro')
         ps += p
