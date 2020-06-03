@@ -19,7 +19,7 @@
 
 
 # interactive
-# srun -t 10:00:00 --mem=20G -p gpu-short --gres=gpu:1 -c 10 --pty bash
+# srun -t 4:00:00 --mem=10G -c 5 --pty bash
 
 
 module purge
@@ -34,7 +34,7 @@ INS=(256x1000 768x100 300x100 300x100)
 srun $USERAPPL/ve37/bin/python3 dl20/src/data.py \
     --emb_pars ${EMBS[$ID % ${#EMBS[@]}]} \
     --input_shape ${INS[$ID % ${#INS[@]}]} \
-    --set test
+    --set train
 
 
 
