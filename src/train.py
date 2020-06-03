@@ -178,6 +178,10 @@ if DEVICE == torch.device('cuda'):
     print(torch.cuda.memory_summary(device=DEVICE))
     torch.cuda.empty_cache()
 
+# get model path for saving
+model_fname = get_model_savepath(params, ext='.pt')
+model_path = os.path.join(MODEL_DIR, model_fname)  # path where trained model is saved
+
 print('Start training...')
 # train model
 losses, precs, recs, fs = [], [], [], []
@@ -199,9 +203,6 @@ else:
     test_preds = (test_preds >= 0.5).astype('int')
     np.savetxt(os.path.join(PROJ_DIR, 'dl20', 'test_preds.txt'), test_preds, fmt='%i')
 
-    # get model path for saving
-    model_fname = get_model_savepath(params, ext='.pt')
-    model_path = os.path.join(MODEL_DIR, model_fname)  # path where trained model is saved
     torch.save(model.state_dict(), model_path)
 
 # write some resulst into file
