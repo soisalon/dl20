@@ -47,7 +47,7 @@ srun $USERAPPL/ve37/bin/python3 dl20/src/train.py \
     --tr_ratio 0.2 \
     --dev_ratio 0.1 \
     --seed 100 \
-    --use_seqs \
+    --use_seqs True \
     --emb_pars ${EMBS[$ID % ${#EMBS[@]}]} \
     --n_epochs 10 \
     --batch_size ${BS[$ID % ${#BS[@]}]} \

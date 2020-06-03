@@ -47,6 +47,7 @@ DROPS=(0.5)
 srun $USERAPPL/ve37/bin/python3 dl20/src/train.py \
     --dev_ratio 0.1 \
     --seed 100 \
+    --use_seqs False \
     --emb_pars ${EMBS[$ID % ${#EMBS[@]}]} \
     --n_epochs 10 \
     --batch_size ${BS[$ID % ${#BS[@]}]} \
