@@ -9,10 +9,9 @@ from torch.utils.data import DataLoader
 import numpy as np
 from sklearn.metrics import precision_recall_fscore_support
 
-from data import sample_sequences, get_model_savepath, DocDataset, SeqDataset
+from data import get_model_savepath, DocDataset, SeqDataset
 from vars import LOSSES, OPTIMS, MODEL_DIR, TESTING, DEVICE, PROJ_DIR
 import cnn
-
 
 parser = argparse.ArgumentParser()
 
@@ -23,23 +22,23 @@ parser.add_argument('--seed', nargs='?', type=int, default=100)
 parser.add_argument('--final', nargs='?', type=bool, default=False)  # whether to train with whole dataset
 parser.add_argument('--use_seqs', nargs='?', type=bool, default=False)
 # params for sampling and encoding words from XMLs
-# parser.add_argument('--emb_pars', nargs='*', default=['enc=elmo_2x1024_128_2048cnn_1xhighway', 'dim=2'])
+parser.add_argument('--emb_pars', nargs='*', default=['enc=elmo_2x1024_128_2048cnn_1xhighway', 'dim=2'])
 # parser.add_argument('--emb_pars', nargs='*', default=['enc=bert-base-uncased'])
-parser.add_argument('--emb_pars', nargs='*', default=['enc=glove'])
+# parser.add_argument('--emb_pars', nargs='*', default=['enc=glove'])
 # training params
-parser.add_argument('--n_epochs', nargs='?', type=int, default=10)
-parser.add_argument('--batch_size', nargs='?', type=int, default=128)
+parser.add_argument('--n_epochs', nargs='?', type=int, default=20)
+parser.add_argument('--batch_size', nargs='?', type=int, default=64)
 parser.add_argument('--loss_fn', nargs='?', default='bce')
 parser.add_argument('--optim', nargs='?', default='adadelta')
 parser.add_argument('--opt_params', nargs='*', default=['lr=1.0'])
 # CNN params
-parser.add_argument('--model_name', nargs='?', default='BaseCNN')          # BaseCNN / DocCNN
-parser.add_argument('--n_conv_layers', nargs='?', type=int, default=1)
-parser.add_argument('--kernel_shapes', nargs='*', default=['300x4', '1x2'])
-parser.add_argument('--strides', nargs='*', default=['1x1'])
-parser.add_argument('--pool_sizes', nargs='*', default=['1x2'])
-parser.add_argument('--input_shape', nargs='?', default='300x100')
-parser.add_argument('--n_kernels', nargs='*', type=int, default=[10])
+parser.add_argument('--model_name', nargs='?', default='DocCNN')          # BaseCNN / DocCNN
+parser.add_argument('--n_conv_layers', nargs='?', type=int, default=2)
+parser.add_argument('--kernel_shapes', nargs='*', default=['150x10', '2x2'])
+parser.add_argument('--strides', nargs='*', default=['1x1', '1x1'])
+parser.add_argument('--pool_sizes', nargs='*', default=['1x10', '1x9'])
+parser.add_argument('--input_shape', nargs='?', default='256x100')
+parser.add_argument('--n_kernels', nargs='*', type=int, default=[10, 10])
 parser.add_argument('--conv_act_fn', nargs='?', default='relu')
 parser.add_argument('--h_units', nargs='*', type=int, default=[64])
 parser.add_argument('--fc_act_fn', nargs='?', default='relu')
@@ -60,10 +59,6 @@ n_tr_docs = n_docs - n_dev_docs                 # docs to use for training set
 
 if params.tr_ratio:
     n_tr_docs = int(n_tr_docs * params.tr_ratio)
-
-in_height, in_width = tuple(map(int, params.input_shape.split('x')))        # desired width of input
-kh = int(params.kernel_shapes[0].split('x')[0])
-assert kh == in_height
 
 enc_name = params.emb_pars[0].split('=')[1]
 enc_name = enc_name[:4] if enc_name[:4] == 'bert' or enc_name[:4] == 'elmo' else enc_name
@@ -134,6 +129,7 @@ def validate(lossv, pv, rv, fv):
     rs = 100. * rs
     fs = 100. * fs
 
+    print('For model {}:'.format(model_fname))
     print('\nDev set: Average loss: {:.4f}, Precision: {:.0f}%, Recall: {}%, F1: {}%\n'.format(
         val_loss, ps, rs, fs))
 
