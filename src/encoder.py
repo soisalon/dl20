@@ -86,7 +86,8 @@ class Encoder(object):
             e = emb[self.elmo_dim, ...]
 
         elif self.enc_name == 'bert':
-            inds = torch.tensor(self.tokeniser.encode(' '.join(seq)), device=DEVICE).unsqueeze(0)
+            # inds = torch.tensor(self.tokeniser.encode(' '.join(seq)), device=DEVICE).unsqueeze(0)
+            inds = torch.tensor(self.tokeniser.encode(' '.join(seq))).unsqueeze(0)
             with torch.no_grad():
                 output = self.model(inds)
             e = output[0].squeeze()
