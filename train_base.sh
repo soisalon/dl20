@@ -18,7 +18,7 @@
 
 
 # interactive
-# srun -t 10:00:00 --mem=20G -p gpu-short --gres=gpu:1 -c 10 --pty bash
+# srun -t 10:00:00 --mem=50G -p gpu-short --gres=gpu:1 -c 10 --pty bash
 
 
 module purge
@@ -32,8 +32,9 @@ ID=SLURM_ARRAY_TASK_ID
 # ID=2
 
 EMBS=(enc=word2vec)
-KS=(300x2 300x3 300x4 300x5 300x6 300x8 300x10 300x12 300x14)
-N_KS=(100)
+# KS=(300x2 300x3 300x4 300x5 300x6 300x8 300x10 300x12 300x14)
+KS=(300x5)
+N_KS=(1 10 50 100 200 300 400 500 600 700 800 900)
 NC=(1)
 MODS=(BaseCNN)
 INS=(300x100)
@@ -44,7 +45,7 @@ DROPS=(0.5)
 # train model
 # srun -n 4 --exclusive $USERAPPL/ve37/bin/python3 dl20/src/train.py \
 srun $USERAPPL/ve37/bin/python3 dl20/src/train.py \
-    --dev_ratio 0.2 \
+    --dev_ratio 0.1 \
     --seed 100 \
     --use_seqs 1 \
     --emb_pars ${EMBS[$ID % ${#EMBS[@]}]} \
