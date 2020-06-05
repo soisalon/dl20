@@ -37,7 +37,7 @@ MODS=(BaseCNN)
 INS=(300x100)
 BS=(64)
 OPTS=(adadelta)
-HS=(10 50 100 200)
+HS=(10 50 100 200 500)
 DROPS=(0.5)
 # train model
 # srun -n 4 --exclusive $USERAPPL/ve37/bin/python3 dl20/src/train.py \
