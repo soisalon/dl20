@@ -12,10 +12,6 @@
 #SBATCH --gres=gpu:1
 #SBATCH -p gpu-short
 
-#--mem-per-cpu=10G
-
-# --ntasks=6
-
 
 # interactive
 # srun -t 10:00:00 --mem=50G -p gpu-short --gres=gpu:1 -c 10 --pty bash
@@ -34,13 +30,14 @@ ID=SLURM_ARRAY_TASK_ID
 EMBS=(enc=word2vec)
 # KS=(300x2 300x3 300x4 300x5 300x6 300x8 300x10 300x12 300x14)
 KS=(300x5)
-N_KS=(1 10 50 100 200 300 400 500 600 700 800 900)
+# N_KS=(1 10 50 100 200 300 400 500 600 700 800 900)
+N_KS=(100)
 NC=(1)
 MODS=(BaseCNN)
 INS=(300x100)
 BS=(64)
 OPTS=(adadelta)
-HS=(100)
+HS=(10 50 100 200)
 DROPS=(0.5)
 # train model
 # srun -n 4 --exclusive $USERAPPL/ve37/bin/python3 dl20/src/train.py \
