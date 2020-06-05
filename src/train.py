@@ -8,6 +8,7 @@ import torch
 from torch.utils.data import DataLoader
 import numpy as np
 from sklearn.metrics import precision_recall_fscore_support
+import matplotlib.pyplot as plt
 
 from data import get_model_savepath, DocDataset, SeqDataset
 from vars import LOSSES, OPTIMS, MODEL_DIR, TESTING, DEVICE, PROJ_DIR
@@ -20,10 +21,11 @@ parser.add_argument('--tr_ratio', nargs='?', type=float)
 parser.add_argument('--dev_ratio', nargs='?', type=float, default=0.1)
 parser.add_argument('--seed', nargs='?', type=int, default=100)
 parser.add_argument('--final', nargs='?', type=bool, default=False)  # whether to train with whole dataset
-parser.add_argument('--use_seqs', nargs='?', type=bool, default=False)
+parser.add_argument('--use_seqs', nargs='?', type=bool, default=True)
+parser.add_argument('--plot', nargs='?', type=bool, default=False)
 # params for sampling and encoding words from XMLs
-parser.add_argument('--emb_pars', nargs='*', default=['enc=elmo_2x1024_128_2048cnn_1xhighway', 'dim=2'])
-# parser.add_argument('--emb_pars', nargs='*', default=['enc=bert-base-uncased'])
+# parser.add_argument('--emb_pars', nargs='*', default=['enc=elmo_2x1024_128_2048cnn_1xhighway', 'dim=2'])
+parser.add_argument('--emb_pars', nargs='*', default=['enc=random'])
 # parser.add_argument('--emb_pars', nargs='*', default=['enc=glove'])
 # training params
 parser.add_argument('--n_epochs', nargs='?', type=int, default=20)
@@ -37,7 +39,7 @@ parser.add_argument('--n_conv_layers', nargs='?', type=int, default=2)
 parser.add_argument('--kernel_shapes', nargs='*', default=['150x10', '2x2'])
 parser.add_argument('--strides', nargs='*', default=['1x1', '1x1'])
 parser.add_argument('--pool_sizes', nargs='*', default=['1x9', '1x5'])
-parser.add_argument('--input_shape', nargs='?', default='256x100')
+parser.add_argument('--input_shape', nargs='?', default='300x100')
 parser.add_argument('--n_kernels', nargs='*', type=int, default=[10, 10])
 parser.add_argument('--conv_act_fn', nargs='?', default='relu')
 parser.add_argument('--h_units', nargs='*', type=int, default=[64])
@@ -88,8 +90,12 @@ def train(epoch):
             print('Train Epoch: {}/{} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
                 epoch + 1, params.n_epochs, bi * len(data), len(tr_loader.dataset), 100. * bi / len(tr_loader), float(loss)))
 
+        if params.plot and bi % 1000:
+            validate(losses, precs, recs, fscores)
+
 
 def validate(lossv, pv, rv, fv):
+    early_stop = False
     model.eval()
     val_loss, ps, rs, fs = 0, 0, 0, 0
     for bi, (data, target) in enumerate(dev_loader):
@@ -129,9 +135,12 @@ def validate(lossv, pv, rv, fv):
     rs = 100. * rs
     fs = 100. * fs
 
-    print('For model {}:'.format(model_fname))
-    print('\nDev set: Average loss: {:.4f}, Precision: {:.0f}%, Recall: {}%, F1: {}%\n'.format(
+    print('\nFor model {}:'.format(model_fname))
+    print('Dev set: Average loss: {:.4f}, Precision: {:.0f}%, Recall: {}%, F1: {}%\n'.format(
         val_loss, ps, rs, fs))
+    if len(lossv) > 3 and lossv[-1] > lossv[-2] > lossv[-3]:
+        early_stop = True
+    return early_stop
 
 
 # initialise CNN
@@ -167,25 +176,19 @@ dev_loader = DataLoader(dataset=dev_dset, batch_size=params.batch_size, shuffle=
 print('After init, torch.utils.data.get_worker_info(): ', torch.utils.data.get_worker_info())
 print('Done.')
 
-if DEVICE == torch.device('cuda'):
-    print('mem allocated / reserved after starting dataloaders: ')
-    print(torch.cuda.memory_allocated(device=DEVICE))
-    print(torch.cuda.memory_reserved(device=DEVICE))
-    print(torch.cuda.memory_summary(device=DEVICE))
-    torch.cuda.empty_cache()
-
 # get model path for saving
 model_fname = get_model_savepath(params, ext='.pt')
 model_path = os.path.join(MODEL_DIR, model_fname)  # path where trained model is saved
 
 print('Start training...')
 # train model
-losses, precs, recs, fs = [], [], [], []
+losses, precs, recs, fscores = [], [], [], []
 if not params.final:
     for e in range(params.n_epochs):
         train(e)
-        validate(losses, precs, recs, fs)
-
+        stop = validate(losses, precs, recs, fscores)
+        if stop:
+            break
 else:
     for e in range(params.n_epochs):
         train(e)
@@ -202,9 +205,24 @@ else:
 
 # write some resulst into file
 with open(os.path.join(PROJ_DIR, 'dl20', 'scores.txt'), 'a') as f:
-    f.write('Scores for model after training for {} epochs: {}\n'.format(params.n_epochs, model_fname))
-    f.write('Model precision = {}\n'.format(precs[-1]))
-    f.write('Model recall = {}\n'.format(recs[-1]))
-    f.write('Model F1= {}\n'.format(fs[-1]))
+    f.write('\nScores for model after training for {} epochs: {}\n'.format(params.n_epochs, model_fname))
+    f.write('Model precisions: {}\n'.format(' '.join(['{:2.2f}'.format(s) for s in precs])))
+    f.write('Model recalls: {}\n'.format(' '.join(['{:2.2f}'.format(s) for s in recs])))
+    f.write('Model F1-s: {}\n'.format(' '.join(['{:2.2f}'.format(s) for s in fscores])))
     f.write('\n#####\n')
 
+if params.plot:
+
+    # write losses to file for plotting
+    losses_file = os.path.join(PROJ_DIR, 'dl20', 'final_losses.dat')
+    precs_file = os.path.join(PROJ_DIR, 'dl20', 'final_precs.dat')
+    recs_file = os.path.join(PROJ_DIR, 'dl20', 'final_recs.dat')
+    fs_file = os.path.join(PROJ_DIR, 'dl20', 'final_fs.dat')
+    with open(losses_file, 'a') as f:
+        f.write('{}-layer\t'.format(params.n_conv_layers) + '\t'.join(['{:2.3f}'.format(s) for s in losses]) + '\n')
+    with open(precs_file, 'a') as f:
+        f.write('{}-layer\t'.format(params.n_conv_layers) + '\t'.join(['{:2.3f}'.format(s) for s in precs]) + '\n')
+    with open(recs_file, 'a') as f:
+        f.write('{}-layer\t'.format(params.n_conv_layers) + '\t'.join(['{:2.3f}'.format(s) for s in recs]) + '\n')
+    with open(fs_file, 'a') as f:
+        f.write('{}-layer\t'.format(params.n_conv_layers) + '\t'.join(['{:2.3f}'.format(s) for s in fscores]) + '\n')

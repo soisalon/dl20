@@ -89,7 +89,7 @@ class DocCNN(nn.Module):
         n_weights = int(n_kernels[-1] * ws[-1] * hs[-1])     # num. of weights after the conv layers
 
         fc_layers = []
-        for i in range(1, len(h_units)):
+        for i in range(len(h_units)):
             in_feats = n_weights if i == 0 else h_units[i - 1]
             fc_layers += [nn.Linear(in_features=in_feats, out_features=h_units[i])]
             fc_layers += [fc_act_fn]
@@ -101,5 +101,17 @@ class DocCNN(nn.Module):
 
         self.net = nn.Sequential(*conv_layers, nn.Flatten(), *fc_layers)
 
+        # for debugging
+        self.conv_layers = conv_layers
+        self.fc_layers = fc_layers
+
     def forward(self, x):
-        return self.net(x)
+        h = self.conv_layers[0](x)
+        for l in self.conv_layers[1:]:
+            h = l(h)
+        h = torch.flatten(h, start_dim=1)
+        for l in self.fc_layers:
+            h = l(h)
+        return h
+
+        # return self.net(x)

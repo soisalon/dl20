@@ -45,11 +45,11 @@ DROPS=(0.5)
 # train model
 # srun -n 4 --exclusive $USERAPPL/ve37/bin/python3 dl20/src/train.py \
 srun $USERAPPL/ve37/bin/python3 dl20/src/train.py \
-    --dev_ratio 0.1 \
+    --dev_ratio 0.2 \
     --seed 100 \
-    --use_seqs False \
+    --use_seqs 1 \
     --emb_pars ${EMBS[$ID % ${#EMBS[@]}]} \
-    --n_epochs 10 \
+    --n_epochs 50 \
     --batch_size ${BS[$ID % ${#BS[@]}]} \
     --loss_fn bce \
     --optim ${OPTS[$ID % ${#OPTS[@]}]}\

@@ -24,13 +24,15 @@ class SeqDataset(torch.utils.data.Dataset):
         self.encoder = Encoder(params=params)
 
         n_docs_test = 33142
-        n_docs = 299773 if not TESTING else n_docs_test
+        n_docs = 299773 if not TESTING else 100
         n_dev = int(n_docs * params.dev_ratio)
         n_tr = n_docs - n_dev
 
         with open(fpath, 'r') as f:
             lines = [l.strip() for l in f]
         seqs = [l.split() for l in lines]
+        if TESTING:
+            seqs = seqs[:100]
 
         labels_path = os.path.join(PROJ_DIR, 'dl20', 'ground_truth.txt')
         labels = torch.tensor(np.loadtxt(labels_path))
@@ -237,6 +239,7 @@ def sample_sequences(word_batch, max_width):
         if wi % 100 == 0:
             print('{} seqs done!'.format(wi + 1))
     return seqs
+
 
 
 if __name__ == '__main__':
