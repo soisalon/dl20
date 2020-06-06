@@ -99,10 +99,11 @@ class Encoder(object):
                 if w in self.model:
                     vec = self.model[w]
                     vec.flags.writeable = True  # to avoid user warning
+                    vec = torch.tensor(vec)
                 else:
                     vec = torch.empty(self.in_height).uniform_(-.25, .25)
 
-                e[i, :] = torch.tensor(vec)
+                e[i, :] = vec
 
         else:   # random - sample from uniform dis. such that variance approx. the same as for w2v
             e = torch.empty(len(seq), self.in_height).uniform_(-.25, .25)
