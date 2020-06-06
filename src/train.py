@@ -108,11 +108,10 @@ def validate(n_iters, lossv, pv, rv, fv, accv):
         corrs += np.sum(preds == target)
 
         # if last epoch, get eyeball set from last full batch
-        if bi == len(dev_loader) - 1 and (e == params.n_epochs - 1 or early_stop):
+        if bi == len(dev_loader) - 2 and (e == params.n_epochs - 1 or early_stop):
             # assuming dev set begins at index n_tr_docs
             st_i, end_i = n_tr_docs + params.batch_size * bi, n_tr_docs + params.batch_size * (bi + 1)
             seq_inds = [i for i in range(st_i, end_i)]
-            assert len(seq_inds) == params.batch_size
             get_eyeball_set(seq_inds, preds, target)
             print('After epoch {}/{}, for batch {}/{} - predictions for sequences {}-{} stored in eb_preds.txt.'
                   .format(e + 1, params.n_epochs, bi + 1, len(dev_loader), st_i, end_i))
