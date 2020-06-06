@@ -72,7 +72,7 @@ class DocCNN(nn.Module):
 
         # get convnet
         conv_layers = []
-        ws = [in_width]      # widths after each convolution/pooling operation
+        ws = [in_width]      # dimensions after each convolution/pooling operation
         hs = [in_height]
         for i in range(n_conv_layers):
             in_channels = 1 if i == 0 else n_kernels[i - 1]
@@ -81,10 +81,11 @@ class DocCNN(nn.Module):
             conv_layers += [conv_act_fn]
             conv_layers += [nn.MaxPool2d(kernel_size=pool_sizes[i])]
 
-            h = abs((hs[i] - kernel_shapes[i][0]) // strides[i][0]) + 1
-            hs += [abs((h - pool_sizes[i][0]) // pool_sizes[i][0]) + 1]
-            w = abs((ws[i] - kernel_shapes[i][1]) // strides[i][1]) + 1
-            ws += [abs((w - pool_sizes[i][1]) // pool_sizes[i][1]) + 1]
+            # compute the dimensions
+            h = abs((hs[i] - kernel_shapes[i][0]) // strides[i][0]) + 1     # after conv
+            hs += [abs((h - pool_sizes[i][0]) // pool_sizes[i][0]) + 1]     # after pooling
+            w = abs((ws[i] - kernel_shapes[i][1]) // strides[i][1]) + 1     # after conv
+            ws += [abs((w - pool_sizes[i][1]) // pool_sizes[i][1]) + 1]     # after pooling
 
         n_weights = int(n_kernels[-1] * ws[-1] * hs[-1])     # num. of weights after the conv layers
 

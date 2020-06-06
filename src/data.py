@@ -23,7 +23,7 @@ class SeqDataset(torch.utils.data.Dataset):
 
         self.encoder = Encoder(params=params)
 
-        n_docs_test = 33142
+        # n_docs_test = 33142
         n_docs = 299773 if not TESTING else 100
         n_dev = int(n_docs * params.dev_ratio)
         n_tr = n_docs - n_dev
@@ -135,22 +135,21 @@ class DocDataset(torch.utils.data.Dataset):
 def get_model_savepath(params, ext='.pt'):
 
     mod = params.model_name[:3]
-    encoder = params.emb_pars[0].split('=')[1][:4]
-    nl = params.n_conv_layers
-    ks = '+'.join(params.kernel_shapes)
+    encoder = 'enc=' + params.emb_pars[0].split('=')[1][:4]
+    nl = 'nl' + str(params.n_conv_layers)
+    ks = 'ks' + '+'.join(params.kernel_shapes)
     pls = '+'.join(params.pool_sizes)
-    insh = params.input_shape
-    nk = '+'.join([str(n) for n in params.n_kernels])
+    insh = 'in' + params.input_shape
+    nk = 'nk' + '+'.join([str(n) for n in params.n_kernels])
     caf, faf, oaf = params.conv_act_fn[:3], params.fc_act_fn[:3], params.out_act_fn[:3]
-    d = params.dropout
+    d = 'd' + str(params.dropout)
 
-    bs, ne, op, ls = params.batch_size, params.n_epochs, params.optim[:3], params.loss_fn[:3]
-    op_pars = '+'.join(params.opt_params) if params.opt_params else 'def'
+    bs, ne, op, ls = 'bs' + str(params.batch_size), 'ep' + str(params.n_epochs), params.optim[:3], params.loss_fn[:3]
+    op_pars = '+'.join(params.opt_params) if params.opt_params != 'default' else 'def'
 
-    hu = '+'.join([str(n) for n in params.h_units])
+    hu = 'h' + '+'.join([str(n) for n in params.h_units])
 
-    return '-'.join(map(str, [mod, encoder, nl, ks, pls, insh, nk, caf, faf, oaf, d, hu,
-                                         bs, ne, op, op_pars, ls])) + ext
+    return '-'.join([mod, encoder, nl, ks, pls, insh, nk, caf, faf, oaf, d, hu, bs, ne, op, op_pars, ls]) + ext
 
 
 def get_docs(cum_docs, zips):
@@ -240,6 +239,34 @@ def sample_sequences(word_batch, max_width):
             print('{} seqs done!'.format(wi + 1))
     return seqs
 
+
+def get_eyeball_set(seq_inds, preds, target):
+
+    # write sequences and corresponding preds and target values in a file
+    codes_fp = os.path.join(PROJ_DIR, 'dl20', 'codes', 'topic_codes.txt')
+    eb_fp = os.path.join(PROJ_DIR, 'dl20', 'eyeball', 'eb_preds.txt')
+    seqs_fp = os.path.join(PROJ_DIR, 'dl20', 'sequences.txt')
+    # get topics
+    with open(codes_fp, 'r') as f:
+        code_lines = [line.strip().split() for line in f if not line.startswith(';')]
+    topics = [line[1] for line in code_lines]
+    # get seqs
+    with open(seqs_fp, 'r') as f:
+        eb_seqs = [line for line in f]
+    eb_seqs = [eb_seqs[i] for i in seq_inds]
+
+    for i in range(len(preds)):
+        pred_topic_inds = np.where(preds[i] == 1)[0]
+        tgt_topic_inds = np.where(target[i] == 1)[0]
+        pred_topics = [topics[j] for j in pred_topic_inds]
+        tgt_topics = [topics[j] for j in tgt_topic_inds]
+
+    with open(eb_fp, 'a') as f:
+        for si, s in zip(seq_inds, eb_seqs):
+            f.write('Sequence {}. Preidcted: {} - Actual: {}\n'.format(si, ', '.join(pred_topics),
+                                                                       ', '.join(tgt_topics)))
+            f.write('Words: {}\n'.format(s))
+            f.write('\n######\n')
 
 
 if __name__ == '__main__':

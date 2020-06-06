@@ -2,22 +2,19 @@
 
 import os
 import argparse
-import random
 
 import torch
 from torch.utils.data import DataLoader
 import numpy as np
 from sklearn.metrics import precision_recall_fscore_support
-import matplotlib.pyplot as plt
 
-from data import get_model_savepath, DocDataset, SeqDataset
+from data import get_eyeball_set, get_model_savepath, DocDataset, SeqDataset
 from vars import LOSSES, OPTIMS, MODEL_DIR, TESTING, DEVICE, PROJ_DIR
 import cnn
 
 parser = argparse.ArgumentParser()
 
 # general params
-parser.add_argument('--tr_ratio', nargs='?', type=float)
 parser.add_argument('--dev_ratio', nargs='?', type=float, default=0.1)
 parser.add_argument('--seed', nargs='?', type=int, default=100)
 parser.add_argument('--final', nargs='?', type=bool, default=False)  # whether to train with whole dataset
@@ -33,6 +30,7 @@ parser.add_argument('--batch_size', nargs='?', type=int, default=64)
 parser.add_argument('--loss_fn', nargs='?', default='bce')
 parser.add_argument('--optim', nargs='?', default='adadelta')
 parser.add_argument('--opt_params', nargs='*', default=['lr=1.0'])
+parser.add_argument('--early_stop', nargs='?', default='F1')    # criterion for early stopping (F1 / loss)
 # CNN params
 parser.add_argument('--model_name', nargs='?', default='DocCNN')          # BaseCNN / DocCNN
 parser.add_argument('--n_conv_layers', nargs='?', type=int, default=2)
@@ -53,27 +51,17 @@ print('params.use_seqs: ', params.use_seqs)
 
 torch.manual_seed(params.seed)
 
-n_classes = 126
+n_classes = 126                                 # number of different topics
 n_docs = 299773                                 # docs (xml files) in total
-n_docs_test = 33142
+n_docs_test = 33142                             # docs in test set
 n_dev_docs = int(n_docs * params.dev_ratio)     # docs to use for dev set
 n_tr_docs = n_docs - n_dev_docs                 # docs to use for training set
 
-if params.tr_ratio:
-    n_tr_docs = int(n_tr_docs * params.tr_ratio)
-
 enc_name = params.emb_pars[0].split('=')[1]
 enc_name = enc_name[:4] if enc_name[:4] == 'bert' or enc_name[:4] == 'elmo' else enc_name
-emb_data_dir = os.path.join(PROJ_DIR, 'dl20', enc_name + '_data')
-
-if TESTING:
-    n_docs, n_tr_docs, n_dev_docs = 20, 12, 8
-    params.batch_size = 4
-    params.n_epochs = 2
-    print('Testing code')
 
 
-def train(epoch):
+def train(epoch, iter_count):
     model.train()
     for bi, (data, target) in enumerate(tr_loader):
         data = data.to(DEVICE)
@@ -87,17 +75,21 @@ def train(epoch):
         opt.step()
 
         if bi % 100 == 0:
-            print('Train Epoch: {}/{} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
-                epoch + 1, params.n_epochs, bi * len(data), len(tr_loader.dataset), 100. * bi / len(tr_loader), float(loss)))
+            print('Train Epoch: {}/{} [{}/{} ({:.0f}%)]\tTraining loss for batch {}/{}: {:.6f}'.format(
+                epoch + 1, params.n_epochs, bi * len(data), len(tr_loader.dataset), 100. * bi / len(tr_loader),
+                bi + 1, len(tr_loader), float(loss)))
 
-        if params.plot and bi % 1000:
-            validate(losses, precs, recs, fscores)
+        # if plotting, get validation scores after every 1000 iterations
+        if params.plot and bi % 1000 == 999:
+            validate(n_its, losses, precs, recs, fscores, accs)
+        iter_count += 1
+    return iter_count
 
 
-def validate(lossv, pv, rv, fv):
-    early_stop = False
+def validate(n_iters, lossv, pv, rv, fv, accv):
+    n_iters += [it_count]
     model.eval()
-    val_loss, ps, rs, fs = 0, 0, 0, 0
+    val_loss, corrs, ps, rs, fs = 0, 0, 0, 0, 0
     for bi, (data, target) in enumerate(dev_loader):
         data = data.to(DEVICE)
         target = target.to(DEVICE)
@@ -113,34 +105,40 @@ def validate(lossv, pv, rv, fv):
         ps += p
         rs += r
         fs += f
+        corrs += np.sum(preds == target)
 
-        if bi == 10:
-            print('Predicions for inds {}-{} in sequences.txt.'.format(n_tr_docs + params.batch_size * 100,
-                                                                       n_tr_docs + params.batch_size * 101))
-            np.savetxt(os.path.join(PROJ_DIR, 'dl20', 'eyeball_preds.txt'), preds, fmt='%i')
-            np.savetxt(os.path.join(PROJ_DIR, 'dl20', 'eyeball_targt.txt'), target, fmt='%i')
-            # TODO: write topics predicted + true topics of this batch
+        # if last epoch, get eyeball set from last full batch
+        if bi == len(dev_loader) - 1 and (e == params.n_epochs - 1 or early_stop):
+            # assuming dev set begins at index n_tr_docs
+            st_i, end_i = n_tr_docs + params.batch_size * bi, n_tr_docs + params.batch_size * (bi + 1)
+            seq_inds = [i for i in range(st_i, end_i)]
+            assert len(seq_inds) == params.batch_size
+            get_eyeball_set(seq_inds, preds, target)
+            print('After epoch {}/{}, for batch {}/{} - predictions for sequences {}-{} stored in eb_preds.txt.'
+                  .format(e + 1, params.n_epochs, bi + 1, len(dev_loader), st_i, end_i))
 
     val_loss /= len(dev_loader)
     ps /= len(dev_loader)
     rs /= len(dev_loader)
     fs /= len(dev_loader)
+    acc = corrs / (len(dev_loader.dataset) * n_classes)
 
     lossv += [val_loss]
     pv += [ps]
     rv += [rs]
     fv += [fs]
+    accv += [acc]
 
     ps = 100. * ps
     rs = 100. * rs
     fs = 100. * fs
+    acc = 100. * acc
 
     print('\nFor model {}:'.format(model_fname))
-    print('Dev set: Average loss: {:.4f}, Precision: {:.0f}%, Recall: {}%, F1: {}%\n'.format(
-        val_loss, ps, rs, fs))
-    if len(lossv) > 3 and lossv[-1] > lossv[-2] > lossv[-3]:
-        early_stop = True
-    return early_stop
+    print('Dev set - Average loss: {:.4f}, Precision: {:.2f}%, Recall: {:.2f}%, F1: {:.2f}%, Acc: {:.2f}%\n'.format(
+        val_loss, ps, rs, fs, acc))
+
+    return n_iters, lossv, pv, rv, fv, accv
 
 
 # initialise CNN
@@ -171,8 +169,8 @@ else:
 print('Done.')
 
 print('Initialise DataLoaders...')
-tr_loader = DataLoader(dataset=tr_dset, batch_size=params.batch_size, shuffle=True, num_workers=10)
-dev_loader = DataLoader(dataset=dev_dset, batch_size=params.batch_size, shuffle=False, num_workers=10)
+tr_loader = DataLoader(dataset=tr_dset, batch_size=params.batch_size, shuffle=True, num_workers=10, drop_last=False)
+dev_loader = DataLoader(dataset=dev_dset, batch_size=params.batch_size, shuffle=False, num_workers=10, drop_last=False)
 print('After init, torch.utils.data.get_worker_info(): ', torch.utils.data.get_worker_info())
 print('Done.')
 
@@ -182,16 +180,28 @@ model_path = os.path.join(MODEL_DIR, model_fname)  # path where trained model is
 
 print('Start training...')
 # train model
-losses, precs, recs, fscores = [], [], [], []
+losses, precs, recs, fscores, accs = [], [], [], [], []
+n_its = []            # for plotting
+it_count = 0
 if not params.final:
+    early_stop = False
     for e in range(params.n_epochs):
-        train(e)
-        stop = validate(losses, precs, recs, fscores)
-        if stop:
+        # early stopping if F1 score has decreased / loss increased for two consecutive epochs, but train for one more
+        if (params.early_stop == 'loss' and len(losses) > 10 and losses[-1] > losses[-2] > losses[-3]) or \
+        (params.early_stop == 'F1' and len(fscores) > 10 and fscores[-1] < fscores[-2] < fscores[-3]):
+            early_stop = True
+            print('One more epoch before early stopping...')
+
+        it_count = train(e, it_count)
+        n_its, losses, precs, recs, fscores, accs = validate(n_its, losses, precs, recs, fscores, accs)
+
+        if early_stop:
             break
+
 else:
     for e in range(params.n_epochs):
-        train(e)
+        train(e, it_count)
+        # no validation since training with the whole dataset
 
     # get predictions on final test data
     test_data = dev_dset.dev_data
@@ -203,26 +213,41 @@ else:
 
     torch.save(model.state_dict(), model_path)
 
-# write some resulst into file
+# write some results into file
 with open(os.path.join(PROJ_DIR, 'dl20', 'scores.txt'), 'a') as f:
-    f.write('\nScores for model after training for {} epochs: {}\n'.format(params.n_epochs, model_fname))
-    f.write('Model precisions: {}\n'.format(' '.join(['{:2.2f}'.format(s) for s in precs])))
-    f.write('Model recalls: {}\n'.format(' '.join(['{:2.2f}'.format(s) for s in recs])))
-    f.write('Model F1-s: {}\n'.format(' '.join(['{:2.2f}'.format(s) for s in fscores])))
+    # amount of actual epochs, in case of early stopping
+    f.write('\nAfter training for {}/{} epochs, scores for model {}:\n'.format(e + 1, params.n_epochs, model_fname))
+    f.write('Model losses: {}\n'.format(' '.join(['{:.2f}'.format(s * 100) for s in losses])))
+    f.write('Model precisions: {}\n'.format(' '.join(['{:.2f}'.format(s * 100) for s in precs])))
+    f.write('Model recalls: {}\n'.format(' '.join(['{:.2f}'.format(s * 100) for s in recs])))
+    f.write('Model F1-s: {}\n'.format(' '.join(['{:.2f}'.format(s * 100) for s in fscores])))
+    f.write('Model accuracies: {}\n'.format(' '.join(['{:.2f}'.format(s * 100) for s in accs])))
     f.write('\n#####\n')
 
 if params.plot:
 
     # write losses to file for plotting
-    losses_file = os.path.join(PROJ_DIR, 'dl20', 'final_losses.dat')
-    precs_file = os.path.join(PROJ_DIR, 'dl20', 'final_precs.dat')
-    recs_file = os.path.join(PROJ_DIR, 'dl20', 'final_recs.dat')
-    fs_file = os.path.join(PROJ_DIR, 'dl20', 'final_fs.dat')
+    losses_file = os.path.join(PROJ_DIR, 'dl20', 'plots', 'final_losses.dat')
+    precs_file = os.path.join(PROJ_DIR, 'dl20', 'plots', 'final_precs.dat')
+    recs_file = os.path.join(PROJ_DIR, 'dl20', 'plots', 'final_recs.dat')
+    fs_file = os.path.join(PROJ_DIR, 'dl20', 'plots', 'final_fs.dat')
+    acc_file = os.path.join(PROJ_DIR, 'dl20', 'plots', 'final_accs.dat')
+    iters_file = os.path.join(PROJ_DIR, 'dl20', 'plots', 'iters.dat')
+    line = '{} layer {}\t' if params.n_conv_layers == 1 else '{} layers {}\t'
+    with open(iters_file, 'w') as f:
+        f.write('{}'.format('\t'.join(['{}'.format(it) for it in n_its])))
     with open(losses_file, 'a') as f:
-        f.write('{}-layer\t'.format(params.n_conv_layers) + '\t'.join(['{:2.3f}'.format(s) for s in losses]) + '\n')
+        f.write(line.format(params.n_conv_layers, model_fname) +
+                '\t'.join(['{:2.3f}'.format(s) for s in losses]) + '\n')
     with open(precs_file, 'a') as f:
-        f.write('{}-layer\t'.format(params.n_conv_layers) + '\t'.join(['{:2.3f}'.format(s) for s in precs]) + '\n')
+        f.write(line.format(params.n_conv_layers, model_fname) +
+                '\t'.join(['{:2.3f}'.format(s) for s in precs]) + '\n')
     with open(recs_file, 'a') as f:
-        f.write('{}-layer\t'.format(params.n_conv_layers) + '\t'.join(['{:2.3f}'.format(s) for s in recs]) + '\n')
+        f.write(line.format(params.n_conv_layers, model_fname) +
+                '\t'.join(['{:2.3f}'.format(s) for s in recs]) + '\n')
     with open(fs_file, 'a') as f:
-        f.write('{}-layer\t'.format(params.n_conv_layers) + '\t'.join(['{:2.3f}'.format(s) for s in fscores]) + '\n')
+        f.write(line.format(params.n_conv_layers, model_fname) +
+                '\t'.join(['{:2.3f}'.format(s) for s in fscores]) + '\n')
+    with open(acc_file, 'a') as f:
+        f.write(line.format(params.n_conv_layers, model_fname) +
+                '\t'.join(['{:2.3f}'.format(s) for s in accs]) + '\n')

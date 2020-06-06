@@ -96,10 +96,12 @@ class Encoder(object):
 
             e = torch.empty(len(seq), self.in_height)
             for i, w in enumerate(seq):
-                e[i, :] = torch.tensor(self.model[w]) if w in self.model else torch.randn(self.in_height)
+                vec = self.model[w] if w in self.model else torch.empty(self.in_height).uniform_(-.25, .25)
+                vec.flags.writeable = True      # to avoid user warning
+                e[i, :] = torch.tensor(vec)
 
-        else:   # random
-            e = torch.randn(len(seq), self.in_height)
+        else:   # random - sample from uniform dis. such that variance approx. the same as for w2v
+            e = torch.empty(len(seq), self.in_height).uniform_(-.25, .25)
 
         elen = e.shape[0]
         diff = self.in_width - elen
