@@ -21,8 +21,7 @@ class Encoder(object):
         self.encoder = emb_pars['enc']
         self.elmo_dim = int(emb_pars['dim']) if 'dim' in emb_pars else None
 
-        self.in_height = int(params.input_shape.split('x')[0])
-        self.in_width = int(params.input_shape.split('x')[1])          # max. number of words from a doc
+        self.in_height, self.in_width = tuple(map(int, params.input_shape.split('x')))
         self.enc_name = self.encoder[:4] if self.encoder[:4] == 'elmo' or self.encoder[:4] == 'bert' else self.encoder
         model_path = os.path.join(PROJ_DIR, 'models', self.enc_name)
 
@@ -32,7 +31,8 @@ class Encoder(object):
             options_file = os.path.join(model_path, opt_fname)
             weight_file = os.path.join(model_path, w_fname)
 
-            cuda_device = 0 if torch.cuda.is_available() else -1
+            # cuda_device = 0 if torch.cuda.is_available() else -1
+            cuda_device = -1        # to avoid re-initialisation in subprocess
             self.model = ElmoEmbedder(options_file=options_file, weight_file=weight_file, cuda_device=cuda_device)
 
         elif self.enc_name == 'bert':
@@ -40,7 +40,7 @@ class Encoder(object):
             self.tokeniser = BertTokenizer.from_pretrained(self.encoder, cache_dir=cache_dir)
             self.model = BertModel.from_pretrained(self.encoder, cache_dir=cache_dir)
             self.model.eval()
-            # self.model.to(DEVICE)
+            # self.model.to(DEVICE) - avoid re-initialising CUDA
 
         elif self.encoder == 'word2vec':
             self.model = get_w2v_embs()

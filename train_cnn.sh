@@ -15,7 +15,7 @@
 # --mem 10G
 
 # interactive
-# srun -t 10:00:00 --mem=10G -p gpu-short --gres=gpu:1 -c 10 --pty bash
+# srun -t 8:00:00 --mem=50G -p gpu-short --gres=gpu:1 -c 10 --pty bash
 
 
 module purge
@@ -30,11 +30,12 @@ ID=SLURM_ARRAY_TASK_ID
 EMBS=(enc=word2vec)
 KS=("100x10 3x2" "150x10 2x2" "50x10 6x2")
 PS=("4x4 2x2" "4x4 2x2" "4x4 2x2")
-STS=("1x1" "1x1" "1x1")
+STS=("1x1 1x1" "1x1 1x1" "1x1 1x1")
 N_KS=("100 100")
 NC=(2)
 MODS=(DocCNN)
-INS=(300x100 300x100 768x100)
+# INS=(300x100 300x100 768x100)
+INS=(300x100)
 BS=(64)
 OPTS=(adadelta)
 HS=(100)
