@@ -14,7 +14,7 @@
 
 
 # interactive
-# srun -t 10:00:00 --mem=50G -p gpu-short --gres=gpu:1 -c 10 --pty bash
+# srun -t 1:00:00 --mem=50G -p gpu-short --gres=gpu:1 -c 10 --pty bash
 
 
 module purge

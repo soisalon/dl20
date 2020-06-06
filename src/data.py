@@ -16,12 +16,12 @@ from encoder import Encoder
 
 class SeqDataset(torch.utils.data.Dataset):
 
-    def __init__(self, fpath, params, train=True):
+    def __init__(self, fpath, params, encoder, train=True):
 
         self.train = train
         self.use_whole = params.final
 
-        self.encoder = Encoder(params=params)
+        self.encoder = encoder
 
         # n_docs_test = 33142
         n_docs = 299773 if not TESTING else 100

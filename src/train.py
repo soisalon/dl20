@@ -9,7 +9,8 @@ import numpy as np
 from sklearn.metrics import precision_recall_fscore_support
 
 from data import get_eyeball_set, get_model_savepath, DocDataset, SeqDataset
-from vars import LOSSES, OPTIMS, MODEL_DIR, TESTING, DEVICE, PROJ_DIR
+from vars import LOSSES, OPTIMS, MODEL_DIR, DEVICE, PROJ_DIR
+from encoder import Encoder
 import cnn
 
 parser = argparse.ArgumentParser()
@@ -22,8 +23,8 @@ parser.add_argument('--use_seqs', nargs='?', type=bool, default=True)
 parser.add_argument('--plot', nargs='?', type=bool, default=False)
 # params for sampling and encoding words from XMLs
 # parser.add_argument('--emb_pars', nargs='*', default=['enc=elmo_2x1024_128_2048cnn_1xhighway', 'dim=2'])
-parser.add_argument('--emb_pars', nargs='*', default=['enc=random'])
-# parser.add_argument('--emb_pars', nargs='*', default=['enc=glove'])
+# parser.add_argument('--emb_pars', nargs='*', default=['enc=random'])
+parser.add_argument('--emb_pars', nargs='*', default=['enc=glove'])
 # training params
 parser.add_argument('--n_epochs', nargs='?', type=int, default=20)
 parser.add_argument('--batch_size', nargs='?', type=int, default=64)
@@ -152,15 +153,17 @@ else:                                                           # or get optimis
     opt_params = {par.split('=')[0]: float(par.split('=')[1]) for par in params.opt_params}
     opt = OPTIMS[params.optim](model.parameters(), **opt_params)
 
+print('Init. encoder...')
+encoder = Encoder(params=params)
 # load datasets
 print('Initialise Datasets...')
 seq_fpath = os.path.join(PROJ_DIR, 'dl20', 'sequences.txt')
 te_seq_fpath = os.path.join(PROJ_DIR, 'dl20', 'test_sequences.txt')
 if params.use_seqs:
-    tr_dset = SeqDataset(seq_fpath, params, train=True) if not params.final \
-        else SeqDataset(seq_fpath, params, train=True)
-    dev_dset = SeqDataset(seq_fpath, params, train=False) if not params.final \
-        else SeqDataset(te_seq_fpath, params, train=False)
+    tr_dset = SeqDataset(seq_fpath, params, encoder, train=True) if not params.final \
+        else SeqDataset(seq_fpath, params, encoder, train=True)
+    dev_dset = SeqDataset(seq_fpath, params, encoder, train=False) if not params.final \
+        else SeqDataset(te_seq_fpath, params, encoder, train=False)
 else:
     tr_dset = DocDataset(enc_name + '_data', params, train=True)
     dev_dset = DocDataset(enc_name + '_data', params, train=False)
@@ -187,7 +190,7 @@ if not params.final:
     for e in range(params.n_epochs):
         # early stopping if F1 score has decreased / loss increased for two consecutive epochs, but train for one more
         if (params.early_stop == 'loss' and len(losses) > 10 and losses[-1] > losses[-2] > losses[-3]) or \
-        (params.early_stop == 'F1' and len(fscores) > 10 and fscores[-1] < fscores[-2] < fscores[-3]):
+           (params.early_stop == 'F1' and len(fscores) > 10 and fscores[-1] < fscores[-2] < fscores[-3]):
             early_stop = True
             print('One more epoch before early stopping...')
 

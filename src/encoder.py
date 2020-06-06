@@ -96,8 +96,12 @@ class Encoder(object):
 
             e = torch.empty(len(seq), self.in_height)
             for i, w in enumerate(seq):
-                vec = self.model[w] if w in self.model else torch.empty(self.in_height).uniform_(-.25, .25)
-                vec.flags.writeable = True      # to avoid user warning
+                if w in self.model:
+                    vec = self.model[w]
+                    vec.flags.writeable = True  # to avoid user warning
+                else:
+                    vec = torch.empty(self.in_height).uniform_(-.25, .25)
+
                 e[i, :] = torch.tensor(vec)
 
         else:   # random - sample from uniform dis. such that variance approx. the same as for w2v
@@ -148,7 +152,7 @@ def get_glove_embs(vec_path=os.path.join(EMB_DIR, 'glove', 'vecs.txt')):
 
 
 def get_w2v_embs(vec_path=os.path.join(EMB_DIR, 'word2vec', 'GoogleNews-vectors-negative300.bin')):
-    print('Loading w2vembeddings...')
+    print('Loading w2v embeddings...')
     w2v_model = KeyedVectors.load_word2vec_format(vec_path, binary=True)
     return w2v_model
 
