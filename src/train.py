@@ -217,11 +217,11 @@ else:
 with open(os.path.join(PROJ_DIR, 'dl20', 'scores.txt'), 'a') as f:
     # amount of actual epochs, in case of early stopping
     f.write('\nAfter training for {}/{} epochs, scores for model {}:\n'.format(e + 1, params.n_epochs, model_fname))
-    f.write('Model losses: {}\n'.format(' '.join(['{:.2f}'.format(s * 100) for s in losses])))
-    f.write('Model precisions: {}\n'.format(' '.join(['{:.2f}'.format(s * 100) for s in precs])))
-    f.write('Model recalls: {}\n'.format(' '.join(['{:.2f}'.format(s * 100) for s in recs])))
-    f.write('Model F1-s: {}\n'.format(' '.join(['{:.2f}'.format(s * 100) for s in fscores])))
-    f.write('Model accuracies: {}\n'.format(' '.join(['{:.2f}'.format(s * 100) for s in accs])))
+    f.write('Losses: {}\n'.format(' '.join(['{:.2f}'.format(s * 100) for s in losses])))
+    f.write('Precisions: {}\n'.format(' '.join(['{:.2f}'.format(s * 100) for s in precs])))
+    f.write('Recalls: {}\n'.format(' '.join(['{:.2f}'.format(s * 100) for s in recs])))
+    f.write('F1-s: {}\n'.format(' '.join(['{:.2f}'.format(s * 100) for s in fscores])))
+    f.write('Accuracies: {}\n'.format(' '.join(['{:.2f}'.format(s * 100) for s in accs])))
     f.write('\n#####\n')
 
 if params.plot:
