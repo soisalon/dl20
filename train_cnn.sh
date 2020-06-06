@@ -8,14 +8,11 @@
 #SBATCH -c 10
 #SBATCH -p gpu-short
 #SBATCH --gres=gpu:1
-#SBATCH --mem=50G
+#SBATCH --mem=100G
 #SBATCH --mail-type=END
 #SBATCH --mail-user=eliel.soisalon-soininen@helsinki.fi
 
 # --mem 10G
-
-# interactive
-# srun -t 8:00:00 --mem=50G -p gpu-short --gres=gpu:1 -c 10 --pty bash
 
 
 module purge
@@ -28,11 +25,11 @@ echo "training cnn for DL"
 ID=SLURM_ARRAY_TASK_ID
 
 EMBS=(enc=word2vec)
-KS=("100x10 3x2" "150x10 2x2" "50x10 6x2")
-PS=("4x4 2x2" "4x4 2x2" "4x4 2x2")
-STS=("1x1 1x1" "1x1 1x1" "1x1 1x1")
-N_KS=("100 100")
-NC=(2)
+KS=("100x10 10x2 6x1" "100x20 50x2 8x2" "200x20 6x2 10x2" "50x20 20x2 10x2 6x2" "31x21 20x4 10x2 2x1 4x1")
+PS=("1x2 2x1 1x1" "2x2 4x4 1x5" "4x4 2x2 1x4" "4x4 2x2 2x2 1x3" "4x4 2x1 3x2 1x1 1x3")
+STS=("10x10 1x1 1x1" "1x1 1x1 1x1" "1x1 1x1 1x1" "1x1 1x1 1x1 1x1" "1x1 1x1 1x1 1x1 1x1")
+N_KS=("25 50 100" "25 50 100" "25 50 100" "25 50 100 200" "25 50 100 200 300")
+NC=(3 3 3 4 5)
 MODS=(DocCNN)
 # INS=(300x100 300x100 768x100)
 INS=(300x100)
