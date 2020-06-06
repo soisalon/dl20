@@ -29,9 +29,9 @@ ID=SLURM_ARRAY_TASK_ID
 
 EMBS=(enc=word2vec)
 KS=("100x10 3x2" "150x10 2x2" "50x10 6x2")
-PS=("1x9 1x5" "1x9 1x5" "1x9 1x5")
+PS=("4x4 2x2" "4x4 2x2" "4x4 2x2")
 STS=("1x1" "1x1" "1x1")
-N_KS=(100)
+N_KS=("100 100")
 NC=(2)
 MODS=(DocCNN)
 INS=(300x100 300x100 768x100)
