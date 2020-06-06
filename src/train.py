@@ -25,6 +25,7 @@ parser.add_argument('--plot', nargs='?', type=bool, default=False)
 # parser.add_argument('--emb_pars', nargs='*', default=['enc=elmo_2x1024_128_2048cnn_1xhighway', 'dim=2'])
 # parser.add_argument('--emb_pars', nargs='*', default=['enc=random'])
 parser.add_argument('--emb_pars', nargs='*', default=['enc=glove'])
+parser.add_argument('--input_shape', nargs='?', default='300x100')
 # training params
 parser.add_argument('--n_epochs', nargs='?', type=int, default=20)
 parser.add_argument('--batch_size', nargs='?', type=int, default=64)
@@ -38,7 +39,7 @@ parser.add_argument('--n_conv_layers', nargs='?', type=int, default=2)
 parser.add_argument('--kernel_shapes', nargs='*', default=['150x10', '2x2'])
 parser.add_argument('--strides', nargs='*', default=['1x1', '1x1'])
 parser.add_argument('--pool_sizes', nargs='*', default=['1x9', '1x5'])
-parser.add_argument('--input_shape', nargs='?', default='300x100')
+parser.add_argument('--dilations', nargs='?', default=['1x1', '1x1'])   # TODO: update CNN for dilation
 parser.add_argument('--n_kernels', nargs='*', type=int, default=[10, 10])
 parser.add_argument('--conv_act_fn', nargs='?', default='relu')
 parser.add_argument('--h_units', nargs='*', type=int, default=[64])
@@ -134,8 +135,8 @@ def validate(n_iters, lossv, pv, rv, fv, accv):
     fs = 100. * fs
     acc = 100. * acc
 
-    print('\nFor model {}:'.format(model_fname))
-    print('Dev set - Average loss: {:.4f}, Precision: {:.2f}%, Recall: {:.2f}%, F1: {:.2f}%, Acc: {:.2f}%\n'.format(
+    print('\nDev set scores for model {}:'.format(model_fname))
+    print('Average loss: {:.4f}, Precision: {:.2f}%, Recall: {:.2f}%, F1: {:.2f}%, Acc: {:.2f}%\n'.format(
         val_loss, ps, rs, fs, acc))
 
     return n_iters, lossv, pv, rv, fv, accv
@@ -173,7 +174,6 @@ print('Done.')
 print('Initialise DataLoaders...')
 tr_loader = DataLoader(dataset=tr_dset, batch_size=params.batch_size, shuffle=True, num_workers=10, drop_last=False)
 dev_loader = DataLoader(dataset=dev_dset, batch_size=params.batch_size, shuffle=False, num_workers=10, drop_last=False)
-print('After init, torch.utils.data.get_worker_info(): ', torch.utils.data.get_worker_info())
 print('Done.')
 
 # get model path for saving
@@ -215,6 +215,7 @@ else:
 
     torch.save(model.state_dict(), model_path)
 
+print('Write results to file...')
 # write some results into file
 with open(os.path.join(PROJ_DIR, 'dl20', 'scores.txt'), 'a') as f:
     # amount of actual epochs, in case of early stopping
@@ -225,7 +226,9 @@ with open(os.path.join(PROJ_DIR, 'dl20', 'scores.txt'), 'a') as f:
     f.write('F1-s: {}\n'.format(' '.join(['{:.2f}'.format(s * 100) for s in fscores])))
     f.write('Accuracies: {}\n'.format(' '.join(['{:.2f}'.format(s * 100) for s in accs])))
     f.write('\n#####\n')
+print('Done.')
 
+print('For plotting, write scpres ')
 if params.plot:
 
     # write losses to file for plotting
