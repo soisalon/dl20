@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -J dl_tr_plot
+#SBATCH -J dl_tr_final
 #SBATCH --export=USERAPPL,WRKDIR,LD_LIBRARY_PATH
 #SBATCH --chdir=/wrk/users/eliel/projects/dl_course20/
 #SBATCH -o /wrk/users/eliel/projects/dl_course20/jobs/res/%A_%a.txt
@@ -22,7 +22,7 @@ module load CUDA/10.1.105
 
 echo "training cnn for DL"
 
-ID=SLURM_ARRAY_TASK_ID
+ID=0
 
 EMBS=(enc=word2vec)
 #KS=("100x10 10x2 6x1" "100x20 50x2 8x2" "200x20 6x2 10x2" "50x20 20x2 10x2 6x2" "31x21 20x4 10x2 2x1 4x1")
