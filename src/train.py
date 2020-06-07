@@ -18,7 +18,7 @@ parser = argparse.ArgumentParser()
 # general params
 parser.add_argument('--dev_ratio', nargs='?', type=float, default=0.1)  # proportion of dev set
 parser.add_argument('--seed', nargs='?', type=int, default=100)
-parser.add_argument('--final', nargs='?', type=bool, default=False)     # whether to train with whole dataset
+parser.add_argument('--final', nargs='?', type=bool, default=True)     # whether to train with whole dataset
 parser.add_argument('--plot', nargs='?', type=bool, default=False)      # whether to validate more frequently for plots
 parser.add_argument('--use_seqs', nargs='?', type=bool, default=True)   # whether to encode sequences while training
 # params for inputs
@@ -208,18 +208,25 @@ if not params.final:
             break
 
 else:
-    for e in range(params.n_epochs):
-        train(e, it_count)
-        # no validation since training with the whole dataset
+    if not os.path.exists(model_path):
+        for e in range(params.n_epochs):
+            train(e, it_count)
+            # no validation since training with the whole dataset
 
-    torch.save(model.state_dict(), model_path)
+        torch.save(model.state_dict(), model_path)
+    else:
+        model = torch.load(model_path)
 
     # get predictions on final test data
-    test_data = dev_dset.dev_seqs
-    with torch.no_grad():
-        test_preds = model(test_data).squeeze()
-    test_preds = test_preds.data.cpu().numpy()
-    test_preds = (test_preds >= 0.5).astype('int')
+    preds_arr = []
+    for data in dev_loader:
+        data = data.to(DEVICE)
+        with torch.no_grad():
+            output = model(data).double()
+        output = output.squeeze()
+        preds = (output >= 0.5).int().cpu().numpy()  # get the index of the max log-probability
+        preds_arr += preds
+    test_preds = np.concatenate(preds_arr, axis=0)
     np.savetxt(os.path.join(PROJ_DIR, 'dl20', 'test_preds.txt'), test_preds, fmt='%i')
 
 
@@ -247,8 +254,9 @@ if params.plot:
     acc_file = os.path.join(PROJ_DIR, 'dl20', 'plots', 'final_accs.dat')
     iters_file = os.path.join(PROJ_DIR, 'dl20', 'plots', 'iters.dat')
     line = '{} layer {}\t' if params.n_conv_layers == 1 else '{} layers {}\t'
-    with open(iters_file, 'w') as f:
-        f.write('{}'.format('\t'.join(['{}'.format(it) for it in n_its])))
+    with open(iters_file, 'a') as f:
+        f.write(line.format(params.n_conv_layers, model_fname) +
+                '\t'.join(['{}'.format(i) for i in n_its]) + '\n')
     with open(losses_file, 'a') as f:
         f.write(line.format(params.n_conv_layers, model_fname) +
                 '\t'.join(['{:2.3f}'.format(s) for s in losses]) + '\n')
