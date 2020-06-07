@@ -269,7 +269,7 @@ def get_eyeball_set(seq_inds, preds, target, model_name):
         eb_seqs = [line.strip() for line in f]
     eb_seqs = [eb_seqs[i] for i in seq_inds]
 
-    for i in range(len(preds)):
+    for i in range(len(seq_inds)):
         pred_topic_inds = np.where(preds[i] == 1)[0]
         tgt_topic_inds = np.where(target[i] == 1)[0]
         pred_topics = [topics[j] for j in pred_topic_inds]
