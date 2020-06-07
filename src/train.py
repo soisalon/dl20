@@ -110,11 +110,10 @@ def validate(n_iters, lossv, pv, rv, fv, accv):
 
         # if last epoch, get eyeball set from last full batch
         if bi == len(dev_loader) - 2 and (e == params.n_epochs - 1 or early_stop):
-            # assuming dev set begins at index n_tr_docs
-            st_i, end_i = n_tr_docs + params.batch_size * bi, n_tr_docs + params.batch_size * (bi + 1)
-            seq_inds = [i for i in range(st_i, end_i)]
+            st_i, end_i = params.batch_size * bi, params.batch_size * (bi + 1)
+            seq_inds = dev_inds[st_i: end_i]
             get_eyeball_set(seq_inds, preds, target)
-            print('After epoch {}/{}, for batch {}/{} - predictions for sequences {}-{} stored in eb_preds.txt.'
+            print('After epoch {}/{}, for dev batch {}/{} - predictions for sequences {}-{} stored in eb_preds.txt.'
                   .format(e + 1, params.n_epochs, bi + 1, len(dev_loader), st_i, end_i))
 
     val_loss /= len(dev_loader)
@@ -163,6 +162,7 @@ te_seq_fpath = os.path.join(PROJ_DIR, 'dl20', 'test_sequences.txt')
 # get tr_set inds
 np.random.seed(0)       # ensure the training/dev set split is the same for each run
 tr_inds = np.random.choice(np.arange(n_docs), n_tr_docs)
+dev_inds = [i for i in range(n_docs) if i not in tr_inds]
 
 if params.use_seqs:
     tr_dset = SeqDataset(seq_fpath, tr_inds, params, encoder, train=True) if not params.final \
