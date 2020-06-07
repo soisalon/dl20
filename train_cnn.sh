@@ -25,18 +25,25 @@ echo "training cnn for DL"
 ID=SLURM_ARRAY_TASK_ID
 
 EMBS=(enc=word2vec)
-KS=("100x10 10x2 6x1" "100x20 50x2 8x2" "200x20 6x2 10x2" "50x20 20x2 10x2 6x2" "31x21 20x4 10x2 2x1 4x1")
-PS=("1x2 2x1 1x1" "2x2 4x4 1x5" "4x4 2x2 1x4" "4x4 2x2 2x2 1x3" "4x4 2x1 3x2 1x1 1x3")
-STS=("10x10 1x1 1x1" "1x1 1x1 1x1" "1x1 1x1 1x1" "1x1 1x1 1x1 1x1" "1x1 1x1 1x1 1x1 1x1")
-N_KS=("25 50 100" "25 50 100" "25 50 100" "25 50 100 200" "25 50 100 200 300")
-NC=(3 3 3 4 5)
+#KS=("100x10 10x2 6x1" "100x20 50x2 8x2" "200x20 6x2 10x2" "50x20 20x2 10x2 6x2" "31x21 20x4 10x2 2x1 4x1")
+KS=("300x10 150x5" "100x10 50x5" "100x10 10x2")
+# STS=("10x10 1x1 1x1" "1x1 1x1 1x1" "1x1 1x1 1x1" "1x1 1x1 1x1 1x1" "1x1 1x1 1x1 1x1 1x1")
+STS=("1x1 1x1" "1x1 1x1" "10x5 1x1")
+#PS=("2x2 1x2 1x1" "2x2 4x4 1x5" "4x4 2x2 1x4" "4x4 2x2 2x2 1x3" "4x4 2x1 3x2 1x1 1x3")
+PS=("2x2 1x41" "2x2 1x8" "2x2 1xx")
+DILS=("1x1 1x1" "2x2 1x1" "1x1 1x1")
+PADS=("150x0 0x0" "0x0 0x0" "0x0 0x0")
+# N_KS=("25 50 100" "25 50 100" "25 50 100" "25 50 100 200" "25 50 100 200 300")
+N_KS=("100 100" "100 100" "100 100")
+NC=(2 2 2 3 3 4 4)
 MODS=(DocCNN)
 # INS=(300x100 300x100 768x100)
 INS=(300x100)
 BS=(64)
 OPTS=(adadelta)
 HS=(100)
-DROPS=(0.5)
+DROPS=(0.2)
+
 # train model
 srun $USERAPPL/ve37/bin/python3 dl20/src/train.py \
     --dev_ratio 0.1 \
@@ -51,8 +58,10 @@ srun $USERAPPL/ve37/bin/python3 dl20/src/train.py \
     --model_name ${MODS[$ID % ${#MODS[@]}]}\
     --n_conv_layers ${NC[$ID % ${#NC[@]}]} \
     --kernel_shapes ${KS[$ID % ${#KS[@]}]} \
-    --pool_sizes ${PS[$ID % ${#PS[@]}]} \
     --strides ${STS[$ID % ${#STS[@]}]} \
+    --pool_sizes ${PS[$ID % ${#PS[@]}]} \
+    --dilations ${DILS[$ID % ${#DILS[@]}]} \
+    --paddings ${PADS[$ID % ${#PADS[@]}]} \
     --input_shape ${INS[$ID % ${#INS[@]}]} \
     --n_kernels ${N_KS[$ID % ${#N_KS[@]}]} \
     --conv_act_fn relu \
