@@ -15,7 +15,9 @@ from encoder import Encoder
 
 
 class SeqDataset(torch.utils.data.Dataset):
-
+    """
+    Dataset class where word sequences are encoded as in get_item.
+    """
     def __init__(self, fpath, tr_inds, params, encoder, train=True):
 
         self.train = train
@@ -26,7 +28,7 @@ class SeqDataset(torch.utils.data.Dataset):
         # n_docs_test = 33142
         # n_tr = n_docs - n_dev
         # n_dev = int(n_docs * params.dev_ratio)
-        n_docs = 299773
+        n_docs = 299773 if not TESTING else 1000
 
         dev_inds = [i for i in range(n_docs) if i not in tr_inds]
 
@@ -58,6 +60,9 @@ class SeqDataset(torch.utils.data.Dataset):
         elif not self.train and not self.use_whole:
             item, target = self.transform(self.dev_seqs[idx]), self.dev_labels[idx]
             return item, target
+        else:
+            item = self.transform(self.dev_seqs[idx])
+            return item
 
     def __len__(self):
         if self.train:
@@ -70,7 +75,10 @@ class SeqDataset(torch.utils.data.Dataset):
 
 
 class DocDataset(torch.utils.data.Dataset):
+    """
+    Dataset which loads the whole dataset into a tensor.
 
+    """
     def __init__(self, root_dir, params, train=True):
 
         self.train = train
@@ -135,6 +143,12 @@ class DocDataset(torch.utils.data.Dataset):
 
 
 def get_model_savepath(params, ext='.pt'):
+    """
+    Get the path to which a model will be saved, based on the parameters.
+    :param params:
+    :param ext:
+    :return:
+    """
 
     mod = 'Doc' if params.model_name == 'DocCNN' else 'Base'
     enc = params.emb_pars[0].split('=')[1]
@@ -167,7 +181,12 @@ def get_model_savepath(params, ext='.pt'):
 
 
 def get_docs(cum_docs, zips):
-
+    """
+    Get the newsitems as list of XML documents.
+    :param cum_docs:
+    :param zips:
+    :return:
+    """
     inds = max(list(cum_docs.values()))
     batch_docs = []
     for i in range(inds):
@@ -183,7 +202,11 @@ def get_docs(cum_docs, zips):
 
 
 def get_cum_docs_per_zip(zips):
-
+    """
+    Count the cumulative number of XMLs in zip files.
+    :param zips:
+    :return:
+    """
     docs_per_zip = {}
     count = 0
     for zipf in zips:
@@ -238,7 +261,12 @@ def get_doc_words(xmlfile):
 
 
 def sample_sequences(word_batch, max_width):
-
+    """
+    Take a random contiguous sequence from a list of words extracted from an XML document.
+    :param word_batch:
+    :param max_width:
+    :return:
+    """
     random.seed(100)
     seqs = []
     for wi, wordlist in enumerate(word_batch):
@@ -255,7 +283,14 @@ def sample_sequences(word_batch, max_width):
 
 
 def get_eyeball_set(seq_inds, preds, target, model_name):
-
+    """
+    Write to file some sequences, predictions and actual labels (for error analysis).
+    :param seq_inds:
+    :param preds:
+    :param target:
+    :param model_name:
+    :return:
+    """
     # write sequences and corresponding preds and target values in a file
     codes_fp = os.path.join(PROJ_DIR, 'dl20', 'codes', 'topic_codes.txt')
     eb_fp = os.path.join(PROJ_DIR, 'dl20', 'eyeball', 'eb_{}.txt'.format(model_name))
