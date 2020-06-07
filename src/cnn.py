@@ -61,6 +61,8 @@ class DocCNN(nn.Module):
         kernel_shapes = [tuple(map(int, s.split('x'))) for s in params.kernel_shapes]
         strides = [tuple(map(int, s.split('x'))) for s in params.strides]
         pool_sizes = [tuple(map(int, s.split('x'))) for s in params.pool_sizes]
+        dilations = [tuple(map(int, s.split('x'))) for s in params.dilations]
+        paddings = [tuple(map(int, s.split('x'))) for s in params.paddings]
 
         conv_act_fn = ACTIVATIONS[params.conv_act_fn]      # activation function in conv. layers
 
@@ -77,7 +79,7 @@ class DocCNN(nn.Module):
         for i in range(n_conv_layers):
             in_channels = 1 if i == 0 else n_kernels[i - 1]
             conv_layers += [nn.Conv2d(in_channels, n_kernels[i], kernel_size=kernel_shapes[i],
-                                      stride=strides[i])]
+                                      stride=strides[i], dilation=dilations[i], padding=paddings[i])]
             conv_layers += [conv_act_fn]
             conv_layers += [nn.MaxPool2d(kernel_size=pool_sizes[i])]
 
