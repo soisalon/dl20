@@ -154,8 +154,14 @@ def get_model_savepath(params, ext='.pt'):
 
     hu = 'h' + '+'.join([str(n) for n in params.h_units])
 
-    return '-'.join([mod, encoder, nl, ks, sts, pls, dils, pads, insh, nk, caf, faf, oaf, d, hu, bs, ne, op, op_pars,
-                     ls]) + ext
+    if mod == 'Doc':
+        savepath = '-'.join([mod, encoder, nl, ks, sts, pls, dils, pads, insh, nk, caf, faf, oaf, d, hu, bs, ne, op, op_pars,
+                            ls]) + ext
+    else:
+        savepath = '-'.join(
+            [mod, encoder, nl, ks, insh, nk, caf, faf, oaf, d, hu, bs, ne, op, op_pars, ls]) + ext
+
+    return savepath
 
 
 def get_docs(cum_docs, zips):
