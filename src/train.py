@@ -194,7 +194,8 @@ if not params.final:
     for e in range(params.n_epochs):
         # early stopping if F1 score has decreased / loss increased for two consecutive epochs, but train for one more
         if (params.early_stop == 'loss' and len(losses) > 10 and losses[-1] > losses[-2] > losses[-3]) or \
-           (params.early_stop == 'F1' and len(fscores) > 10 and fscores[-1] < fscores[-2] < fscores[-3]):
+           (params.early_stop == 'F1' and len(fscores) > 10 and fscores[-1] < fscores[-2] < fscores[-3]) and \
+           not params.plot:
             early_stop = True
             print('One more epoch before early stopping...')
 
