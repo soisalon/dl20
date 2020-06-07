@@ -38,8 +38,8 @@ INS=(300x100)
 BS=(64)
 OPTS=(adadelta)
 # HS=(10 50 100 200 500)
-HS=(100)
-DROPS=(0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9)
+HS=(20 60 150 200)
+DROPS=(0.5)
 # train model
 # srun -n 4 --exclusive $USERAPPL/ve37/bin/python3 dl20/src/train.py \
 srun $USERAPPL/ve37/bin/python3 dl20/src/train.py \
