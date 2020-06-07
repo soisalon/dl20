@@ -220,7 +220,7 @@ print('Write results to file...')
 with open(os.path.join(PROJ_DIR, 'dl20', 'scores.txt'), 'a') as f:
     # amount of actual epochs, in case of early stopping
     f.write('\nAfter training for {}/{} epochs, scores for model {}:\n'.format(e + 1, params.n_epochs, model_fname))
-    f.write('Losses: {}\n'.format(' '.join(['{:.2f}'.format(s * 100) for s in losses])))
+    f.write('Losses: {}\n'.format(' '.join(['{:.4f}'.format(s) for s in losses])))
     f.write('Precisions: {}\n'.format(' '.join(['{:.2f}'.format(s * 100) for s in precs])))
     f.write('Recalls: {}\n'.format(' '.join(['{:.2f}'.format(s * 100) for s in recs])))
     f.write('F1-s: {}\n'.format(' '.join(['{:.2f}'.format(s * 100) for s in fscores])))
