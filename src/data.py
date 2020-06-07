@@ -41,10 +41,10 @@ class SeqDataset(torch.utils.data.Dataset):
 
         if self.train and not self.use_whole:
             self.tr_seqs = [seqs[i] for i in tr_inds]
-            self.tr_labels = torch.tensor(np.take(labels, indices=tr_inds))
+            self.tr_labels = torch.tensor(np.take(labels, indices=tr_inds, axis=0))
         elif not self.train and not self.use_whole:
             self.dev_seqs = [seqs[i] for i in dev_inds]
-            self.dev_labels = torch.tensor(np.take(labels, indices=dev_inds))
+            self.dev_labels = torch.tensor(np.take(labels, indices=dev_inds, axis=0))
         elif self.train and self.use_whole:
             self.tr_seqs = seqs
             self.tr_labels = labels
@@ -141,6 +141,7 @@ def get_model_savepath(params, ext='.pt'):
     nl = 'nl' + str(params.n_conv_layers)
     ks = 'ks' + '+'.join(params.kernel_shapes)
     pls = 'ps' + '+'.join(params.pool_sizes) if mod == 'Doc' else ''
+    str = 'st' + '+'.join(params.strides) if mod == 'Doc' else ''
     dils = 'di' + '+'.join(params.dilations) if mod == 'Doc' else ''
     pads = 'pd' + '+'.join(params.paddings) if mod == 'Doc' else ''
     insh = 'in' + params.input_shape
