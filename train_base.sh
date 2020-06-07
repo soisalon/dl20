@@ -6,12 +6,13 @@
 #SBATCH -e /wrk/users/eliel/projects/dl_course20/jobs/err/%A_%a.txt
 #SBATCH -t 0-2:00:00
 #SBATCH -c 10
-#SBATCH --mail-type=END
-#SBATCH --mail-user=eliel.soisalon-soininen@helsinki.fi
 #SBATCH --mem=20G
 #SBATCH --gres=gpu:1
 #SBATCH -p gpu
 
+
+# --mail-type=END
+# --mail-user=eliel.soisalon-soininen@helsinki.fi
 
 # interactive
 # srun -t 1:00:00 --mem=50G -p gpu-short --gres=gpu:1 -c 10 --pty bash
@@ -27,7 +28,7 @@ echo "training cnn for DL"
 ID=SLURM_ARRAY_TASK_ID
 # ID=2
 
-EMBS=(enc=word2vec)
+EMBS=(enc=glove)
 KS=(300x5)
 # KS=(300x2 300x4 300x6 300x8 300x10 300x12 300x16 300x20)
 # N_KS=(1 10 50 100 200 300 400 500 600 700 800 900)
@@ -37,9 +38,9 @@ MODS=(BaseCNN)
 INS=(300x100)
 BS=(64)
 OPTS=(adadelta)
-HS=(10 50 100 200 500)
-# HS=(100)
-DROPS=(0.5)
+# HS=(10 50 200 500)
+HS=(100)
+DROPS=(0.2)
 # train model
 # srun -n 4 --exclusive $USERAPPL/ve37/bin/python3 dl20/src/train.py \
 srun $USERAPPL/ve37/bin/python3 dl20/src/train.py \
