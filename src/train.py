@@ -225,7 +225,7 @@ else:
             output = model(data).double()
         output = output.squeeze()
         preds = (output >= 0.5).int().cpu().numpy()  # get the index of the max log-probability
-        preds_arr += preds
+        preds_arr += [preds]
     test_preds = np.concatenate(preds_arr, axis=0)
     np.savetxt(os.path.join(PROJ_DIR, 'dl20', 'test_preds.txt'), test_preds, fmt='%i')
 
