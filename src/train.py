@@ -16,16 +16,14 @@ import cnn
 parser = argparse.ArgumentParser()
 
 # general params
-parser.add_argument('--dev_ratio', nargs='?', type=float, default=0.1)
+parser.add_argument('--dev_ratio', nargs='?', type=float, default=0.1)  # proportion of dev set
 parser.add_argument('--seed', nargs='?', type=int, default=100)
-parser.add_argument('--final', nargs='?', type=bool, default=False)  # whether to train with whole dataset
-parser.add_argument('--use_seqs', nargs='?', type=bool, default=True)
-parser.add_argument('--plot', nargs='?', type=bool, default=False)
-# params for sampling and encoding words from XMLs
-# parser.add_argument('--emb_pars', nargs='*', default=['enc=elmo_2x1024_128_2048cnn_1xhighway', 'dim=2'])
-# parser.add_argument('--emb_pars', nargs='*', default=['enc=random'])
-parser.add_argument('--emb_pars', nargs='*', default=['enc=glove'])
-parser.add_argument('--input_shape', nargs='?', default='300x100')
+parser.add_argument('--final', nargs='?', type=bool, default=False)     # whether to train with whole dataset
+parser.add_argument('--plot', nargs='?', type=bool, default=False)      # whether to validate more frequently for plots
+parser.add_argument('--use_seqs', nargs='?', type=bool, default=True)   # whether to encode sequences while training
+# params for inputs
+parser.add_argument('--emb_pars', nargs='*', default=['enc=random'])    # source of word embeddings
+parser.add_argument('--input_shape', nargs='?', default='300x100')      # emb. dim x 100
 # training params
 parser.add_argument('--n_epochs', nargs='?', type=int, default=20)
 parser.add_argument('--batch_size', nargs='?', type=int, default=64)
@@ -39,9 +37,9 @@ parser.add_argument('--n_conv_layers', nargs='?', type=int, default=2)
 parser.add_argument('--kernel_shapes', nargs='*', default=['150x10', '2x2'])
 parser.add_argument('--strides', nargs='*', default=['1x1', '1x1'])
 parser.add_argument('--pool_sizes', nargs='*', default=['1x9', '1x5'])
-parser.add_argument('--dilations', nargs='*', default=['1', '1'])   # TODO: update CNN for dilation
+parser.add_argument('--dilations', nargs='*', default=['1', '1'])
 parser.add_argument('--paddings', nargs='*', default=['0', '0'])
-parser.add_argument('--n_kernels', nargs='*', type=int, default=[10, 10])
+parser.add_argument('--n_kernels', nargs='*', type=int, default=[10, 10])   # num. of kernels in each conv layer
 parser.add_argument('--conv_act_fn', nargs='?', default='relu')
 parser.add_argument('--h_units', nargs='*', type=int, default=[64])
 parser.add_argument('--fc_act_fn', nargs='?', default='relu')
@@ -161,11 +159,16 @@ encoder = Encoder(params=params)
 print('Initialise Datasets...')
 seq_fpath = os.path.join(PROJ_DIR, 'dl20', 'sequences.txt')
 te_seq_fpath = os.path.join(PROJ_DIR, 'dl20', 'test_sequences.txt')
+
+# get tr_set inds
+np.random.seed(0)
+tr_inds = np.random.choice(np.arange(n_docs), n_tr_docs)
+
 if params.use_seqs:
-    tr_dset = SeqDataset(seq_fpath, params, encoder, train=True) if not params.final \
-        else SeqDataset(seq_fpath, params, encoder, train=True)
-    dev_dset = SeqDataset(seq_fpath, params, encoder, train=False) if not params.final \
-        else SeqDataset(te_seq_fpath, params, encoder, train=False)
+    tr_dset = SeqDataset(seq_fpath, tr_inds, params, encoder, train=True) if not params.final \
+        else SeqDataset(seq_fpath, tr_inds, params, encoder, train=True)
+    dev_dset = SeqDataset(seq_fpath, tr_inds, params, encoder, train=False) if not params.final \
+        else SeqDataset(te_seq_fpath, tr_inds, params, encoder, train=False)
 else:
     tr_dset = DocDataset(enc_name + '_data', params, train=True)
     dev_dset = DocDataset(enc_name + '_data', params, train=False)

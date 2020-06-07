@@ -16,7 +16,7 @@ from encoder import Encoder
 
 class SeqDataset(torch.utils.data.Dataset):
 
-    def __init__(self, fpath, params, encoder, train=True):
+    def __init__(self, fpath, tr_inds, params, encoder, train=True):
 
         self.train = train
         self.use_whole = params.final
@@ -24,9 +24,11 @@ class SeqDataset(torch.utils.data.Dataset):
         self.encoder = encoder
 
         # n_docs_test = 33142
-        n_docs = 299773 if not TESTING else 100
-        n_dev = int(n_docs * params.dev_ratio)
-        n_tr = n_docs - n_dev
+        # n_tr = n_docs - n_dev
+        # n_dev = int(n_docs * params.dev_ratio)
+        n_docs = 299773
+
+        dev_inds = [i for i in range(n_docs) if i not in tr_inds]
 
         with open(fpath, 'r') as f:
             lines = [l.strip() for l in f]
@@ -35,14 +37,14 @@ class SeqDataset(torch.utils.data.Dataset):
             seqs = seqs[:100]
 
         labels_path = os.path.join(PROJ_DIR, 'dl20', 'ground_truth.txt')
-        labels = torch.tensor(np.loadtxt(labels_path))
+        labels = np.loadtxt(labels_path)
 
         if self.train and not self.use_whole:
-            self.tr_seqs = seqs[:n_tr]
-            self.tr_labels = labels[:n_tr]
+            self.tr_seqs = [seqs[i] for i in tr_inds]
+            self.tr_labels = torch.tensor(np.take(labels, indices=tr_inds))
         elif not self.train and not self.use_whole:
-            self.dev_seqs = seqs[n_tr:]
-            self.dev_labels = labels[n_tr:]
+            self.dev_seqs = [seqs[i] for i in dev_inds]
+            self.dev_labels = torch.tensor(np.take(labels, indices=dev_inds))
         elif self.train and self.use_whole:
             self.tr_seqs = seqs
             self.tr_labels = labels
@@ -255,7 +257,7 @@ def get_eyeball_set(seq_inds, preds, target):
     topics = [line[1] for line in code_lines]
     # get seqs
     with open(seqs_fp, 'r') as f:
-        eb_seqs = [line for line in f]
+        eb_seqs = [line.strip() for line in f]
     eb_seqs = [eb_seqs[i] for i in seq_inds]
 
     for i in range(len(preds)):
@@ -264,10 +266,11 @@ def get_eyeball_set(seq_inds, preds, target):
         pred_topics = [topics[j] for j in pred_topic_inds]
         tgt_topics = [topics[j] for j in tgt_topic_inds]
 
-    with open(eb_fp, 'a') as f:
+    with open(eb_fp, 'w') as f:
         for si, s in zip(seq_inds, eb_seqs):
-            f.write('Sequence {}. Preidcted: {} - Actual: {}\n'.format(si, ', '.join(pred_topics),
+            f.write('Sequence {}. Predicted: {} - Actual: {}\n'.format(si, ', '.join(pred_topics),
                                                                        ', '.join(tgt_topics)))
+            s = s.replace('\t', ' ')
             f.write('Words: {}\n'.format(s))
             f.write('\n######\n')
 
