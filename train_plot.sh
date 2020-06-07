@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH -J dl_train
+#SBATCH -J dl_tr_plot
 #SBATCH --export=USERAPPL,WRKDIR,LD_LIBRARY_PATH
 #SBATCH --chdir=/wrk/users/eliel/projects/dl_course20/
 #SBATCH -o /wrk/users/eliel/projects/dl_course20/jobs/res/%A_%a.txt
 #SBATCH -e /wrk/users/eliel/projects/dl_course20/jobs/err/%A_%a.txt
-#SBATCH -t 0-3:00:00
+#SBATCH -t 0-5:00:00
 #SBATCH -c 10
 #SBATCH -p gpu-short
 #SBATCH --gres=gpu:1
