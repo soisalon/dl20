@@ -112,7 +112,7 @@ def validate(n_iters, lossv, pv, rv, fv, accv):
         if bi == len(dev_loader) - 2 and (e == params.n_epochs - 1 or early_stop):
             st_i, end_i = params.batch_size * bi, params.batch_size * (bi + 1)
             seq_inds = dev_inds[st_i: end_i]
-            get_eyeball_set(seq_inds, preds, target)
+            get_eyeball_set(seq_inds, preds, target, model_fname)
             print('After epoch {}/{}, for dev batch {}/{} - predictions for sequences {}-{} stored in eb_preds.txt.'
                   .format(e + 1, params.n_epochs, bi + 1, len(dev_loader), st_i, end_i))
 

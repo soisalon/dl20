@@ -254,11 +254,11 @@ def sample_sequences(word_batch, max_width):
     return seqs
 
 
-def get_eyeball_set(seq_inds, preds, target):
+def get_eyeball_set(seq_inds, preds, target, model_name):
 
     # write sequences and corresponding preds and target values in a file
     codes_fp = os.path.join(PROJ_DIR, 'dl20', 'codes', 'topic_codes.txt')
-    eb_fp = os.path.join(PROJ_DIR, 'dl20', 'eyeball', 'eb_preds.txt')
+    eb_fp = os.path.join(PROJ_DIR, 'dl20', 'eyeball', 'eb_{}.txt'.format(model_name))
     seqs_fp = os.path.join(PROJ_DIR, 'dl20', 'sequences.txt')
     # get topics
     with open(codes_fp, 'r') as f:
