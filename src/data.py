@@ -141,7 +141,7 @@ def get_model_savepath(params, ext='.pt'):
     nl = 'nl' + str(params.n_conv_layers)
     ks = 'ks' + '+'.join(params.kernel_shapes)
     pls = 'ps' + '+'.join(params.pool_sizes) if mod == 'Doc' else ''
-    str = 'st' + '+'.join(params.strides) if mod == 'Doc' else ''
+    sts = 'st' + '+'.join(params.strides) if mod == 'Doc' else ''
     dils = 'di' + '+'.join(params.dilations) if mod == 'Doc' else ''
     pads = 'pd' + '+'.join(params.paddings) if mod == 'Doc' else ''
     insh = 'in' + params.input_shape
@@ -154,8 +154,8 @@ def get_model_savepath(params, ext='.pt'):
 
     hu = 'h' + '+'.join([str(n) for n in params.h_units])
 
-    return '-'.join([mod, encoder, nl, ks, pls, dils, pads, insh, nk, caf, faf, oaf, d, hu, bs, ne, op, op_pars, ls])\
-           + ext
+    return '-'.join([mod, encoder, nl, ks, sts, pls, dils, pads, insh, nk, caf, faf, oaf, d, hu, bs, ne, op, op_pars,
+                     ls]) + ext
 
 
 def get_docs(cum_docs, zips):
