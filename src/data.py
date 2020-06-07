@@ -137,7 +137,9 @@ class DocDataset(torch.utils.data.Dataset):
 def get_model_savepath(params, ext='.pt'):
 
     mod = 'Doc' if params.model_name == 'DocCNN' else 'Base'
-    encoder = 'enc=' + params.emb_pars[0].split('=')[1][:4]
+    enc = params.emb_pars[0].split('=')[1]
+    enc = 'w2v' if enc == 'word2vec' else enc[:4]
+    encoder = 'enc=' + enc
     nl = 'nl' + str(params.n_conv_layers)
     ks = 'ks' + '+'.join(params.kernel_shapes)
     pls = 'ps' + '+'.join(params.pool_sizes) if mod == 'Doc' else ''

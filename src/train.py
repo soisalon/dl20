@@ -161,7 +161,7 @@ seq_fpath = os.path.join(PROJ_DIR, 'dl20', 'sequences.txt')
 te_seq_fpath = os.path.join(PROJ_DIR, 'dl20', 'test_sequences.txt')
 
 # get tr_set inds
-np.random.seed(0)
+np.random.seed(0)       # ensure the training/dev set split is the same for each run
 tr_inds = np.random.choice(np.arange(n_docs), n_tr_docs)
 
 if params.use_seqs:
