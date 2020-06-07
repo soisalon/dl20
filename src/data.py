@@ -134,11 +134,13 @@ class DocDataset(torch.utils.data.Dataset):
 
 def get_model_savepath(params, ext='.pt'):
 
-    mod = params.model_name[:3]
+    mod = 'Doc' if params.model_name == 'DocCNN' else 'Base'
     encoder = 'enc=' + params.emb_pars[0].split('=')[1][:4]
     nl = 'nl' + str(params.n_conv_layers)
     ks = 'ks' + '+'.join(params.kernel_shapes)
-    pls = '+'.join(params.pool_sizes)
+    pls = 'ps' + '+'.join(params.pool_sizes) if mod == 'Doc' else ''
+    dils = 'di' + '+'.join(params.dilations) if mod == 'Doc' else ''
+    pads = 'pd' + '+'.join(params.paddings) if mod == 'Doc' else ''
     insh = 'in' + params.input_shape
     nk = 'nk' + '+'.join([str(n) for n in params.n_kernels])
     caf, faf, oaf = params.conv_act_fn[:3], params.fc_act_fn[:3], params.out_act_fn[:3]
@@ -149,7 +151,8 @@ def get_model_savepath(params, ext='.pt'):
 
     hu = 'h' + '+'.join([str(n) for n in params.h_units])
 
-    return '-'.join([mod, encoder, nl, ks, pls, insh, nk, caf, faf, oaf, d, hu, bs, ne, op, op_pars, ls]) + ext
+    return '-'.join([mod, encoder, nl, ks, pls, dils, pads, insh, nk, caf, faf, oaf, d, hu, bs, ne, op, op_pars, ls])\
+           + ext
 
 
 def get_docs(cum_docs, zips):
