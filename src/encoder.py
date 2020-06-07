@@ -83,7 +83,7 @@ class Encoder(object):
 
         if self.enc_name == 'elmo':
             e = torch.tensor(self.model.embed_sentence(seq))
-            e = emb[self.elmo_dim, ...]
+            e = e[self.elmo_dim]
 
         elif self.enc_name == 'bert':
             # inds = torch.tensor(self.tokeniser.encode(' '.join(seq)), device=DEVICE).unsqueeze(0)
