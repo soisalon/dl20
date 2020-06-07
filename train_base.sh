@@ -8,7 +8,7 @@
 #SBATCH -c 10
 #SBATCH --mem=20G
 #SBATCH --gres=gpu:1
-#SBATCH -p gpu
+#SBATCH -p gpu-short
 
 
 # --mail-type=END
