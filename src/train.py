@@ -9,7 +9,7 @@ import numpy as np
 from sklearn.metrics import precision_recall_fscore_support
 
 from data import get_eyeball_set, get_model_savepath, DocDataset, SeqDataset
-from vars import LOSSES, OPTIMS, MODEL_DIR, DEVICE, PROJ_DIR
+from vars import LOSSES, OPTIMS, MODEL_DIR, DEVICE, PROJ_DIR, TESTING
 from encoder import Encoder
 import cnn
 
@@ -60,6 +60,9 @@ n_tr_docs = n_docs - n_dev_docs                 # docs to use for training set
 
 enc_name = params.emb_pars[0].split('=')[1]
 enc_name = enc_name[:4] if enc_name[:4] == 'bert' or enc_name[:4] == 'elmo' else enc_name
+
+if TESTING:
+    params.n_epochs = 2
 
 
 def train(epoch, iter_count):
@@ -165,8 +168,7 @@ tr_inds = np.random.choice(np.arange(n_docs), n_tr_docs)
 dev_inds = [i for i in range(n_docs) if i not in tr_inds]
 
 if params.use_seqs:
-    tr_dset = SeqDataset(seq_fpath, tr_inds, params, encoder, train=True) if not params.final \
-        else SeqDataset(seq_fpath, tr_inds, params, encoder, train=True)
+    tr_dset = SeqDataset(seq_fpath, tr_inds, params, encoder, train=True)
     dev_dset = SeqDataset(seq_fpath, tr_inds, params, encoder, train=False) if not params.final \
         else SeqDataset(te_seq_fpath, tr_inds, params, encoder, train=False)
 else:
@@ -210,15 +212,16 @@ else:
         train(e, it_count)
         # no validation since training with the whole dataset
 
+    torch.save(model.state_dict(), model_path)
+
     # get predictions on final test data
-    test_data = dev_dset.dev_data
+    test_data = dev_dset.dev_seqs
     with torch.no_grad():
         test_preds = model(test_data).squeeze()
     test_preds = test_preds.data.cpu().numpy()
     test_preds = (test_preds >= 0.5).astype('int')
     np.savetxt(os.path.join(PROJ_DIR, 'dl20', 'test_preds.txt'), test_preds, fmt='%i')
 
-    torch.save(model.state_dict(), model_path)
 
 print('Write results to file...')
 # write some results into file
