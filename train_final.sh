@@ -24,7 +24,6 @@ echo "training final model and get test_preds"
 
 # train model
 srun $USERAPPL/ve37/bin/python3 dl20/src/train.py \
-    --dev_ratio 0.1 \
     --seed 100 \
     --use_seqs 1 \
     --final 1 \
