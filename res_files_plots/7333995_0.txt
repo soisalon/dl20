@@ -1,0 +1,1365 @@
+training cnn for DL
+params.use_seqs:  True
+Init. encoder...
+Loading w2v embeddings...
+Initialise Datasets...
+Done.
+Initialise DataLoaders...
+Done.
+Start training...
+Train Epoch: 1/30 [0/269796 (0%)]	Training loss for batch 1/4216: 0.693712
+Train Epoch: 1/30 [6400/269796 (2%)]	Training loss for batch 101/4216: 0.086420
+Train Epoch: 1/30 [12800/269796 (5%)]	Training loss for batch 201/4216: 0.085452
+Train Epoch: 1/30 [19200/269796 (7%)]	Training loss for batch 301/4216: 0.085233
+Train Epoch: 1/30 [25600/269796 (9%)]	Training loss for batch 401/4216: 0.097395
+Train Epoch: 1/30 [32000/269796 (12%)]	Training loss for batch 501/4216: 0.079828
+Train Epoch: 1/30 [38400/269796 (14%)]	Training loss for batch 601/4216: 0.098114
+Train Epoch: 1/30 [44800/269796 (17%)]	Training loss for batch 701/4216: 0.082759
+Train Epoch: 1/30 [51200/269796 (19%)]	Training loss for batch 801/4216: 0.084822
+Train Epoch: 1/30 [57600/269796 (21%)]	Training loss for batch 901/4216: 0.086279
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0827, Precision: 74.91%, Recall: 4.55%, F1: 8.16%, Acc: 97.55%
+
+Train Epoch: 1/30 [64000/269796 (24%)]	Training loss for batch 1001/4216: 0.081352
+Train Epoch: 1/30 [70400/269796 (26%)]	Training loss for batch 1101/4216: 0.081208
+Train Epoch: 1/30 [76800/269796 (28%)]	Training loss for batch 1201/4216: 0.082437
+Train Epoch: 1/30 [83200/269796 (31%)]	Training loss for batch 1301/4216: 0.081386
+Train Epoch: 1/30 [89600/269796 (33%)]	Training loss for batch 1401/4216: 0.079181
+Train Epoch: 1/30 [96000/269796 (36%)]	Training loss for batch 1501/4216: 0.089784
+Train Epoch: 1/30 [102400/269796 (38%)]	Training loss for batch 1601/4216: 0.080446
+Train Epoch: 1/30 [108800/269796 (40%)]	Training loss for batch 1701/4216: 0.077491
+Train Epoch: 1/30 [115200/269796 (43%)]	Training loss for batch 1801/4216: 0.079492
+Train Epoch: 1/30 [121600/269796 (45%)]	Training loss for batch 1901/4216: 0.074579
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0776, Precision: 71.03%, Recall: 19.07%, F1: 28.76%, Acc: 97.76%
+
+Train Epoch: 1/30 [128000/269796 (47%)]	Training loss for batch 2001/4216: 0.068288
+Train Epoch: 1/30 [134400/269796 (50%)]	Training loss for batch 2101/4216: 0.078371
+Train Epoch: 1/30 [140800/269796 (52%)]	Training loss for batch 2201/4216: 0.075390
+Train Epoch: 1/30 [147200/269796 (55%)]	Training loss for batch 2301/4216: 0.078136
+Train Epoch: 1/30 [153600/269796 (57%)]	Training loss for batch 2401/4216: 0.065355
+Train Epoch: 1/30 [160000/269796 (59%)]	Training loss for batch 2501/4216: 0.081246
+Train Epoch: 1/30 [166400/269796 (62%)]	Training loss for batch 2601/4216: 0.068375
+Train Epoch: 1/30 [172800/269796 (64%)]	Training loss for batch 2701/4216: 0.067051
+Train Epoch: 1/30 [179200/269796 (66%)]	Training loss for batch 2801/4216: 0.067829
+Train Epoch: 1/30 [185600/269796 (69%)]	Training loss for batch 2901/4216: 0.072761
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0732, Precision: 73.13%, Recall: 27.55%, F1: 39.23%, Acc: 97.91%
+
+Train Epoch: 1/30 [192000/269796 (71%)]	Training loss for batch 3001/4216: 0.073672
+Train Epoch: 1/30 [198400/269796 (74%)]	Training loss for batch 3101/4216: 0.072003
+Train Epoch: 1/30 [204800/269796 (76%)]	Training loss for batch 3201/4216: 0.068245
+Train Epoch: 1/30 [211200/269796 (78%)]	Training loss for batch 3301/4216: 0.084370
+Train Epoch: 1/30 [217600/269796 (81%)]	Training loss for batch 3401/4216: 0.073203
+Train Epoch: 1/30 [224000/269796 (83%)]	Training loss for batch 3501/4216: 0.073408
+Train Epoch: 1/30 [230400/269796 (85%)]	Training loss for batch 3601/4216: 0.064450
+Train Epoch: 1/30 [236800/269796 (88%)]	Training loss for batch 3701/4216: 0.072417
+Train Epoch: 1/30 [243200/269796 (90%)]	Training loss for batch 3801/4216: 0.074429
+Train Epoch: 1/30 [249600/269796 (93%)]	Training loss for batch 3901/4216: 0.062988
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0704, Precision: 75.86%, Recall: 27.93%, F1: 40.19%, Acc: 97.95%
+
+Train Epoch: 1/30 [256000/269796 (95%)]	Training loss for batch 4001/4216: 0.079707
+Train Epoch: 1/30 [262400/269796 (97%)]	Training loss for batch 4101/4216: 0.069123
+Train Epoch: 1/30 [268800/269796 (100%)]	Training loss for batch 4201/4216: 0.075592
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0699, Precision: 75.48%, Recall: 28.80%, F1: 41.02%, Acc: 97.96%
+
+Train Epoch: 2/30 [0/269796 (0%)]	Training loss for batch 1/4216: 0.073937
+Train Epoch: 2/30 [6400/269796 (2%)]	Training loss for batch 101/4216: 0.076665
+Train Epoch: 2/30 [12800/269796 (5%)]	Training loss for batch 201/4216: 0.070460
+Train Epoch: 2/30 [19200/269796 (7%)]	Training loss for batch 301/4216: 0.078353
+Train Epoch: 2/30 [25600/269796 (9%)]	Training loss for batch 401/4216: 0.068084
+Train Epoch: 2/30 [32000/269796 (12%)]	Training loss for batch 501/4216: 0.064354
+Train Epoch: 2/30 [38400/269796 (14%)]	Training loss for batch 601/4216: 0.072507
+Train Epoch: 2/30 [44800/269796 (17%)]	Training loss for batch 701/4216: 0.059278
+Train Epoch: 2/30 [51200/269796 (19%)]	Training loss for batch 801/4216: 0.075471
+Train Epoch: 2/30 [57600/269796 (21%)]	Training loss for batch 901/4216: 0.076114
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0678, Precision: 76.63%, Recall: 30.12%, F1: 42.56%, Acc: 98.00%
+
+Train Epoch: 2/30 [64000/269796 (24%)]	Training loss for batch 1001/4216: 0.057044
+Train Epoch: 2/30 [70400/269796 (26%)]	Training loss for batch 1101/4216: 0.078438
+Train Epoch: 2/30 [76800/269796 (28%)]	Training loss for batch 1201/4216: 0.069504
+Train Epoch: 2/30 [83200/269796 (31%)]	Training loss for batch 1301/4216: 0.065344
+Train Epoch: 2/30 [89600/269796 (33%)]	Training loss for batch 1401/4216: 0.064004
+Train Epoch: 2/30 [96000/269796 (36%)]	Training loss for batch 1501/4216: 0.076708
+Train Epoch: 2/30 [102400/269796 (38%)]	Training loss for batch 1601/4216: 0.058462
+Train Epoch: 2/30 [108800/269796 (40%)]	Training loss for batch 1701/4216: 0.070061
+Train Epoch: 2/30 [115200/269796 (43%)]	Training loss for batch 1801/4216: 0.071029
+Train Epoch: 2/30 [121600/269796 (45%)]	Training loss for batch 1901/4216: 0.068646
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0656, Precision: 76.16%, Recall: 33.76%, F1: 46.06%, Acc: 98.06%
+
+Train Epoch: 2/30 [128000/269796 (47%)]	Training loss for batch 2001/4216: 0.062862
+Train Epoch: 2/30 [134400/269796 (50%)]	Training loss for batch 2101/4216: 0.071249
+Train Epoch: 2/30 [140800/269796 (52%)]	Training loss for batch 2201/4216: 0.061253
+Train Epoch: 2/30 [147200/269796 (55%)]	Training loss for batch 2301/4216: 0.072932
+Train Epoch: 2/30 [153600/269796 (57%)]	Training loss for batch 2401/4216: 0.063498
+Train Epoch: 2/30 [160000/269796 (59%)]	Training loss for batch 2501/4216: 0.065483
+Train Epoch: 2/30 [166400/269796 (62%)]	Training loss for batch 2601/4216: 0.066358
+Train Epoch: 2/30 [172800/269796 (64%)]	Training loss for batch 2701/4216: 0.068651
+Train Epoch: 2/30 [179200/269796 (66%)]	Training loss for batch 2801/4216: 0.062502
+Train Epoch: 2/30 [185600/269796 (69%)]	Training loss for batch 2901/4216: 0.056957
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0643, Precision: 76.91%, Recall: 34.53%, F1: 46.88%, Acc: 98.08%
+
+Train Epoch: 2/30 [192000/269796 (71%)]	Training loss for batch 3001/4216: 0.064569
+Train Epoch: 2/30 [198400/269796 (74%)]	Training loss for batch 3101/4216: 0.058423
+Train Epoch: 2/30 [204800/269796 (76%)]	Training loss for batch 3201/4216: 0.071591
+Train Epoch: 2/30 [211200/269796 (78%)]	Training loss for batch 3301/4216: 0.061946
+Train Epoch: 2/30 [217600/269796 (81%)]	Training loss for batch 3401/4216: 0.062158
+Train Epoch: 2/30 [224000/269796 (83%)]	Training loss for batch 3501/4216: 0.062979
+Train Epoch: 2/30 [230400/269796 (85%)]	Training loss for batch 3601/4216: 0.053620
+Train Epoch: 2/30 [236800/269796 (88%)]	Training loss for batch 3701/4216: 0.062887
+Train Epoch: 2/30 [243200/269796 (90%)]	Training loss for batch 3801/4216: 0.064820
+Train Epoch: 2/30 [249600/269796 (93%)]	Training loss for batch 3901/4216: 0.067791
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0632, Precision: 76.56%, Recall: 36.38%, F1: 48.61%, Acc: 98.11%
+
+Train Epoch: 2/30 [256000/269796 (95%)]	Training loss for batch 4001/4216: 0.063281
+Train Epoch: 2/30 [262400/269796 (97%)]	Training loss for batch 4101/4216: 0.059301
+Train Epoch: 2/30 [268800/269796 (100%)]	Training loss for batch 4201/4216: 0.062841
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0632, Precision: 77.12%, Recall: 35.23%, F1: 47.58%, Acc: 98.10%
+
+Train Epoch: 3/30 [0/269796 (0%)]	Training loss for batch 1/4216: 0.057355
+Train Epoch: 3/30 [6400/269796 (2%)]	Training loss for batch 101/4216: 0.062290
+Train Epoch: 3/30 [12800/269796 (5%)]	Training loss for batch 201/4216: 0.065089
+Train Epoch: 3/30 [19200/269796 (7%)]	Training loss for batch 301/4216: 0.059521
+Train Epoch: 3/30 [25600/269796 (9%)]	Training loss for batch 401/4216: 0.062143
+Train Epoch: 3/30 [32000/269796 (12%)]	Training loss for batch 501/4216: 0.076735
+Train Epoch: 3/30 [38400/269796 (14%)]	Training loss for batch 601/4216: 0.063675
+Train Epoch: 3/30 [44800/269796 (17%)]	Training loss for batch 701/4216: 0.069146
+Train Epoch: 3/30 [51200/269796 (19%)]	Training loss for batch 801/4216: 0.063051
+Train Epoch: 3/30 [57600/269796 (21%)]	Training loss for batch 901/4216: 0.068436
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0627, Precision: 77.42%, Recall: 35.36%, F1: 47.80%, Acc: 98.11%
+
+Train Epoch: 3/30 [64000/269796 (24%)]	Training loss for batch 1001/4216: 0.067643
+Train Epoch: 3/30 [70400/269796 (26%)]	Training loss for batch 1101/4216: 0.059827
+Train Epoch: 3/30 [76800/269796 (28%)]	Training loss for batch 1201/4216: 0.064179
+Train Epoch: 3/30 [83200/269796 (31%)]	Training loss for batch 1301/4216: 0.057006
+Train Epoch: 3/30 [89600/269796 (33%)]	Training loss for batch 1401/4216: 0.059687
+Train Epoch: 3/30 [96000/269796 (36%)]	Training loss for batch 1501/4216: 0.066244
+Train Epoch: 3/30 [102400/269796 (38%)]	Training loss for batch 1601/4216: 0.055300
+Train Epoch: 3/30 [108800/269796 (40%)]	Training loss for batch 1701/4216: 0.066572
+Train Epoch: 3/30 [115200/269796 (43%)]	Training loss for batch 1801/4216: 0.059924
+Train Epoch: 3/30 [121600/269796 (45%)]	Training loss for batch 1901/4216: 0.056596
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0618, Precision: 76.43%, Recall: 38.45%, F1: 50.54%, Acc: 98.15%
+
+Train Epoch: 3/30 [128000/269796 (47%)]	Training loss for batch 2001/4216: 0.051792
+Train Epoch: 3/30 [134400/269796 (50%)]	Training loss for batch 2101/4216: 0.060889
+Train Epoch: 3/30 [140800/269796 (52%)]	Training loss for batch 2201/4216: 0.061679
+Train Epoch: 3/30 [147200/269796 (55%)]	Training loss for batch 2301/4216: 0.072971
+Train Epoch: 3/30 [153600/269796 (57%)]	Training loss for batch 2401/4216: 0.069469
+Train Epoch: 3/30 [160000/269796 (59%)]	Training loss for batch 2501/4216: 0.067166
+Train Epoch: 3/30 [166400/269796 (62%)]	Training loss for batch 2601/4216: 0.072741
+Train Epoch: 3/30 [172800/269796 (64%)]	Training loss for batch 2701/4216: 0.063930
+Train Epoch: 3/30 [179200/269796 (66%)]	Training loss for batch 2801/4216: 0.068071
+Train Epoch: 3/30 [185600/269796 (69%)]	Training loss for batch 2901/4216: 0.059675
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0611, Precision: 76.71%, Recall: 38.69%, F1: 50.82%, Acc: 98.16%
+
+Train Epoch: 3/30 [192000/269796 (71%)]	Training loss for batch 3001/4216: 0.057876
+Train Epoch: 3/30 [198400/269796 (74%)]	Training loss for batch 3101/4216: 0.055381
+Train Epoch: 3/30 [204800/269796 (76%)]	Training loss for batch 3201/4216: 0.054457
+Train Epoch: 3/30 [211200/269796 (78%)]	Training loss for batch 3301/4216: 0.065488
+Train Epoch: 3/30 [217600/269796 (81%)]	Training loss for batch 3401/4216: 0.055730
+Train Epoch: 3/30 [224000/269796 (83%)]	Training loss for batch 3501/4216: 0.057989
+Train Epoch: 3/30 [230400/269796 (85%)]	Training loss for batch 3601/4216: 0.060407
+Train Epoch: 3/30 [236800/269796 (88%)]	Training loss for batch 3701/4216: 0.060217
+Train Epoch: 3/30 [243200/269796 (90%)]	Training loss for batch 3801/4216: 0.062767
+Train Epoch: 3/30 [249600/269796 (93%)]	Training loss for batch 3901/4216: 0.065458
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0606, Precision: 76.25%, Recall: 39.91%, F1: 51.84%, Acc: 98.17%
+
+Train Epoch: 3/30 [256000/269796 (95%)]	Training loss for batch 4001/4216: 0.062238
+Train Epoch: 3/30 [262400/269796 (97%)]	Training loss for batch 4101/4216: 0.059055
+Train Epoch: 3/30 [268800/269796 (100%)]	Training loss for batch 4201/4216: 0.068655
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0605, Precision: 77.01%, Recall: 39.15%, F1: 51.31%, Acc: 98.17%
+
+Train Epoch: 4/30 [0/269796 (0%)]	Training loss for batch 1/4216: 0.065054
+Train Epoch: 4/30 [6400/269796 (2%)]	Training loss for batch 101/4216: 0.064541
+Train Epoch: 4/30 [12800/269796 (5%)]	Training loss for batch 201/4216: 0.048847
+Train Epoch: 4/30 [19200/269796 (7%)]	Training loss for batch 301/4216: 0.068956
+Train Epoch: 4/30 [25600/269796 (9%)]	Training loss for batch 401/4216: 0.069148
+Train Epoch: 4/30 [32000/269796 (12%)]	Training loss for batch 501/4216: 0.057327
+Train Epoch: 4/30 [38400/269796 (14%)]	Training loss for batch 601/4216: 0.059752
+Train Epoch: 4/30 [44800/269796 (17%)]	Training loss for batch 701/4216: 0.055246
+Train Epoch: 4/30 [51200/269796 (19%)]	Training loss for batch 801/4216: 0.049265
+Train Epoch: 4/30 [57600/269796 (21%)]	Training loss for batch 901/4216: 0.063688
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0604, Precision: 77.33%, Recall: 38.32%, F1: 50.58%, Acc: 98.16%
+
+Train Epoch: 4/30 [64000/269796 (24%)]	Training loss for batch 1001/4216: 0.052136
+Train Epoch: 4/30 [70400/269796 (26%)]	Training loss for batch 1101/4216: 0.055520
+Train Epoch: 4/30 [76800/269796 (28%)]	Training loss for batch 1201/4216: 0.064321
+Train Epoch: 4/30 [83200/269796 (31%)]	Training loss for batch 1301/4216: 0.055730
+Train Epoch: 4/30 [89600/269796 (33%)]	Training loss for batch 1401/4216: 0.057720
+Train Epoch: 4/30 [96000/269796 (36%)]	Training loss for batch 1501/4216: 0.069046
+Train Epoch: 4/30 [102400/269796 (38%)]	Training loss for batch 1601/4216: 0.054471
+Train Epoch: 4/30 [108800/269796 (40%)]	Training loss for batch 1701/4216: 0.060658
+Train Epoch: 4/30 [115200/269796 (43%)]	Training loss for batch 1801/4216: 0.055852
+Train Epoch: 4/30 [121600/269796 (45%)]	Training loss for batch 1901/4216: 0.067321
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0597, Precision: 76.38%, Recall: 40.88%, F1: 52.71%, Acc: 98.19%
+
+Train Epoch: 4/30 [128000/269796 (47%)]	Training loss for batch 2001/4216: 0.052763
+Train Epoch: 4/30 [134400/269796 (50%)]	Training loss for batch 2101/4216: 0.051610
+Train Epoch: 4/30 [140800/269796 (52%)]	Training loss for batch 2201/4216: 0.060368
+Train Epoch: 4/30 [147200/269796 (55%)]	Training loss for batch 2301/4216: 0.067322
+Train Epoch: 4/30 [153600/269796 (57%)]	Training loss for batch 2401/4216: 0.049430
+Train Epoch: 4/30 [160000/269796 (59%)]	Training loss for batch 2501/4216: 0.061625
+Train Epoch: 4/30 [166400/269796 (62%)]	Training loss for batch 2601/4216: 0.055360
+Train Epoch: 4/30 [172800/269796 (64%)]	Training loss for batch 2701/4216: 0.059409
+Train Epoch: 4/30 [179200/269796 (66%)]	Training loss for batch 2801/4216: 0.063271
+Train Epoch: 4/30 [185600/269796 (69%)]	Training loss for batch 2901/4216: 0.062159
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0592, Precision: 76.67%, Recall: 41.12%, F1: 52.99%, Acc: 98.20%
+
+Train Epoch: 4/30 [192000/269796 (71%)]	Training loss for batch 3001/4216: 0.057463
+Train Epoch: 4/30 [198400/269796 (74%)]	Training loss for batch 3101/4216: 0.062172
+Train Epoch: 4/30 [204800/269796 (76%)]	Training loss for batch 3201/4216: 0.063188
+Train Epoch: 4/30 [211200/269796 (78%)]	Training loss for batch 3301/4216: 0.055091
+Train Epoch: 4/30 [217600/269796 (81%)]	Training loss for batch 3401/4216: 0.068072
+Train Epoch: 4/30 [224000/269796 (83%)]	Training loss for batch 3501/4216: 0.057243
+Train Epoch: 4/30 [230400/269796 (85%)]	Training loss for batch 3601/4216: 0.061997
+Train Epoch: 4/30 [236800/269796 (88%)]	Training loss for batch 3701/4216: 0.054692
+Train Epoch: 4/30 [243200/269796 (90%)]	Training loss for batch 3801/4216: 0.058459
+Train Epoch: 4/30 [249600/269796 (93%)]	Training loss for batch 3901/4216: 0.058675
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0588, Precision: 76.01%, Recall: 42.64%, F1: 54.17%, Acc: 98.22%
+
+Train Epoch: 4/30 [256000/269796 (95%)]	Training loss for batch 4001/4216: 0.071586
+Train Epoch: 4/30 [262400/269796 (97%)]	Training loss for batch 4101/4216: 0.067147
+Train Epoch: 4/30 [268800/269796 (100%)]	Training loss for batch 4201/4216: 0.044011
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0589, Precision: 76.16%, Recall: 42.24%, F1: 53.86%, Acc: 98.22%
+
+Train Epoch: 5/30 [0/269796 (0%)]	Training loss for batch 1/4216: 0.055168
+Train Epoch: 5/30 [6400/269796 (2%)]	Training loss for batch 101/4216: 0.063363
+Train Epoch: 5/30 [12800/269796 (5%)]	Training loss for batch 201/4216: 0.074204
+Train Epoch: 5/30 [19200/269796 (7%)]	Training loss for batch 301/4216: 0.057142
+Train Epoch: 5/30 [25600/269796 (9%)]	Training loss for batch 401/4216: 0.055311
+Train Epoch: 5/30 [32000/269796 (12%)]	Training loss for batch 501/4216: 0.066220
+Train Epoch: 5/30 [38400/269796 (14%)]	Training loss for batch 601/4216: 0.059913
+Train Epoch: 5/30 [44800/269796 (17%)]	Training loss for batch 701/4216: 0.053626
+Train Epoch: 5/30 [51200/269796 (19%)]	Training loss for batch 801/4216: 0.064112
+Train Epoch: 5/30 [57600/269796 (21%)]	Training loss for batch 901/4216: 0.060251
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0587, Precision: 76.82%, Recall: 40.75%, F1: 52.71%, Acc: 98.20%
+
+Train Epoch: 5/30 [64000/269796 (24%)]	Training loss for batch 1001/4216: 0.059987
+Train Epoch: 5/30 [70400/269796 (26%)]	Training loss for batch 1101/4216: 0.058489
+Train Epoch: 5/30 [76800/269796 (28%)]	Training loss for batch 1201/4216: 0.049651
+Train Epoch: 5/30 [83200/269796 (31%)]	Training loss for batch 1301/4216: 0.064641
+Train Epoch: 5/30 [89600/269796 (33%)]	Training loss for batch 1401/4216: 0.062739
+Train Epoch: 5/30 [96000/269796 (36%)]	Training loss for batch 1501/4216: 0.051883
+Train Epoch: 5/30 [102400/269796 (38%)]	Training loss for batch 1601/4216: 0.057437
+Train Epoch: 5/30 [108800/269796 (40%)]	Training loss for batch 1701/4216: 0.057309
+Train Epoch: 5/30 [115200/269796 (43%)]	Training loss for batch 1801/4216: 0.066420
+Train Epoch: 5/30 [121600/269796 (45%)]	Training loss for batch 1901/4216: 0.042032
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0582, Precision: 75.91%, Recall: 43.54%, F1: 54.90%, Acc: 98.24%
+
+Train Epoch: 5/30 [128000/269796 (47%)]	Training loss for batch 2001/4216: 0.053379
+Train Epoch: 5/30 [134400/269796 (50%)]	Training loss for batch 2101/4216: 0.051967
+Train Epoch: 5/30 [140800/269796 (52%)]	Training loss for batch 2201/4216: 0.056125
+Train Epoch: 5/30 [147200/269796 (55%)]	Training loss for batch 2301/4216: 0.049751
+Train Epoch: 5/30 [153600/269796 (57%)]	Training loss for batch 2401/4216: 0.058588
+Train Epoch: 5/30 [160000/269796 (59%)]	Training loss for batch 2501/4216: 0.056333
+Train Epoch: 5/30 [166400/269796 (62%)]	Training loss for batch 2601/4216: 0.057684
+Train Epoch: 5/30 [172800/269796 (64%)]	Training loss for batch 2701/4216: 0.052551
+Train Epoch: 5/30 [179200/269796 (66%)]	Training loss for batch 2801/4216: 0.068382
+Train Epoch: 5/30 [185600/269796 (69%)]	Training loss for batch 2901/4216: 0.054129
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0579, Precision: 75.56%, Recall: 44.10%, F1: 55.27%, Acc: 98.24%
+
+Train Epoch: 5/30 [192000/269796 (71%)]	Training loss for batch 3001/4216: 0.062038
+Train Epoch: 5/30 [198400/269796 (74%)]	Training loss for batch 3101/4216: 0.066341
+Train Epoch: 5/30 [204800/269796 (76%)]	Training loss for batch 3201/4216: 0.053405
+Train Epoch: 5/30 [211200/269796 (78%)]	Training loss for batch 3301/4216: 0.054614
+Train Epoch: 5/30 [217600/269796 (81%)]	Training loss for batch 3401/4216: 0.059783
+Train Epoch: 5/30 [224000/269796 (83%)]	Training loss for batch 3501/4216: 0.051737
+Train Epoch: 5/30 [230400/269796 (85%)]	Training loss for batch 3601/4216: 0.052425
+Train Epoch: 5/30 [236800/269796 (88%)]	Training loss for batch 3701/4216: 0.053061
+Train Epoch: 5/30 [243200/269796 (90%)]	Training loss for batch 3801/4216: 0.057600
+Train Epoch: 5/30 [249600/269796 (93%)]	Training loss for batch 3901/4216: 0.065670
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0576, Precision: 75.94%, Recall: 44.00%, F1: 55.29%, Acc: 98.25%
+
+Train Epoch: 5/30 [256000/269796 (95%)]	Training loss for batch 4001/4216: 0.053681
+Train Epoch: 5/30 [262400/269796 (97%)]	Training loss for batch 4101/4216: 0.058298
+Train Epoch: 5/30 [268800/269796 (100%)]	Training loss for batch 4201/4216: 0.063885
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0577, Precision: 75.21%, Recall: 44.95%, F1: 55.87%, Acc: 98.25%
+
+Train Epoch: 6/30 [0/269796 (0%)]	Training loss for batch 1/4216: 0.060011
+Train Epoch: 6/30 [6400/269796 (2%)]	Training loss for batch 101/4216: 0.058404
+Train Epoch: 6/30 [12800/269796 (5%)]	Training loss for batch 201/4216: 0.055699
+Train Epoch: 6/30 [19200/269796 (7%)]	Training loss for batch 301/4216: 0.059337
+Train Epoch: 6/30 [25600/269796 (9%)]	Training loss for batch 401/4216: 0.055386
+Train Epoch: 6/30 [32000/269796 (12%)]	Training loss for batch 501/4216: 0.053380
+Train Epoch: 6/30 [38400/269796 (14%)]	Training loss for batch 601/4216: 0.065758
+Train Epoch: 6/30 [44800/269796 (17%)]	Training loss for batch 701/4216: 0.057456
+Train Epoch: 6/30 [51200/269796 (19%)]	Training loss for batch 801/4216: 0.066986
+Train Epoch: 6/30 [57600/269796 (21%)]	Training loss for batch 901/4216: 0.054155
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0576, Precision: 76.89%, Recall: 42.18%, F1: 53.94%, Acc: 98.23%
+
+Train Epoch: 6/30 [64000/269796 (24%)]	Training loss for batch 1001/4216: 0.066783
+Train Epoch: 6/30 [70400/269796 (26%)]	Training loss for batch 1101/4216: 0.058075
+Train Epoch: 6/30 [76800/269796 (28%)]	Training loss for batch 1201/4216: 0.047652
+Train Epoch: 6/30 [83200/269796 (31%)]	Training loss for batch 1301/4216: 0.060869
+Train Epoch: 6/30 [89600/269796 (33%)]	Training loss for batch 1401/4216: 0.050600
+Train Epoch: 6/30 [96000/269796 (36%)]	Training loss for batch 1501/4216: 0.053652
+Train Epoch: 6/30 [102400/269796 (38%)]	Training loss for batch 1601/4216: 0.067466
+Train Epoch: 6/30 [108800/269796 (40%)]	Training loss for batch 1701/4216: 0.054593
+Train Epoch: 6/30 [115200/269796 (43%)]	Training loss for batch 1801/4216: 0.047256
+Train Epoch: 6/30 [121600/269796 (45%)]	Training loss for batch 1901/4216: 0.056946
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0573, Precision: 75.91%, Recall: 44.76%, F1: 55.89%, Acc: 98.26%
+
+Train Epoch: 6/30 [128000/269796 (47%)]	Training loss for batch 2001/4216: 0.062812
+Train Epoch: 6/30 [134400/269796 (50%)]	Training loss for batch 2101/4216: 0.050036
+Train Epoch: 6/30 [140800/269796 (52%)]	Training loss for batch 2201/4216: 0.063643
+Train Epoch: 6/30 [147200/269796 (55%)]	Training loss for batch 2301/4216: 0.061293
+Train Epoch: 6/30 [153600/269796 (57%)]	Training loss for batch 2401/4216: 0.060878
+Train Epoch: 6/30 [160000/269796 (59%)]	Training loss for batch 2501/4216: 0.050059
+Train Epoch: 6/30 [166400/269796 (62%)]	Training loss for batch 2601/4216: 0.047517
+Train Epoch: 6/30 [172800/269796 (64%)]	Training loss for batch 2701/4216: 0.067600
+Train Epoch: 6/30 [179200/269796 (66%)]	Training loss for batch 2801/4216: 0.061293
+Train Epoch: 6/30 [185600/269796 (69%)]	Training loss for batch 2901/4216: 0.068517
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0569, Precision: 75.70%, Recall: 45.17%, F1: 56.17%, Acc: 98.26%
+
+Train Epoch: 6/30 [192000/269796 (71%)]	Training loss for batch 3001/4216: 0.052763
+Train Epoch: 6/30 [198400/269796 (74%)]	Training loss for batch 3101/4216: 0.062411
+Train Epoch: 6/30 [204800/269796 (76%)]	Training loss for batch 3201/4216: 0.054514
+Train Epoch: 6/30 [211200/269796 (78%)]	Training loss for batch 3301/4216: 0.055240
+Train Epoch: 6/30 [217600/269796 (81%)]	Training loss for batch 3401/4216: 0.052178
+Train Epoch: 6/30 [224000/269796 (83%)]	Training loss for batch 3501/4216: 0.055788
+Train Epoch: 6/30 [230400/269796 (85%)]	Training loss for batch 3601/4216: 0.042236
+Train Epoch: 6/30 [236800/269796 (88%)]	Training loss for batch 3701/4216: 0.062971
+Train Epoch: 6/30 [243200/269796 (90%)]	Training loss for batch 3801/4216: 0.048941
+Train Epoch: 6/30 [249600/269796 (93%)]	Training loss for batch 3901/4216: 0.057837
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0567, Precision: 75.30%, Recall: 46.24%, F1: 56.92%, Acc: 98.27%
+
+Train Epoch: 6/30 [256000/269796 (95%)]	Training loss for batch 4001/4216: 0.054936
+Train Epoch: 6/30 [262400/269796 (97%)]	Training loss for batch 4101/4216: 0.053124
+Train Epoch: 6/30 [268800/269796 (100%)]	Training loss for batch 4201/4216: 0.044876
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0568, Precision: 75.11%, Recall: 46.31%, F1: 56.91%, Acc: 98.27%
+
+Train Epoch: 7/30 [0/269796 (0%)]	Training loss for batch 1/4216: 0.051006
+Train Epoch: 7/30 [6400/269796 (2%)]	Training loss for batch 101/4216: 0.056879
+Train Epoch: 7/30 [12800/269796 (5%)]	Training loss for batch 201/4216: 0.063755
+Train Epoch: 7/30 [19200/269796 (7%)]	Training loss for batch 301/4216: 0.061107
+Train Epoch: 7/30 [25600/269796 (9%)]	Training loss for batch 401/4216: 0.070814
+Train Epoch: 7/30 [32000/269796 (12%)]	Training loss for batch 501/4216: 0.066462
+Train Epoch: 7/30 [38400/269796 (14%)]	Training loss for batch 601/4216: 0.057488
+Train Epoch: 7/30 [44800/269796 (17%)]	Training loss for batch 701/4216: 0.056443
+Train Epoch: 7/30 [51200/269796 (19%)]	Training loss for batch 801/4216: 0.051738
+Train Epoch: 7/30 [57600/269796 (21%)]	Training loss for batch 901/4216: 0.061248
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0567, Precision: 76.86%, Recall: 43.07%, F1: 54.72%, Acc: 98.25%
+
+Train Epoch: 7/30 [64000/269796 (24%)]	Training loss for batch 1001/4216: 0.045888
+Train Epoch: 7/30 [70400/269796 (26%)]	Training loss for batch 1101/4216: 0.048070
+Train Epoch: 7/30 [76800/269796 (28%)]	Training loss for batch 1201/4216: 0.045419
+Train Epoch: 7/30 [83200/269796 (31%)]	Training loss for batch 1301/4216: 0.054272
+Train Epoch: 7/30 [89600/269796 (33%)]	Training loss for batch 1401/4216: 0.057129
+Train Epoch: 7/30 [96000/269796 (36%)]	Training loss for batch 1501/4216: 0.043718
+Train Epoch: 7/30 [102400/269796 (38%)]	Training loss for batch 1601/4216: 0.053321
+Train Epoch: 7/30 [108800/269796 (40%)]	Training loss for batch 1701/4216: 0.050664
+Train Epoch: 7/30 [115200/269796 (43%)]	Training loss for batch 1801/4216: 0.052719
+Train Epoch: 7/30 [121600/269796 (45%)]	Training loss for batch 1901/4216: 0.044850
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0565, Precision: 75.63%, Recall: 45.89%, F1: 56.72%, Acc: 98.28%
+
+Train Epoch: 7/30 [128000/269796 (47%)]	Training loss for batch 2001/4216: 0.048058
+Train Epoch: 7/30 [134400/269796 (50%)]	Training loss for batch 2101/4216: 0.066374
+Train Epoch: 7/30 [140800/269796 (52%)]	Training loss for batch 2201/4216: 0.054877
+Train Epoch: 7/30 [147200/269796 (55%)]	Training loss for batch 2301/4216: 0.065815
+Train Epoch: 7/30 [153600/269796 (57%)]	Training loss for batch 2401/4216: 0.051808
+Train Epoch: 7/30 [160000/269796 (59%)]	Training loss for batch 2501/4216: 0.057900
+Train Epoch: 7/30 [166400/269796 (62%)]	Training loss for batch 2601/4216: 0.064567
+Train Epoch: 7/30 [172800/269796 (64%)]	Training loss for batch 2701/4216: 0.045678
+Train Epoch: 7/30 [179200/269796 (66%)]	Training loss for batch 2801/4216: 0.050745
+Train Epoch: 7/30 [185600/269796 (69%)]	Training loss for batch 2901/4216: 0.052458
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0563, Precision: 75.23%, Recall: 46.44%, F1: 57.05%, Acc: 98.28%
+
+Train Epoch: 7/30 [192000/269796 (71%)]	Training loss for batch 3001/4216: 0.050063
+Train Epoch: 7/30 [198400/269796 (74%)]	Training loss for batch 3101/4216: 0.042752
+Train Epoch: 7/30 [204800/269796 (76%)]	Training loss for batch 3201/4216: 0.059809
+Train Epoch: 7/30 [211200/269796 (78%)]	Training loss for batch 3301/4216: 0.050982
+Train Epoch: 7/30 [217600/269796 (81%)]	Training loss for batch 3401/4216: 0.055766
+Train Epoch: 7/30 [224000/269796 (83%)]	Training loss for batch 3501/4216: 0.062136
+Train Epoch: 7/30 [230400/269796 (85%)]	Training loss for batch 3601/4216: 0.055670
+Train Epoch: 7/30 [236800/269796 (88%)]	Training loss for batch 3701/4216: 0.051926
+Train Epoch: 7/30 [243200/269796 (90%)]	Training loss for batch 3801/4216: 0.043731
+Train Epoch: 7/30 [249600/269796 (93%)]	Training loss for batch 3901/4216: 0.056007
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0561, Precision: 75.35%, Recall: 46.55%, F1: 57.18%, Acc: 98.28%
+
+Train Epoch: 7/30 [256000/269796 (95%)]	Training loss for batch 4001/4216: 0.056669
+Train Epoch: 7/30 [262400/269796 (97%)]	Training loss for batch 4101/4216: 0.059256
+Train Epoch: 7/30 [268800/269796 (100%)]	Training loss for batch 4201/4216: 0.054272
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0560, Precision: 75.78%, Recall: 45.99%, F1: 56.84%, Acc: 98.28%
+
+Train Epoch: 8/30 [0/269796 (0%)]	Training loss for batch 1/4216: 0.050022
+Train Epoch: 8/30 [6400/269796 (2%)]	Training loss for batch 101/4216: 0.050478
+Train Epoch: 8/30 [12800/269796 (5%)]	Training loss for batch 201/4216: 0.053318
+Train Epoch: 8/30 [19200/269796 (7%)]	Training loss for batch 301/4216: 0.053774
+Train Epoch: 8/30 [25600/269796 (9%)]	Training loss for batch 401/4216: 0.058996
+Train Epoch: 8/30 [32000/269796 (12%)]	Training loss for batch 501/4216: 0.054267
+Train Epoch: 8/30 [38400/269796 (14%)]	Training loss for batch 601/4216: 0.053595
+Train Epoch: 8/30 [44800/269796 (17%)]	Training loss for batch 701/4216: 0.056151
+Train Epoch: 8/30 [51200/269796 (19%)]	Training loss for batch 801/4216: 0.061883
+Train Epoch: 8/30 [57600/269796 (21%)]	Training loss for batch 901/4216: 0.062513
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0562, Precision: 75.71%, Recall: 45.07%, F1: 56.08%, Acc: 98.26%
+
+Train Epoch: 8/30 [64000/269796 (24%)]	Training loss for batch 1001/4216: 0.047472
+Train Epoch: 8/30 [70400/269796 (26%)]	Training loss for batch 1101/4216: 0.057502
+Train Epoch: 8/30 [76800/269796 (28%)]	Training loss for batch 1201/4216: 0.043523
+Train Epoch: 8/30 [83200/269796 (31%)]	Training loss for batch 1301/4216: 0.053752
+Train Epoch: 8/30 [89600/269796 (33%)]	Training loss for batch 1401/4216: 0.055367
+Train Epoch: 8/30 [96000/269796 (36%)]	Training loss for batch 1501/4216: 0.056028
+Train Epoch: 8/30 [102400/269796 (38%)]	Training loss for batch 1601/4216: 0.048434
+Train Epoch: 8/30 [108800/269796 (40%)]	Training loss for batch 1701/4216: 0.045131
+Train Epoch: 8/30 [115200/269796 (43%)]	Training loss for batch 1801/4216: 0.053084
+Train Epoch: 8/30 [121600/269796 (45%)]	Training loss for batch 1901/4216: 0.056730
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0559, Precision: 74.84%, Recall: 47.61%, F1: 57.85%, Acc: 98.29%
+
+Train Epoch: 8/30 [128000/269796 (47%)]	Training loss for batch 2001/4216: 0.054384
+Train Epoch: 8/30 [134400/269796 (50%)]	Training loss for batch 2101/4216: 0.054130
+Train Epoch: 8/30 [140800/269796 (52%)]	Training loss for batch 2201/4216: 0.045162
+Train Epoch: 8/30 [147200/269796 (55%)]	Training loss for batch 2301/4216: 0.050862
+Train Epoch: 8/30 [153600/269796 (57%)]	Training loss for batch 2401/4216: 0.064042
+Train Epoch: 8/30 [160000/269796 (59%)]	Training loss for batch 2501/4216: 0.053131
+Train Epoch: 8/30 [166400/269796 (62%)]	Training loss for batch 2601/4216: 0.048845
+Train Epoch: 8/30 [172800/269796 (64%)]	Training loss for batch 2701/4216: 0.051852
+Train Epoch: 8/30 [179200/269796 (66%)]	Training loss for batch 2801/4216: 0.057180
+Train Epoch: 8/30 [185600/269796 (69%)]	Training loss for batch 2901/4216: 0.046754
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0559, Precision: 74.49%, Recall: 47.84%, F1: 57.92%, Acc: 98.28%
+
+Train Epoch: 8/30 [192000/269796 (71%)]	Training loss for batch 3001/4216: 0.056942
+Train Epoch: 8/30 [198400/269796 (74%)]	Training loss for batch 3101/4216: 0.042070
+Train Epoch: 8/30 [204800/269796 (76%)]	Training loss for batch 3201/4216: 0.050929
+Train Epoch: 8/30 [211200/269796 (78%)]	Training loss for batch 3301/4216: 0.052915
+Train Epoch: 8/30 [217600/269796 (81%)]	Training loss for batch 3401/4216: 0.061343
+Train Epoch: 8/30 [224000/269796 (83%)]	Training loss for batch 3501/4216: 0.055889
+Train Epoch: 8/30 [230400/269796 (85%)]	Training loss for batch 3601/4216: 0.051507
+Train Epoch: 8/30 [236800/269796 (88%)]	Training loss for batch 3701/4216: 0.058254
+Train Epoch: 8/30 [243200/269796 (90%)]	Training loss for batch 3801/4216: 0.050698
+Train Epoch: 8/30 [249600/269796 (93%)]	Training loss for batch 3901/4216: 0.053103
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0557, Precision: 74.63%, Recall: 47.94%, F1: 58.04%, Acc: 98.29%
+
+Train Epoch: 8/30 [256000/269796 (95%)]	Training loss for batch 4001/4216: 0.057192
+Train Epoch: 8/30 [262400/269796 (97%)]	Training loss for batch 4101/4216: 0.050141
+Train Epoch: 8/30 [268800/269796 (100%)]	Training loss for batch 4201/4216: 0.064333
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0556, Precision: 74.94%, Recall: 47.64%, F1: 57.90%, Acc: 98.30%
+
+Train Epoch: 9/30 [0/269796 (0%)]	Training loss for batch 1/4216: 0.062157
+Train Epoch: 9/30 [6400/269796 (2%)]	Training loss for batch 101/4216: 0.052260
+Train Epoch: 9/30 [12800/269796 (5%)]	Training loss for batch 201/4216: 0.055878
+Train Epoch: 9/30 [19200/269796 (7%)]	Training loss for batch 301/4216: 0.060558
+Train Epoch: 9/30 [25600/269796 (9%)]	Training loss for batch 401/4216: 0.054008
+Train Epoch: 9/30 [32000/269796 (12%)]	Training loss for batch 501/4216: 0.047171
+Train Epoch: 9/30 [38400/269796 (14%)]	Training loss for batch 601/4216: 0.061772
+Train Epoch: 9/30 [44800/269796 (17%)]	Training loss for batch 701/4216: 0.045436
+Train Epoch: 9/30 [51200/269796 (19%)]	Training loss for batch 801/4216: 0.048833
+Train Epoch: 9/30 [57600/269796 (21%)]	Training loss for batch 901/4216: 0.054836
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0558, Precision: 75.94%, Recall: 45.28%, F1: 56.32%, Acc: 98.28%
+
+Train Epoch: 9/30 [64000/269796 (24%)]	Training loss for batch 1001/4216: 0.057340
+Train Epoch: 9/30 [70400/269796 (26%)]	Training loss for batch 1101/4216: 0.045874
+Train Epoch: 9/30 [76800/269796 (28%)]	Training loss for batch 1201/4216: 0.044116
+Train Epoch: 9/30 [83200/269796 (31%)]	Training loss for batch 1301/4216: 0.047754
+Train Epoch: 9/30 [89600/269796 (33%)]	Training loss for batch 1401/4216: 0.050772
+Train Epoch: 9/30 [96000/269796 (36%)]	Training loss for batch 1501/4216: 0.044639
+Train Epoch: 9/30 [102400/269796 (38%)]	Training loss for batch 1601/4216: 0.053801
+Train Epoch: 9/30 [108800/269796 (40%)]	Training loss for batch 1701/4216: 0.045609
+Train Epoch: 9/30 [115200/269796 (43%)]	Training loss for batch 1801/4216: 0.056824
+Train Epoch: 9/30 [121600/269796 (45%)]	Training loss for batch 1901/4216: 0.048403
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0557, Precision: 74.90%, Recall: 47.42%, F1: 57.72%, Acc: 98.29%
+
+Train Epoch: 9/30 [128000/269796 (47%)]	Training loss for batch 2001/4216: 0.043306
+Train Epoch: 9/30 [134400/269796 (50%)]	Training loss for batch 2101/4216: 0.058125
+Train Epoch: 9/30 [140800/269796 (52%)]	Training loss for batch 2201/4216: 0.044104
+Train Epoch: 9/30 [147200/269796 (55%)]	Training loss for batch 2301/4216: 0.051896
+Train Epoch: 9/30 [153600/269796 (57%)]	Training loss for batch 2401/4216: 0.050676
+Train Epoch: 9/30 [160000/269796 (59%)]	Training loss for batch 2501/4216: 0.047352
+Train Epoch: 9/30 [166400/269796 (62%)]	Training loss for batch 2601/4216: 0.056121
+Train Epoch: 9/30 [172800/269796 (64%)]	Training loss for batch 2701/4216: 0.052790
+Train Epoch: 9/30 [179200/269796 (66%)]	Training loss for batch 2801/4216: 0.060669
+Train Epoch: 9/30 [185600/269796 (69%)]	Training loss for batch 2901/4216: 0.056047
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0557, Precision: 74.82%, Recall: 47.73%, F1: 57.93%, Acc: 98.29%
+
+Train Epoch: 9/30 [192000/269796 (71%)]	Training loss for batch 3001/4216: 0.046526
+Train Epoch: 9/30 [198400/269796 (74%)]	Training loss for batch 3101/4216: 0.046462
+Train Epoch: 9/30 [204800/269796 (76%)]	Training loss for batch 3201/4216: 0.048559
+Train Epoch: 9/30 [211200/269796 (78%)]	Training loss for batch 3301/4216: 0.054838
+Train Epoch: 9/30 [217600/269796 (81%)]	Training loss for batch 3401/4216: 0.051113
+Train Epoch: 9/30 [224000/269796 (83%)]	Training loss for batch 3501/4216: 0.050507
+Train Epoch: 9/30 [230400/269796 (85%)]	Training loss for batch 3601/4216: 0.054925
+Train Epoch: 9/30 [236800/269796 (88%)]	Training loss for batch 3701/4216: 0.039813
+Train Epoch: 9/30 [243200/269796 (90%)]	Training loss for batch 3801/4216: 0.049410
+Train Epoch: 9/30 [249600/269796 (93%)]	Training loss for batch 3901/4216: 0.043374
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0555, Precision: 74.52%, Recall: 47.87%, F1: 57.96%, Acc: 98.30%
+
+Train Epoch: 9/30 [256000/269796 (95%)]	Training loss for batch 4001/4216: 0.058576
+Train Epoch: 9/30 [262400/269796 (97%)]	Training loss for batch 4101/4216: 0.044466
+Train Epoch: 9/30 [268800/269796 (100%)]	Training loss for batch 4201/4216: 0.052074
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0555, Precision: 74.52%, Recall: 48.00%, F1: 58.05%, Acc: 98.30%
+
+Train Epoch: 10/30 [0/269796 (0%)]	Training loss for batch 1/4216: 0.048494
+Train Epoch: 10/30 [6400/269796 (2%)]	Training loss for batch 101/4216: 0.051796
+Train Epoch: 10/30 [12800/269796 (5%)]	Training loss for batch 201/4216: 0.047328
+Train Epoch: 10/30 [19200/269796 (7%)]	Training loss for batch 301/4216: 0.051897
+Train Epoch: 10/30 [25600/269796 (9%)]	Training loss for batch 401/4216: 0.046547
+Train Epoch: 10/30 [32000/269796 (12%)]	Training loss for batch 501/4216: 0.043032
+Train Epoch: 10/30 [38400/269796 (14%)]	Training loss for batch 601/4216: 0.053817
+Train Epoch: 10/30 [44800/269796 (17%)]	Training loss for batch 701/4216: 0.062260
+Train Epoch: 10/30 [51200/269796 (19%)]	Training loss for batch 801/4216: 0.052564
+Train Epoch: 10/30 [57600/269796 (21%)]	Training loss for batch 901/4216: 0.054415
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0558, Precision: 76.00%, Recall: 44.80%, F1: 55.92%, Acc: 98.27%
+
+Train Epoch: 10/30 [64000/269796 (24%)]	Training loss for batch 1001/4216: 0.044232
+Train Epoch: 10/30 [70400/269796 (26%)]	Training loss for batch 1101/4216: 0.041227
+Train Epoch: 10/30 [76800/269796 (28%)]	Training loss for batch 1201/4216: 0.046329
+Train Epoch: 10/30 [83200/269796 (31%)]	Training loss for batch 1301/4216: 0.046996
+Train Epoch: 10/30 [89600/269796 (33%)]	Training loss for batch 1401/4216: 0.053711
+Train Epoch: 10/30 [96000/269796 (36%)]	Training loss for batch 1501/4216: 0.054838
+Train Epoch: 10/30 [102400/269796 (38%)]	Training loss for batch 1601/4216: 0.048127
+Train Epoch: 10/30 [108800/269796 (40%)]	Training loss for batch 1701/4216: 0.052666
+Train Epoch: 10/30 [115200/269796 (43%)]	Training loss for batch 1801/4216: 0.050300
+Train Epoch: 10/30 [121600/269796 (45%)]	Training loss for batch 1901/4216: 0.041672
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0559, Precision: 74.29%, Recall: 48.06%, F1: 58.04%, Acc: 98.30%
+
+Train Epoch: 10/30 [128000/269796 (47%)]	Training loss for batch 2001/4216: 0.049559
+Train Epoch: 10/30 [134400/269796 (50%)]	Training loss for batch 2101/4216: 0.045191
+Train Epoch: 10/30 [140800/269796 (52%)]	Training loss for batch 2201/4216: 0.050220
+Train Epoch: 10/30 [147200/269796 (55%)]	Training loss for batch 2301/4216: 0.059820
+Train Epoch: 10/30 [153600/269796 (57%)]	Training loss for batch 2401/4216: 0.041378
+Train Epoch: 10/30 [160000/269796 (59%)]	Training loss for batch 2501/4216: 0.053959
+Train Epoch: 10/30 [166400/269796 (62%)]	Training loss for batch 2601/4216: 0.045065
+Train Epoch: 10/30 [172800/269796 (64%)]	Training loss for batch 2701/4216: 0.049971
+Train Epoch: 10/30 [179200/269796 (66%)]	Training loss for batch 2801/4216: 0.046319
+Train Epoch: 10/30 [185600/269796 (69%)]	Training loss for batch 2901/4216: 0.048061
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0556, Precision: 74.24%, Recall: 48.39%, F1: 58.25%, Acc: 98.30%
+
+Train Epoch: 10/30 [192000/269796 (71%)]	Training loss for batch 3001/4216: 0.053892
+Train Epoch: 10/30 [198400/269796 (74%)]	Training loss for batch 3101/4216: 0.051960
+Train Epoch: 10/30 [204800/269796 (76%)]	Training loss for batch 3201/4216: 0.052104
+Train Epoch: 10/30 [211200/269796 (78%)]	Training loss for batch 3301/4216: 0.051358
+Train Epoch: 10/30 [217600/269796 (81%)]	Training loss for batch 3401/4216: 0.047107
+Train Epoch: 10/30 [224000/269796 (83%)]	Training loss for batch 3501/4216: 0.051063
+Train Epoch: 10/30 [230400/269796 (85%)]	Training loss for batch 3601/4216: 0.054880
+Train Epoch: 10/30 [236800/269796 (88%)]	Training loss for batch 3701/4216: 0.045844
+Train Epoch: 10/30 [243200/269796 (90%)]	Training loss for batch 3801/4216: 0.046233
+Train Epoch: 10/30 [249600/269796 (93%)]	Training loss for batch 3901/4216: 0.057500
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0557, Precision: 73.97%, Recall: 47.94%, F1: 57.84%, Acc: 98.28%
+
+Train Epoch: 10/30 [256000/269796 (95%)]	Training loss for batch 4001/4216: 0.054066
+Train Epoch: 10/30 [262400/269796 (97%)]	Training loss for batch 4101/4216: 0.043222
+Train Epoch: 10/30 [268800/269796 (100%)]	Training loss for batch 4201/4216: 0.060543
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0556, Precision: 74.09%, Recall: 48.12%, F1: 58.02%, Acc: 98.29%
+
+Train Epoch: 11/30 [0/269796 (0%)]	Training loss for batch 1/4216: 0.054939
+Train Epoch: 11/30 [6400/269796 (2%)]	Training loss for batch 101/4216: 0.052860
+Train Epoch: 11/30 [12800/269796 (5%)]	Training loss for batch 201/4216: 0.049834
+Train Epoch: 11/30 [19200/269796 (7%)]	Training loss for batch 301/4216: 0.044599
+Train Epoch: 11/30 [25600/269796 (9%)]	Training loss for batch 401/4216: 0.049735
+Train Epoch: 11/30 [32000/269796 (12%)]	Training loss for batch 501/4216: 0.055835
+Train Epoch: 11/30 [38400/269796 (14%)]	Training loss for batch 601/4216: 0.053103
+Train Epoch: 11/30 [44800/269796 (17%)]	Training loss for batch 701/4216: 0.062901
+Train Epoch: 11/30 [51200/269796 (19%)]	Training loss for batch 801/4216: 0.049254
+Train Epoch: 11/30 [57600/269796 (21%)]	Training loss for batch 901/4216: 0.050591
+After epoch 11/30, for dev batch 1/1906 - predictions for sequences 0-10 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 101/1906 - predictions for sequences 6400-6410 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 201/1906 - predictions for sequences 12800-12810 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 301/1906 - predictions for sequences 19200-19210 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 401/1906 - predictions for sequences 25600-25610 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 501/1906 - predictions for sequences 32000-32010 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 601/1906 - predictions for sequences 38400-38410 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 701/1906 - predictions for sequences 44800-44810 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 801/1906 - predictions for sequences 51200-51210 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 901/1906 - predictions for sequences 57600-57610 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1001/1906 - predictions for sequences 64000-64010 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1101/1906 - predictions for sequences 70400-70410 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1201/1906 - predictions for sequences 76800-76810 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1301/1906 - predictions for sequences 83200-83210 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1401/1906 - predictions for sequences 89600-89610 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1501/1906 - predictions for sequences 96000-96010 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1601/1906 - predictions for sequences 102400-102410 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1701/1906 - predictions for sequences 108800-108810 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1801/1906 - predictions for sequences 115200-115210 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1901/1906 - predictions for sequences 121600-121610 stored in eb_preds.txt.
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0557, Precision: 74.53%, Recall: 46.78%, F1: 57.12%, Acc: 98.28%
+
+Train Epoch: 11/30 [64000/269796 (24%)]	Training loss for batch 1001/4216: 0.045798
+Train Epoch: 11/30 [70400/269796 (26%)]	Training loss for batch 1101/4216: 0.041841
+Train Epoch: 11/30 [76800/269796 (28%)]	Training loss for batch 1201/4216: 0.052140
+Train Epoch: 11/30 [83200/269796 (31%)]	Training loss for batch 1301/4216: 0.044833
+Train Epoch: 11/30 [89600/269796 (33%)]	Training loss for batch 1401/4216: 0.041060
+Train Epoch: 11/30 [96000/269796 (36%)]	Training loss for batch 1501/4216: 0.048277
+Train Epoch: 11/30 [102400/269796 (38%)]	Training loss for batch 1601/4216: 0.060970
+Train Epoch: 11/30 [108800/269796 (40%)]	Training loss for batch 1701/4216: 0.063377
+Train Epoch: 11/30 [115200/269796 (43%)]	Training loss for batch 1801/4216: 0.039184
+Train Epoch: 11/30 [121600/269796 (45%)]	Training loss for batch 1901/4216: 0.049601
+After epoch 11/30, for dev batch 1/1906 - predictions for sequences 0-10 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 101/1906 - predictions for sequences 6400-6410 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 201/1906 - predictions for sequences 12800-12810 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 301/1906 - predictions for sequences 19200-19210 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 401/1906 - predictions for sequences 25600-25610 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 501/1906 - predictions for sequences 32000-32010 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 601/1906 - predictions for sequences 38400-38410 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 701/1906 - predictions for sequences 44800-44810 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 801/1906 - predictions for sequences 51200-51210 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 901/1906 - predictions for sequences 57600-57610 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1001/1906 - predictions for sequences 64000-64010 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1101/1906 - predictions for sequences 70400-70410 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1201/1906 - predictions for sequences 76800-76810 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1301/1906 - predictions for sequences 83200-83210 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1401/1906 - predictions for sequences 89600-89610 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1501/1906 - predictions for sequences 96000-96010 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1601/1906 - predictions for sequences 102400-102410 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1701/1906 - predictions for sequences 108800-108810 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1801/1906 - predictions for sequences 115200-115210 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1901/1906 - predictions for sequences 121600-121610 stored in eb_preds.txt.
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0558, Precision: 73.72%, Recall: 48.35%, F1: 58.07%, Acc: 98.28%
+
+Train Epoch: 11/30 [128000/269796 (47%)]	Training loss for batch 2001/4216: 0.044566
+Train Epoch: 11/30 [134400/269796 (50%)]	Training loss for batch 2101/4216: 0.039164
+Train Epoch: 11/30 [140800/269796 (52%)]	Training loss for batch 2201/4216: 0.042164
+Train Epoch: 11/30 [147200/269796 (55%)]	Training loss for batch 2301/4216: 0.049240
+Train Epoch: 11/30 [153600/269796 (57%)]	Training loss for batch 2401/4216: 0.060417
+Train Epoch: 11/30 [160000/269796 (59%)]	Training loss for batch 2501/4216: 0.059251
+Train Epoch: 11/30 [166400/269796 (62%)]	Training loss for batch 2601/4216: 0.048376
+Train Epoch: 11/30 [172800/269796 (64%)]	Training loss for batch 2701/4216: 0.044785
+Train Epoch: 11/30 [179200/269796 (66%)]	Training loss for batch 2801/4216: 0.042671
+Train Epoch: 11/30 [185600/269796 (69%)]	Training loss for batch 2901/4216: 0.052359
+After epoch 11/30, for dev batch 1/1906 - predictions for sequences 0-10 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 101/1906 - predictions for sequences 6400-6410 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 201/1906 - predictions for sequences 12800-12810 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 301/1906 - predictions for sequences 19200-19210 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 401/1906 - predictions for sequences 25600-25610 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 501/1906 - predictions for sequences 32000-32010 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 601/1906 - predictions for sequences 38400-38410 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 701/1906 - predictions for sequences 44800-44810 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 801/1906 - predictions for sequences 51200-51210 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 901/1906 - predictions for sequences 57600-57610 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1001/1906 - predictions for sequences 64000-64010 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1101/1906 - predictions for sequences 70400-70410 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1201/1906 - predictions for sequences 76800-76810 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1301/1906 - predictions for sequences 83200-83210 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1401/1906 - predictions for sequences 89600-89610 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1501/1906 - predictions for sequences 96000-96010 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1601/1906 - predictions for sequences 102400-102410 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1701/1906 - predictions for sequences 108800-108810 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1801/1906 - predictions for sequences 115200-115210 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1901/1906 - predictions for sequences 121600-121610 stored in eb_preds.txt.
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0556, Precision: 73.71%, Recall: 49.21%, F1: 58.72%, Acc: 98.30%
+
+Train Epoch: 11/30 [192000/269796 (71%)]	Training loss for batch 3001/4216: 0.055128
+Train Epoch: 11/30 [198400/269796 (74%)]	Training loss for batch 3101/4216: 0.048322
+Train Epoch: 11/30 [204800/269796 (76%)]	Training loss for batch 3201/4216: 0.044230
+Train Epoch: 11/30 [211200/269796 (78%)]	Training loss for batch 3301/4216: 0.040134
+Train Epoch: 11/30 [217600/269796 (81%)]	Training loss for batch 3401/4216: 0.057244
+Train Epoch: 11/30 [224000/269796 (83%)]	Training loss for batch 3501/4216: 0.038236
+Train Epoch: 11/30 [230400/269796 (85%)]	Training loss for batch 3601/4216: 0.049972
+Train Epoch: 11/30 [236800/269796 (88%)]	Training loss for batch 3701/4216: 0.048334
+Train Epoch: 11/30 [243200/269796 (90%)]	Training loss for batch 3801/4216: 0.049243
+Train Epoch: 11/30 [249600/269796 (93%)]	Training loss for batch 3901/4216: 0.047745
+After epoch 11/30, for dev batch 1/1906 - predictions for sequences 0-10 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 101/1906 - predictions for sequences 6400-6410 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 201/1906 - predictions for sequences 12800-12810 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 301/1906 - predictions for sequences 19200-19210 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 401/1906 - predictions for sequences 25600-25610 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 501/1906 - predictions for sequences 32000-32010 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 601/1906 - predictions for sequences 38400-38410 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 701/1906 - predictions for sequences 44800-44810 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 801/1906 - predictions for sequences 51200-51210 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 901/1906 - predictions for sequences 57600-57610 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1001/1906 - predictions for sequences 64000-64010 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1101/1906 - predictions for sequences 70400-70410 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1201/1906 - predictions for sequences 76800-76810 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1301/1906 - predictions for sequences 83200-83210 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1401/1906 - predictions for sequences 89600-89610 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1501/1906 - predictions for sequences 96000-96010 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1601/1906 - predictions for sequences 102400-102410 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1701/1906 - predictions for sequences 108800-108810 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1801/1906 - predictions for sequences 115200-115210 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1901/1906 - predictions for sequences 121600-121610 stored in eb_preds.txt.
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0554, Precision: 73.85%, Recall: 48.81%, F1: 58.45%, Acc: 98.30%
+
+Train Epoch: 11/30 [256000/269796 (95%)]	Training loss for batch 4001/4216: 0.042320
+Train Epoch: 11/30 [262400/269796 (97%)]	Training loss for batch 4101/4216: 0.046308
+Train Epoch: 11/30 [268800/269796 (100%)]	Training loss for batch 4201/4216: 0.044539
+After epoch 11/30, for dev batch 1/1906 - predictions for sequences 0-10 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 101/1906 - predictions for sequences 6400-6410 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 201/1906 - predictions for sequences 12800-12810 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 301/1906 - predictions for sequences 19200-19210 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 401/1906 - predictions for sequences 25600-25610 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 501/1906 - predictions for sequences 32000-32010 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 601/1906 - predictions for sequences 38400-38410 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 701/1906 - predictions for sequences 44800-44810 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 801/1906 - predictions for sequences 51200-51210 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 901/1906 - predictions for sequences 57600-57610 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1001/1906 - predictions for sequences 64000-64010 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1101/1906 - predictions for sequences 70400-70410 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1201/1906 - predictions for sequences 76800-76810 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1301/1906 - predictions for sequences 83200-83210 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1401/1906 - predictions for sequences 89600-89610 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1501/1906 - predictions for sequences 96000-96010 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1601/1906 - predictions for sequences 102400-102410 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1701/1906 - predictions for sequences 108800-108810 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1801/1906 - predictions for sequences 115200-115210 stored in eb_preds.txt.
+After epoch 11/30, for dev batch 1901/1906 - predictions for sequences 121600-121610 stored in eb_preds.txt.
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0556, Precision: 74.09%, Recall: 48.25%, F1: 58.12%, Acc: 98.30%
+
+Train Epoch: 12/30 [0/269796 (0%)]	Training loss for batch 1/4216: 0.053576
+Train Epoch: 12/30 [6400/269796 (2%)]	Training loss for batch 101/4216: 0.049933
+Train Epoch: 12/30 [12800/269796 (5%)]	Training loss for batch 201/4216: 0.048418
+Train Epoch: 12/30 [19200/269796 (7%)]	Training loss for batch 301/4216: 0.059593
+Train Epoch: 12/30 [25600/269796 (9%)]	Training loss for batch 401/4216: 0.043434
+Train Epoch: 12/30 [32000/269796 (12%)]	Training loss for batch 501/4216: 0.055409
+Train Epoch: 12/30 [38400/269796 (14%)]	Training loss for batch 601/4216: 0.052474
+Train Epoch: 12/30 [44800/269796 (17%)]	Training loss for batch 701/4216: 0.064953
+Train Epoch: 12/30 [51200/269796 (19%)]	Training loss for batch 801/4216: 0.056356
+Train Epoch: 12/30 [57600/269796 (21%)]	Training loss for batch 901/4216: 0.052582
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0556, Precision: 74.31%, Recall: 46.91%, F1: 57.15%, Acc: 98.28%
+
+Train Epoch: 12/30 [64000/269796 (24%)]	Training loss for batch 1001/4216: 0.049598
+Train Epoch: 12/30 [70400/269796 (26%)]	Training loss for batch 1101/4216: 0.046986
+Train Epoch: 12/30 [76800/269796 (28%)]	Training loss for batch 1201/4216: 0.055838
+Train Epoch: 12/30 [83200/269796 (31%)]	Training loss for batch 1301/4216: 0.053222
+Train Epoch: 12/30 [89600/269796 (33%)]	Training loss for batch 1401/4216: 0.050647
+Train Epoch: 12/30 [96000/269796 (36%)]	Training loss for batch 1501/4216: 0.044786
+Train Epoch: 12/30 [102400/269796 (38%)]	Training loss for batch 1601/4216: 0.048574
+Train Epoch: 12/30 [108800/269796 (40%)]	Training loss for batch 1701/4216: 0.036823
+Train Epoch: 12/30 [115200/269796 (43%)]	Training loss for batch 1801/4216: 0.048637
+Train Epoch: 12/30 [121600/269796 (45%)]	Training loss for batch 1901/4216: 0.039081
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0560, Precision: 73.72%, Recall: 48.12%, F1: 57.90%, Acc: 98.28%
+
+Train Epoch: 12/30 [128000/269796 (47%)]	Training loss for batch 2001/4216: 0.049115
+Train Epoch: 12/30 [134400/269796 (50%)]	Training loss for batch 2101/4216: 0.047495
+Train Epoch: 12/30 [140800/269796 (52%)]	Training loss for batch 2201/4216: 0.049894
+Train Epoch: 12/30 [147200/269796 (55%)]	Training loss for batch 2301/4216: 0.045165
+Train Epoch: 12/30 [153600/269796 (57%)]	Training loss for batch 2401/4216: 0.049719
+Train Epoch: 12/30 [160000/269796 (59%)]	Training loss for batch 2501/4216: 0.050416
+Train Epoch: 12/30 [166400/269796 (62%)]	Training loss for batch 2601/4216: 0.044159
+Train Epoch: 12/30 [172800/269796 (64%)]	Training loss for batch 2701/4216: 0.058968
+Train Epoch: 12/30 [179200/269796 (66%)]	Training loss for batch 2801/4216: 0.042547
+Train Epoch: 12/30 [185600/269796 (69%)]	Training loss for batch 2901/4216: 0.040959
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0559, Precision: 73.92%, Recall: 48.20%, F1: 58.03%, Acc: 98.29%
+
+Train Epoch: 12/30 [192000/269796 (71%)]	Training loss for batch 3001/4216: 0.053777
+Train Epoch: 12/30 [198400/269796 (74%)]	Training loss for batch 3101/4216: 0.044880
+Train Epoch: 12/30 [204800/269796 (76%)]	Training loss for batch 3201/4216: 0.040590
+Train Epoch: 12/30 [211200/269796 (78%)]	Training loss for batch 3301/4216: 0.048086
+Train Epoch: 12/30 [217600/269796 (81%)]	Training loss for batch 3401/4216: 0.048763
+Train Epoch: 12/30 [224000/269796 (83%)]	Training loss for batch 3501/4216: 0.050654
+Train Epoch: 12/30 [230400/269796 (85%)]	Training loss for batch 3601/4216: 0.049102
+Train Epoch: 12/30 [236800/269796 (88%)]	Training loss for batch 3701/4216: 0.039539
+Train Epoch: 12/30 [243200/269796 (90%)]	Training loss for batch 3801/4216: 0.047841
+Train Epoch: 12/30 [249600/269796 (93%)]	Training loss for batch 3901/4216: 0.048228
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0559, Precision: 73.11%, Recall: 49.80%, F1: 58.97%, Acc: 98.30%
+
+Train Epoch: 12/30 [256000/269796 (95%)]	Training loss for batch 4001/4216: 0.038307
+Train Epoch: 12/30 [262400/269796 (97%)]	Training loss for batch 4101/4216: 0.041095
+Train Epoch: 12/30 [268800/269796 (100%)]	Training loss for batch 4201/4216: 0.048478
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0558, Precision: 73.04%, Recall: 49.09%, F1: 58.42%, Acc: 98.29%
+
+Train Epoch: 13/30 [0/269796 (0%)]	Training loss for batch 1/4216: 0.051845
+Train Epoch: 13/30 [6400/269796 (2%)]	Training loss for batch 101/4216: 0.058149
+Train Epoch: 13/30 [12800/269796 (5%)]	Training loss for batch 201/4216: 0.050323
+Train Epoch: 13/30 [19200/269796 (7%)]	Training loss for batch 301/4216: 0.050766
+Train Epoch: 13/30 [25600/269796 (9%)]	Training loss for batch 401/4216: 0.051857
+Train Epoch: 13/30 [32000/269796 (12%)]	Training loss for batch 501/4216: 0.049521
+Train Epoch: 13/30 [38400/269796 (14%)]	Training loss for batch 601/4216: 0.054585
+Train Epoch: 13/30 [44800/269796 (17%)]	Training loss for batch 701/4216: 0.045286
+Train Epoch: 13/30 [51200/269796 (19%)]	Training loss for batch 801/4216: 0.053268
+Train Epoch: 13/30 [57600/269796 (21%)]	Training loss for batch 901/4216: 0.053788
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0562, Precision: 74.71%, Recall: 45.59%, F1: 56.22%, Acc: 98.27%
+
+Train Epoch: 13/30 [64000/269796 (24%)]	Training loss for batch 1001/4216: 0.045276
+Train Epoch: 13/30 [70400/269796 (26%)]	Training loss for batch 1101/4216: 0.037797
+Train Epoch: 13/30 [76800/269796 (28%)]	Training loss for batch 1201/4216: 0.063165
+Train Epoch: 13/30 [83200/269796 (31%)]	Training loss for batch 1301/4216: 0.054588
+Train Epoch: 13/30 [89600/269796 (33%)]	Training loss for batch 1401/4216: 0.053583
+Train Epoch: 13/30 [96000/269796 (36%)]	Training loss for batch 1501/4216: 0.043782
+Train Epoch: 13/30 [102400/269796 (38%)]	Training loss for batch 1601/4216: 0.043371
+Train Epoch: 13/30 [108800/269796 (40%)]	Training loss for batch 1701/4216: 0.040252
+Train Epoch: 13/30 [115200/269796 (43%)]	Training loss for batch 1801/4216: 0.053742
+Train Epoch: 13/30 [121600/269796 (45%)]	Training loss for batch 1901/4216: 0.049056
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0563, Precision: 72.54%, Recall: 49.14%, F1: 58.30%, Acc: 98.28%
+
+Train Epoch: 13/30 [128000/269796 (47%)]	Training loss for batch 2001/4216: 0.048145
+Train Epoch: 13/30 [134400/269796 (50%)]	Training loss for batch 2101/4216: 0.046999
+Train Epoch: 13/30 [140800/269796 (52%)]	Training loss for batch 2201/4216: 0.040500
+Train Epoch: 13/30 [147200/269796 (55%)]	Training loss for batch 2301/4216: 0.046931
+Train Epoch: 13/30 [153600/269796 (57%)]	Training loss for batch 2401/4216: 0.053033
+Train Epoch: 13/30 [160000/269796 (59%)]	Training loss for batch 2501/4216: 0.053499
+Train Epoch: 13/30 [166400/269796 (62%)]	Training loss for batch 2601/4216: 0.043194
+Train Epoch: 13/30 [172800/269796 (64%)]	Training loss for batch 2701/4216: 0.037439
+Train Epoch: 13/30 [179200/269796 (66%)]	Training loss for batch 2801/4216: 0.049996
+Train Epoch: 13/30 [185600/269796 (69%)]	Training loss for batch 2901/4216: 0.053141
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0564, Precision: 73.09%, Recall: 49.02%, F1: 58.38%, Acc: 98.29%
+
+Train Epoch: 13/30 [192000/269796 (71%)]	Training loss for batch 3001/4216: 0.052640
+Train Epoch: 13/30 [198400/269796 (74%)]	Training loss for batch 3101/4216: 0.058532
+Train Epoch: 13/30 [204800/269796 (76%)]	Training loss for batch 3201/4216: 0.043097
+Train Epoch: 13/30 [211200/269796 (78%)]	Training loss for batch 3301/4216: 0.047714
+Train Epoch: 13/30 [217600/269796 (81%)]	Training loss for batch 3401/4216: 0.055705
+Train Epoch: 13/30 [224000/269796 (83%)]	Training loss for batch 3501/4216: 0.047490
+Train Epoch: 13/30 [230400/269796 (85%)]	Training loss for batch 3601/4216: 0.054253
+Train Epoch: 13/30 [236800/269796 (88%)]	Training loss for batch 3701/4216: 0.051890
+Train Epoch: 13/30 [243200/269796 (90%)]	Training loss for batch 3801/4216: 0.039460
+Train Epoch: 13/30 [249600/269796 (93%)]	Training loss for batch 3901/4216: 0.045016
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0564, Precision: 72.84%, Recall: 49.65%, F1: 58.77%, Acc: 98.30%
+
+Train Epoch: 13/30 [256000/269796 (95%)]	Training loss for batch 4001/4216: 0.046364
+Train Epoch: 13/30 [262400/269796 (97%)]	Training loss for batch 4101/4216: 0.045987
+Train Epoch: 13/30 [268800/269796 (100%)]	Training loss for batch 4201/4216: 0.044620
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0563, Precision: 72.88%, Recall: 48.75%, F1: 58.11%, Acc: 98.28%
+
+Train Epoch: 14/30 [0/269796 (0%)]	Training loss for batch 1/4216: 0.057958
+Train Epoch: 14/30 [6400/269796 (2%)]	Training loss for batch 101/4216: 0.058209
+Train Epoch: 14/30 [12800/269796 (5%)]	Training loss for batch 201/4216: 0.050938
+Train Epoch: 14/30 [19200/269796 (7%)]	Training loss for batch 301/4216: 0.060350
+Train Epoch: 14/30 [25600/269796 (9%)]	Training loss for batch 401/4216: 0.059412
+Train Epoch: 14/30 [32000/269796 (12%)]	Training loss for batch 501/4216: 0.052311
+Train Epoch: 14/30 [38400/269796 (14%)]	Training loss for batch 601/4216: 0.058268
+Train Epoch: 14/30 [44800/269796 (17%)]	Training loss for batch 701/4216: 0.037760
+Train Epoch: 14/30 [51200/269796 (19%)]	Training loss for batch 801/4216: 0.052641
+Train Epoch: 14/30 [57600/269796 (21%)]	Training loss for batch 901/4216: 0.049471
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0564, Precision: 74.48%, Recall: 45.95%, F1: 56.45%, Acc: 98.27%
+
+Train Epoch: 14/30 [64000/269796 (24%)]	Training loss for batch 1001/4216: 0.056087
+Train Epoch: 14/30 [70400/269796 (26%)]	Training loss for batch 1101/4216: 0.045948
+Train Epoch: 14/30 [76800/269796 (28%)]	Training loss for batch 1201/4216: 0.051367
+Train Epoch: 14/30 [83200/269796 (31%)]	Training loss for batch 1301/4216: 0.048401
+Train Epoch: 14/30 [89600/269796 (33%)]	Training loss for batch 1401/4216: 0.043098
+Train Epoch: 14/30 [96000/269796 (36%)]	Training loss for batch 1501/4216: 0.046778
+Train Epoch: 14/30 [102400/269796 (38%)]	Training loss for batch 1601/4216: 0.044521
+Train Epoch: 14/30 [108800/269796 (40%)]	Training loss for batch 1701/4216: 0.047022
+Train Epoch: 14/30 [115200/269796 (43%)]	Training loss for batch 1801/4216: 0.043491
+Train Epoch: 14/30 [121600/269796 (45%)]	Training loss for batch 1901/4216: 0.041265
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0568, Precision: 72.59%, Recall: 48.53%, F1: 57.88%, Acc: 98.27%
+
+Train Epoch: 14/30 [128000/269796 (47%)]	Training loss for batch 2001/4216: 0.053181
+Train Epoch: 14/30 [134400/269796 (50%)]	Training loss for batch 2101/4216: 0.042813
+Train Epoch: 14/30 [140800/269796 (52%)]	Training loss for batch 2201/4216: 0.046906
+Train Epoch: 14/30 [147200/269796 (55%)]	Training loss for batch 2301/4216: 0.039087
+Train Epoch: 14/30 [153600/269796 (57%)]	Training loss for batch 2401/4216: 0.047101
+Train Epoch: 14/30 [160000/269796 (59%)]	Training loss for batch 2501/4216: 0.039938
+Train Epoch: 14/30 [166400/269796 (62%)]	Training loss for batch 2601/4216: 0.034597
+Train Epoch: 14/30 [172800/269796 (64%)]	Training loss for batch 2701/4216: 0.047822
+Train Epoch: 14/30 [179200/269796 (66%)]	Training loss for batch 2801/4216: 0.051053
+Train Epoch: 14/30 [185600/269796 (69%)]	Training loss for batch 2901/4216: 0.057811
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0566, Precision: 71.89%, Recall: 49.22%, F1: 58.14%, Acc: 98.26%
+
+Train Epoch: 14/30 [192000/269796 (71%)]	Training loss for batch 3001/4216: 0.044879
+Train Epoch: 14/30 [198400/269796 (74%)]	Training loss for batch 3101/4216: 0.047687
+Train Epoch: 14/30 [204800/269796 (76%)]	Training loss for batch 3201/4216: 0.036827
+Train Epoch: 14/30 [211200/269796 (78%)]	Training loss for batch 3301/4216: 0.047496
+Train Epoch: 14/30 [217600/269796 (81%)]	Training loss for batch 3401/4216: 0.053234
+Train Epoch: 14/30 [224000/269796 (83%)]	Training loss for batch 3501/4216: 0.047387
+Train Epoch: 14/30 [230400/269796 (85%)]	Training loss for batch 3601/4216: 0.050139
+Train Epoch: 14/30 [236800/269796 (88%)]	Training loss for batch 3701/4216: 0.045270
+Train Epoch: 14/30 [243200/269796 (90%)]	Training loss for batch 3801/4216: 0.045102
+Train Epoch: 14/30 [249600/269796 (93%)]	Training loss for batch 3901/4216: 0.047947
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0565, Precision: 72.82%, Recall: 49.23%, F1: 58.44%, Acc: 98.28%
+
+Train Epoch: 14/30 [256000/269796 (95%)]	Training loss for batch 4001/4216: 0.033071
+Train Epoch: 14/30 [262400/269796 (97%)]	Training loss for batch 4101/4216: 0.050047
+Train Epoch: 14/30 [268800/269796 (100%)]	Training loss for batch 4201/4216: 0.044021
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0566, Precision: 72.60%, Recall: 49.00%, F1: 58.20%, Acc: 98.28%
+
+Train Epoch: 15/30 [0/269796 (0%)]	Training loss for batch 1/4216: 0.046749
+Train Epoch: 15/30 [6400/269796 (2%)]	Training loss for batch 101/4216: 0.061502
+Train Epoch: 15/30 [12800/269796 (5%)]	Training loss for batch 201/4216: 0.050196
+Train Epoch: 15/30 [19200/269796 (7%)]	Training loss for batch 301/4216: 0.054054
+Train Epoch: 15/30 [25600/269796 (9%)]	Training loss for batch 401/4216: 0.045003
+Train Epoch: 15/30 [32000/269796 (12%)]	Training loss for batch 501/4216: 0.046931
+Train Epoch: 15/30 [38400/269796 (14%)]	Training loss for batch 601/4216: 0.041914
+Train Epoch: 15/30 [44800/269796 (17%)]	Training loss for batch 701/4216: 0.043559
+Train Epoch: 15/30 [51200/269796 (19%)]	Training loss for batch 801/4216: 0.040825
+Train Epoch: 15/30 [57600/269796 (21%)]	Training loss for batch 901/4216: 0.042765
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0570, Precision: 72.50%, Recall: 47.38%, F1: 56.96%, Acc: 98.25%
+
+Train Epoch: 15/30 [64000/269796 (24%)]	Training loss for batch 1001/4216: 0.046296
+Train Epoch: 15/30 [70400/269796 (26%)]	Training loss for batch 1101/4216: 0.044885
+Train Epoch: 15/30 [76800/269796 (28%)]	Training loss for batch 1201/4216: 0.055786
+Train Epoch: 15/30 [83200/269796 (31%)]	Training loss for batch 1301/4216: 0.054158
+Train Epoch: 15/30 [89600/269796 (33%)]	Training loss for batch 1401/4216: 0.049842
+Train Epoch: 15/30 [96000/269796 (36%)]	Training loss for batch 1501/4216: 0.052609
+Train Epoch: 15/30 [102400/269796 (38%)]	Training loss for batch 1601/4216: 0.048296
+Train Epoch: 15/30 [108800/269796 (40%)]	Training loss for batch 1701/4216: 0.042710
+Train Epoch: 15/30 [115200/269796 (43%)]	Training loss for batch 1801/4216: 0.046243
+Train Epoch: 15/30 [121600/269796 (45%)]	Training loss for batch 1901/4216: 0.047886
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0566, Precision: 72.21%, Recall: 49.06%, F1: 58.13%, Acc: 98.27%
+
+Train Epoch: 15/30 [128000/269796 (47%)]	Training loss for batch 2001/4216: 0.044441
+Train Epoch: 15/30 [134400/269796 (50%)]	Training loss for batch 2101/4216: 0.054411
+Train Epoch: 15/30 [140800/269796 (52%)]	Training loss for batch 2201/4216: 0.049852
+Train Epoch: 15/30 [147200/269796 (55%)]	Training loss for batch 2301/4216: 0.046002
+Train Epoch: 15/30 [153600/269796 (57%)]	Training loss for batch 2401/4216: 0.044414
+Train Epoch: 15/30 [160000/269796 (59%)]	Training loss for batch 2501/4216: 0.049099
+Train Epoch: 15/30 [166400/269796 (62%)]	Training loss for batch 2601/4216: 0.045338
+Train Epoch: 15/30 [172800/269796 (64%)]	Training loss for batch 2701/4216: 0.046799
+Train Epoch: 15/30 [179200/269796 (66%)]	Training loss for batch 2801/4216: 0.060649
+Train Epoch: 15/30 [185600/269796 (69%)]	Training loss for batch 2901/4216: 0.042917
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0570, Precision: 71.54%, Recall: 50.46%, F1: 58.93%, Acc: 98.27%
+
+Train Epoch: 15/30 [192000/269796 (71%)]	Training loss for batch 3001/4216: 0.042369
+Train Epoch: 15/30 [198400/269796 (74%)]	Training loss for batch 3101/4216: 0.043414
+Train Epoch: 15/30 [204800/269796 (76%)]	Training loss for batch 3201/4216: 0.045136
+Train Epoch: 15/30 [211200/269796 (78%)]	Training loss for batch 3301/4216: 0.044925
+Train Epoch: 15/30 [217600/269796 (81%)]	Training loss for batch 3401/4216: 0.058059
+Train Epoch: 15/30 [224000/269796 (83%)]	Training loss for batch 3501/4216: 0.041411
+Train Epoch: 15/30 [230400/269796 (85%)]	Training loss for batch 3601/4216: 0.052603
+Train Epoch: 15/30 [236800/269796 (88%)]	Training loss for batch 3701/4216: 0.044196
+Train Epoch: 15/30 [243200/269796 (90%)]	Training loss for batch 3801/4216: 0.037130
+Train Epoch: 15/30 [249600/269796 (93%)]	Training loss for batch 3901/4216: 0.041655
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0570, Precision: 71.93%, Recall: 49.53%, F1: 58.38%, Acc: 98.28%
+
+Train Epoch: 15/30 [256000/269796 (95%)]	Training loss for batch 4001/4216: 0.046712
+Train Epoch: 15/30 [262400/269796 (97%)]	Training loss for batch 4101/4216: 0.043211
+Train Epoch: 15/30 [268800/269796 (100%)]	Training loss for batch 4201/4216: 0.044087
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0567, Precision: 71.98%, Recall: 50.18%, F1: 58.88%, Acc: 98.28%
+
+Train Epoch: 16/30 [0/269796 (0%)]	Training loss for batch 1/4216: 0.045535
+Train Epoch: 16/30 [6400/269796 (2%)]	Training loss for batch 101/4216: 0.049659
+Train Epoch: 16/30 [12800/269796 (5%)]	Training loss for batch 201/4216: 0.052108
+Train Epoch: 16/30 [19200/269796 (7%)]	Training loss for batch 301/4216: 0.040054
+Train Epoch: 16/30 [25600/269796 (9%)]	Training loss for batch 401/4216: 0.051512
+Train Epoch: 16/30 [32000/269796 (12%)]	Training loss for batch 501/4216: 0.055598
+Train Epoch: 16/30 [38400/269796 (14%)]	Training loss for batch 601/4216: 0.049230
+Train Epoch: 16/30 [44800/269796 (17%)]	Training loss for batch 701/4216: 0.040982
+Train Epoch: 16/30 [51200/269796 (19%)]	Training loss for batch 801/4216: 0.056205
+Train Epoch: 16/30 [57600/269796 (21%)]	Training loss for batch 901/4216: 0.042917
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0568, Precision: 73.84%, Recall: 47.02%, F1: 57.10%, Acc: 98.28%
+
+Train Epoch: 16/30 [64000/269796 (24%)]	Training loss for batch 1001/4216: 0.051143
+Train Epoch: 16/30 [70400/269796 (26%)]	Training loss for batch 1101/4216: 0.040346
+Train Epoch: 16/30 [76800/269796 (28%)]	Training loss for batch 1201/4216: 0.040286
+Train Epoch: 16/30 [83200/269796 (31%)]	Training loss for batch 1301/4216: 0.036797
+Train Epoch: 16/30 [89600/269796 (33%)]	Training loss for batch 1401/4216: 0.044794
+Train Epoch: 16/30 [96000/269796 (36%)]	Training loss for batch 1501/4216: 0.051099
+Train Epoch: 16/30 [102400/269796 (38%)]	Training loss for batch 1601/4216: 0.056327
+Train Epoch: 16/30 [108800/269796 (40%)]	Training loss for batch 1701/4216: 0.040415
+Train Epoch: 16/30 [115200/269796 (43%)]	Training loss for batch 1801/4216: 0.048645
+Train Epoch: 16/30 [121600/269796 (45%)]	Training loss for batch 1901/4216: 0.041507
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0572, Precision: 72.04%, Recall: 48.10%, F1: 57.37%, Acc: 98.25%
+
+Train Epoch: 16/30 [128000/269796 (47%)]	Training loss for batch 2001/4216: 0.048961
+Train Epoch: 16/30 [134400/269796 (50%)]	Training loss for batch 2101/4216: 0.046693
+Train Epoch: 16/30 [140800/269796 (52%)]	Training loss for batch 2201/4216: 0.055452
+Train Epoch: 16/30 [147200/269796 (55%)]	Training loss for batch 2301/4216: 0.047282
+Train Epoch: 16/30 [153600/269796 (57%)]	Training loss for batch 2401/4216: 0.041835
+Train Epoch: 16/30 [160000/269796 (59%)]	Training loss for batch 2501/4216: 0.038006
+Train Epoch: 16/30 [166400/269796 (62%)]	Training loss for batch 2601/4216: 0.043714
+Train Epoch: 16/30 [172800/269796 (64%)]	Training loss for batch 2701/4216: 0.045617
+Train Epoch: 16/30 [179200/269796 (66%)]	Training loss for batch 2801/4216: 0.049635
+Train Epoch: 16/30 [185600/269796 (69%)]	Training loss for batch 2901/4216: 0.040705
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0571, Precision: 71.79%, Recall: 49.25%, F1: 58.13%, Acc: 98.26%
+
+Train Epoch: 16/30 [192000/269796 (71%)]	Training loss for batch 3001/4216: 0.036555
+Train Epoch: 16/30 [198400/269796 (74%)]	Training loss for batch 3101/4216: 0.052041
+Train Epoch: 16/30 [204800/269796 (76%)]	Training loss for batch 3201/4216: 0.046621
+Train Epoch: 16/30 [211200/269796 (78%)]	Training loss for batch 3301/4216: 0.035972
+Train Epoch: 16/30 [217600/269796 (81%)]	Training loss for batch 3401/4216: 0.053255
+Train Epoch: 16/30 [224000/269796 (83%)]	Training loss for batch 3501/4216: 0.043920
+Train Epoch: 16/30 [230400/269796 (85%)]	Training loss for batch 3601/4216: 0.046803
+Train Epoch: 16/30 [236800/269796 (88%)]	Training loss for batch 3701/4216: 0.052134
+Train Epoch: 16/30 [243200/269796 (90%)]	Training loss for batch 3801/4216: 0.045994
+Train Epoch: 16/30 [249600/269796 (93%)]	Training loss for batch 3901/4216: 0.038986
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0577, Precision: 71.49%, Recall: 50.49%, F1: 58.93%, Acc: 98.28%
+
+Train Epoch: 16/30 [256000/269796 (95%)]	Training loss for batch 4001/4216: 0.038141
+Train Epoch: 16/30 [262400/269796 (97%)]	Training loss for batch 4101/4216: 0.036090
+Train Epoch: 16/30 [268800/269796 (100%)]	Training loss for batch 4201/4216: 0.047937
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0576, Precision: 71.87%, Recall: 49.26%, F1: 58.19%, Acc: 98.27%
+
+Train Epoch: 17/30 [0/269796 (0%)]	Training loss for batch 1/4216: 0.049318
+Train Epoch: 17/30 [6400/269796 (2%)]	Training loss for batch 101/4216: 0.050474
+Train Epoch: 17/30 [12800/269796 (5%)]	Training loss for batch 201/4216: 0.046028
+Train Epoch: 17/30 [19200/269796 (7%)]	Training loss for batch 301/4216: 0.044242
+Train Epoch: 17/30 [25600/269796 (9%)]	Training loss for batch 401/4216: 0.039671
+Train Epoch: 17/30 [32000/269796 (12%)]	Training loss for batch 501/4216: 0.045200
+Train Epoch: 17/30 [38400/269796 (14%)]	Training loss for batch 601/4216: 0.056108
+Train Epoch: 17/30 [44800/269796 (17%)]	Training loss for batch 701/4216: 0.042286
+Train Epoch: 17/30 [51200/269796 (19%)]	Training loss for batch 801/4216: 0.041016
+Train Epoch: 17/30 [57600/269796 (21%)]	Training loss for batch 901/4216: 0.053186
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0569, Precision: 72.50%, Recall: 48.24%, F1: 57.63%, Acc: 98.27%
+
+Train Epoch: 17/30 [64000/269796 (24%)]	Training loss for batch 1001/4216: 0.042733
+Train Epoch: 17/30 [70400/269796 (26%)]	Training loss for batch 1101/4216: 0.043172
+Train Epoch: 17/30 [76800/269796 (28%)]	Training loss for batch 1201/4216: 0.052115
+Train Epoch: 17/30 [83200/269796 (31%)]	Training loss for batch 1301/4216: 0.052697
+Train Epoch: 17/30 [89600/269796 (33%)]	Training loss for batch 1401/4216: 0.043951
+Train Epoch: 17/30 [96000/269796 (36%)]	Training loss for batch 1501/4216: 0.050755
+Train Epoch: 17/30 [102400/269796 (38%)]	Training loss for batch 1601/4216: 0.052233
+Train Epoch: 17/30 [108800/269796 (40%)]	Training loss for batch 1701/4216: 0.045735
+Train Epoch: 17/30 [115200/269796 (43%)]	Training loss for batch 1801/4216: 0.040687
+Train Epoch: 17/30 [121600/269796 (45%)]	Training loss for batch 1901/4216: 0.042170
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0575, Precision: 71.52%, Recall: 49.63%, F1: 58.33%, Acc: 98.27%
+
+Train Epoch: 17/30 [128000/269796 (47%)]	Training loss for batch 2001/4216: 0.045107
+Train Epoch: 17/30 [134400/269796 (50%)]	Training loss for batch 2101/4216: 0.047812
+Train Epoch: 17/30 [140800/269796 (52%)]	Training loss for batch 2201/4216: 0.044708
+Train Epoch: 17/30 [147200/269796 (55%)]	Training loss for batch 2301/4216: 0.036239
+Train Epoch: 17/30 [153600/269796 (57%)]	Training loss for batch 2401/4216: 0.046094
+Train Epoch: 17/30 [160000/269796 (59%)]	Training loss for batch 2501/4216: 0.036163
+Train Epoch: 17/30 [166400/269796 (62%)]	Training loss for batch 2601/4216: 0.043640
+Train Epoch: 17/30 [172800/269796 (64%)]	Training loss for batch 2701/4216: 0.037876
+Train Epoch: 17/30 [179200/269796 (66%)]	Training loss for batch 2801/4216: 0.044698
+Train Epoch: 17/30 [185600/269796 (69%)]	Training loss for batch 2901/4216: 0.046483
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0579, Precision: 71.71%, Recall: 49.62%, F1: 58.39%, Acc: 98.27%
+
+Train Epoch: 17/30 [192000/269796 (71%)]	Training loss for batch 3001/4216: 0.041125
+Train Epoch: 17/30 [198400/269796 (74%)]	Training loss for batch 3101/4216: 0.054185
+Train Epoch: 17/30 [204800/269796 (76%)]	Training loss for batch 3201/4216: 0.044227
+Train Epoch: 17/30 [211200/269796 (78%)]	Training loss for batch 3301/4216: 0.040184
+Train Epoch: 17/30 [217600/269796 (81%)]	Training loss for batch 3401/4216: 0.039214
+Train Epoch: 17/30 [224000/269796 (83%)]	Training loss for batch 3501/4216: 0.049625
+Train Epoch: 17/30 [230400/269796 (85%)]	Training loss for batch 3601/4216: 0.037954
+Train Epoch: 17/30 [236800/269796 (88%)]	Training loss for batch 3701/4216: 0.041374
+Train Epoch: 17/30 [243200/269796 (90%)]	Training loss for batch 3801/4216: 0.042925
+Train Epoch: 17/30 [249600/269796 (93%)]	Training loss for batch 3901/4216: 0.045793
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0575, Precision: 71.30%, Recall: 50.34%, F1: 58.77%, Acc: 98.27%
+
+Train Epoch: 17/30 [256000/269796 (95%)]	Training loss for batch 4001/4216: 0.049138
+Train Epoch: 17/30 [262400/269796 (97%)]	Training loss for batch 4101/4216: 0.037925
+Train Epoch: 17/30 [268800/269796 (100%)]	Training loss for batch 4201/4216: 0.055503
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0572, Precision: 70.85%, Recall: 50.42%, F1: 58.67%, Acc: 98.26%
+
+Train Epoch: 18/30 [0/269796 (0%)]	Training loss for batch 1/4216: 0.053833
+Train Epoch: 18/30 [6400/269796 (2%)]	Training loss for batch 101/4216: 0.039964
+Train Epoch: 18/30 [12800/269796 (5%)]	Training loss for batch 201/4216: 0.051865
+Train Epoch: 18/30 [19200/269796 (7%)]	Training loss for batch 301/4216: 0.053263
+Train Epoch: 18/30 [25600/269796 (9%)]	Training loss for batch 401/4216: 0.048457
+Train Epoch: 18/30 [32000/269796 (12%)]	Training loss for batch 501/4216: 0.046844
+Train Epoch: 18/30 [38400/269796 (14%)]	Training loss for batch 601/4216: 0.044780
+Train Epoch: 18/30 [44800/269796 (17%)]	Training loss for batch 701/4216: 0.048862
+Train Epoch: 18/30 [51200/269796 (19%)]	Training loss for batch 801/4216: 0.041366
+Train Epoch: 18/30 [57600/269796 (21%)]	Training loss for batch 901/4216: 0.051020
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0576, Precision: 73.19%, Recall: 46.72%, F1: 56.67%, Acc: 98.26%
+
+Train Epoch: 18/30 [64000/269796 (24%)]	Training loss for batch 1001/4216: 0.040931
+Train Epoch: 18/30 [70400/269796 (26%)]	Training loss for batch 1101/4216: 0.045450
+Train Epoch: 18/30 [76800/269796 (28%)]	Training loss for batch 1201/4216: 0.037108
+Train Epoch: 18/30 [83200/269796 (31%)]	Training loss for batch 1301/4216: 0.049530
+Train Epoch: 18/30 [89600/269796 (33%)]	Training loss for batch 1401/4216: 0.037879
+Train Epoch: 18/30 [96000/269796 (36%)]	Training loss for batch 1501/4216: 0.037848
+Train Epoch: 18/30 [102400/269796 (38%)]	Training loss for batch 1601/4216: 0.040651
+Train Epoch: 18/30 [108800/269796 (40%)]	Training loss for batch 1701/4216: 0.042307
+Train Epoch: 18/30 [115200/269796 (43%)]	Training loss for batch 1801/4216: 0.041624
+Train Epoch: 18/30 [121600/269796 (45%)]	Training loss for batch 1901/4216: 0.048963
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0576, Precision: 72.03%, Recall: 48.82%, F1: 57.91%, Acc: 98.27%
+
+Train Epoch: 18/30 [128000/269796 (47%)]	Training loss for batch 2001/4216: 0.055367
+Train Epoch: 18/30 [134400/269796 (50%)]	Training loss for batch 2101/4216: 0.045031
+Train Epoch: 18/30 [140800/269796 (52%)]	Training loss for batch 2201/4216: 0.043421
+Train Epoch: 18/30 [147200/269796 (55%)]	Training loss for batch 2301/4216: 0.041388
+Train Epoch: 18/30 [153600/269796 (57%)]	Training loss for batch 2401/4216: 0.041447
+Train Epoch: 18/30 [160000/269796 (59%)]	Training loss for batch 2501/4216: 0.041063
+Train Epoch: 18/30 [166400/269796 (62%)]	Training loss for batch 2601/4216: 0.040816
+Train Epoch: 18/30 [172800/269796 (64%)]	Training loss for batch 2701/4216: 0.057284
+Train Epoch: 18/30 [179200/269796 (66%)]	Training loss for batch 2801/4216: 0.042705
+Train Epoch: 18/30 [185600/269796 (69%)]	Training loss for batch 2901/4216: 0.048144
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0585, Precision: 71.12%, Recall: 49.45%, F1: 58.06%, Acc: 98.25%
+
+Train Epoch: 18/30 [192000/269796 (71%)]	Training loss for batch 3001/4216: 0.045510
+Train Epoch: 18/30 [198400/269796 (74%)]	Training loss for batch 3101/4216: 0.046729
+Train Epoch: 18/30 [204800/269796 (76%)]	Training loss for batch 3201/4216: 0.041548
+Train Epoch: 18/30 [211200/269796 (78%)]	Training loss for batch 3301/4216: 0.041545
+Train Epoch: 18/30 [217600/269796 (81%)]	Training loss for batch 3401/4216: 0.061764
+Train Epoch: 18/30 [224000/269796 (83%)]	Training loss for batch 3501/4216: 0.056462
+Train Epoch: 18/30 [230400/269796 (85%)]	Training loss for batch 3601/4216: 0.051440
+Train Epoch: 18/30 [236800/269796 (88%)]	Training loss for batch 3701/4216: 0.053242
+Train Epoch: 18/30 [243200/269796 (90%)]	Training loss for batch 3801/4216: 0.032157
+Train Epoch: 18/30 [249600/269796 (93%)]	Training loss for batch 3901/4216: 0.045438
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0580, Precision: 71.48%, Recall: 50.39%, F1: 58.86%, Acc: 98.28%
+
+Train Epoch: 18/30 [256000/269796 (95%)]	Training loss for batch 4001/4216: 0.045988
+Train Epoch: 18/30 [262400/269796 (97%)]	Training loss for batch 4101/4216: 0.047095
+Train Epoch: 18/30 [268800/269796 (100%)]	Training loss for batch 4201/4216: 0.041366
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0583, Precision: 69.87%, Recall: 51.22%, F1: 58.88%, Acc: 98.25%
+
+Train Epoch: 19/30 [0/269796 (0%)]	Training loss for batch 1/4216: 0.041049
+Train Epoch: 19/30 [6400/269796 (2%)]	Training loss for batch 101/4216: 0.046155
+Train Epoch: 19/30 [12800/269796 (5%)]	Training loss for batch 201/4216: 0.040738
+Train Epoch: 19/30 [19200/269796 (7%)]	Training loss for batch 301/4216: 0.055367
+Train Epoch: 19/30 [25600/269796 (9%)]	Training loss for batch 401/4216: 0.049551
+Train Epoch: 19/30 [32000/269796 (12%)]	Training loss for batch 501/4216: 0.041244
+Train Epoch: 19/30 [38400/269796 (14%)]	Training loss for batch 601/4216: 0.050994
+Train Epoch: 19/30 [44800/269796 (17%)]	Training loss for batch 701/4216: 0.042104
+Train Epoch: 19/30 [51200/269796 (19%)]	Training loss for batch 801/4216: 0.050186
+Train Epoch: 19/30 [57600/269796 (21%)]	Training loss for batch 901/4216: 0.033326
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0575, Precision: 72.20%, Recall: 49.06%, F1: 58.12%, Acc: 98.27%
+
+Train Epoch: 19/30 [64000/269796 (24%)]	Training loss for batch 1001/4216: 0.041371
+Train Epoch: 19/30 [70400/269796 (26%)]	Training loss for batch 1101/4216: 0.037324
+Train Epoch: 19/30 [76800/269796 (28%)]	Training loss for batch 1201/4216: 0.029948
+Train Epoch: 19/30 [83200/269796 (31%)]	Training loss for batch 1301/4216: 0.042971
+Train Epoch: 19/30 [89600/269796 (33%)]	Training loss for batch 1401/4216: 0.046991
+Train Epoch: 19/30 [96000/269796 (36%)]	Training loss for batch 1501/4216: 0.034789
+Train Epoch: 19/30 [102400/269796 (38%)]	Training loss for batch 1601/4216: 0.044843
+Train Epoch: 19/30 [108800/269796 (40%)]	Training loss for batch 1701/4216: 0.041478
+Train Epoch: 19/30 [115200/269796 (43%)]	Training loss for batch 1801/4216: 0.042450
+Train Epoch: 19/30 [121600/269796 (45%)]	Training loss for batch 1901/4216: 0.046395
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0583, Precision: 71.49%, Recall: 49.95%, F1: 58.55%, Acc: 98.27%
+
+Train Epoch: 19/30 [128000/269796 (47%)]	Training loss for batch 2001/4216: 0.042485
+Train Epoch: 19/30 [134400/269796 (50%)]	Training loss for batch 2101/4216: 0.040756
+Train Epoch: 19/30 [140800/269796 (52%)]	Training loss for batch 2201/4216: 0.046352
+Train Epoch: 19/30 [147200/269796 (55%)]	Training loss for batch 2301/4216: 0.044279
+Train Epoch: 19/30 [153600/269796 (57%)]	Training loss for batch 2401/4216: 0.037809
+Train Epoch: 19/30 [160000/269796 (59%)]	Training loss for batch 2501/4216: 0.035408
+Train Epoch: 19/30 [166400/269796 (62%)]	Training loss for batch 2601/4216: 0.046361
+Train Epoch: 19/30 [172800/269796 (64%)]	Training loss for batch 2701/4216: 0.043253
+Train Epoch: 19/30 [179200/269796 (66%)]	Training loss for batch 2801/4216: 0.048140
+Train Epoch: 19/30 [185600/269796 (69%)]	Training loss for batch 2901/4216: 0.044947
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0586, Precision: 71.25%, Recall: 49.26%, F1: 57.96%, Acc: 98.25%
+
+Train Epoch: 19/30 [192000/269796 (71%)]	Training loss for batch 3001/4216: 0.039404
+Train Epoch: 19/30 [198400/269796 (74%)]	Training loss for batch 3101/4216: 0.038927
+Train Epoch: 19/30 [204800/269796 (76%)]	Training loss for batch 3201/4216: 0.041861
+Train Epoch: 19/30 [211200/269796 (78%)]	Training loss for batch 3301/4216: 0.041128
+Train Epoch: 19/30 [217600/269796 (81%)]	Training loss for batch 3401/4216: 0.051936
+Train Epoch: 19/30 [224000/269796 (83%)]	Training loss for batch 3501/4216: 0.036611
+Train Epoch: 19/30 [230400/269796 (85%)]	Training loss for batch 3601/4216: 0.045887
+Train Epoch: 19/30 [236800/269796 (88%)]	Training loss for batch 3701/4216: 0.037853
+Train Epoch: 19/30 [243200/269796 (90%)]	Training loss for batch 3801/4216: 0.042418
+Train Epoch: 19/30 [249600/269796 (93%)]	Training loss for batch 3901/4216: 0.041867
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0583, Precision: 70.71%, Recall: 48.71%, F1: 57.41%, Acc: 98.23%
+
+Train Epoch: 19/30 [256000/269796 (95%)]	Training loss for batch 4001/4216: 0.038221
+Train Epoch: 19/30 [262400/269796 (97%)]	Training loss for batch 4101/4216: 0.043238
+Train Epoch: 19/30 [268800/269796 (100%)]	Training loss for batch 4201/4216: 0.046694
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0581, Precision: 70.86%, Recall: 50.25%, F1: 58.56%, Acc: 98.26%
+
+Train Epoch: 20/30 [0/269796 (0%)]	Training loss for batch 1/4216: 0.044308
+Train Epoch: 20/30 [6400/269796 (2%)]	Training loss for batch 101/4216: 0.038544
+Train Epoch: 20/30 [12800/269796 (5%)]	Training loss for batch 201/4216: 0.036119
+Train Epoch: 20/30 [19200/269796 (7%)]	Training loss for batch 301/4216: 0.040836
+Train Epoch: 20/30 [25600/269796 (9%)]	Training loss for batch 401/4216: 0.044765
+Train Epoch: 20/30 [32000/269796 (12%)]	Training loss for batch 501/4216: 0.047180
+Train Epoch: 20/30 [38400/269796 (14%)]	Training loss for batch 601/4216: 0.044312
+Train Epoch: 20/30 [44800/269796 (17%)]	Training loss for batch 701/4216: 0.048442
+Train Epoch: 20/30 [51200/269796 (19%)]	Training loss for batch 801/4216: 0.043561
+Train Epoch: 20/30 [57600/269796 (21%)]	Training loss for batch 901/4216: 0.047963
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0582, Precision: 72.34%, Recall: 48.54%, F1: 57.79%, Acc: 98.27%
+
+Train Epoch: 20/30 [64000/269796 (24%)]	Training loss for batch 1001/4216: 0.042724
+Train Epoch: 20/30 [70400/269796 (26%)]	Training loss for batch 1101/4216: 0.049234
+Train Epoch: 20/30 [76800/269796 (28%)]	Training loss for batch 1201/4216: 0.041419
+Train Epoch: 20/30 [83200/269796 (31%)]	Training loss for batch 1301/4216: 0.049442
+Train Epoch: 20/30 [89600/269796 (33%)]	Training loss for batch 1401/4216: 0.040727
+Train Epoch: 20/30 [96000/269796 (36%)]	Training loss for batch 1501/4216: 0.039299
+Train Epoch: 20/30 [102400/269796 (38%)]	Training loss for batch 1601/4216: 0.047257
+Train Epoch: 20/30 [108800/269796 (40%)]	Training loss for batch 1701/4216: 0.039406
+Train Epoch: 20/30 [115200/269796 (43%)]	Training loss for batch 1801/4216: 0.037795
+Train Epoch: 20/30 [121600/269796 (45%)]	Training loss for batch 1901/4216: 0.037968
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0592, Precision: 70.99%, Recall: 49.55%, F1: 58.10%, Acc: 98.25%
+
+Train Epoch: 20/30 [128000/269796 (47%)]	Training loss for batch 2001/4216: 0.035661
+Train Epoch: 20/30 [134400/269796 (50%)]	Training loss for batch 2101/4216: 0.037661
+Train Epoch: 20/30 [140800/269796 (52%)]	Training loss for batch 2201/4216: 0.043438
+Train Epoch: 20/30 [147200/269796 (55%)]	Training loss for batch 2301/4216: 0.030603
+Train Epoch: 20/30 [153600/269796 (57%)]	Training loss for batch 2401/4216: 0.039001
+Train Epoch: 20/30 [160000/269796 (59%)]	Training loss for batch 2501/4216: 0.038378
+Train Epoch: 20/30 [166400/269796 (62%)]	Training loss for batch 2601/4216: 0.037351
+Train Epoch: 20/30 [172800/269796 (64%)]	Training loss for batch 2701/4216: 0.043184
+Train Epoch: 20/30 [179200/269796 (66%)]	Training loss for batch 2801/4216: 0.052346
+Train Epoch: 20/30 [185600/269796 (69%)]	Training loss for batch 2901/4216: 0.029643
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0583, Precision: 69.70%, Recall: 50.38%, F1: 58.25%, Acc: 98.23%
+
+Train Epoch: 20/30 [192000/269796 (71%)]	Training loss for batch 3001/4216: 0.053404
+Train Epoch: 20/30 [198400/269796 (74%)]	Training loss for batch 3101/4216: 0.042674
+Train Epoch: 20/30 [204800/269796 (76%)]	Training loss for batch 3201/4216: 0.038796
+Train Epoch: 20/30 [211200/269796 (78%)]	Training loss for batch 3301/4216: 0.039882
+Train Epoch: 20/30 [217600/269796 (81%)]	Training loss for batch 3401/4216: 0.057266
+Train Epoch: 20/30 [224000/269796 (83%)]	Training loss for batch 3501/4216: 0.045301
+Train Epoch: 20/30 [230400/269796 (85%)]	Training loss for batch 3601/4216: 0.035839
+Train Epoch: 20/30 [236800/269796 (88%)]	Training loss for batch 3701/4216: 0.046516
+Train Epoch: 20/30 [243200/269796 (90%)]	Training loss for batch 3801/4216: 0.053385
+Train Epoch: 20/30 [249600/269796 (93%)]	Training loss for batch 3901/4216: 0.036006
+
+Dev set scores for model Base-enc=w2v-nl1-ks300x5-in300x100-nk100-rel-rel-sig-d0.2-h100-bs64-ep30-ada-default-bce.pt:
+Average loss: 0.0589, Precision: 71.05%, Recall: 50.04%, F1: 58.47%, Acc: 98.26%
+
+Train Epoch: 20/30 [256000/269796 (95%)]	Training loss for batch 4001/4216: 0.043022
+Train Epoch: 20/30 [262400/269796 (97%)]	Training loss for batch 4101/4216: 0.046803
+Train Epoch: 20/30 [268800/269796 (100%)]	Training loss for batch 4201/4216: 0.048916
