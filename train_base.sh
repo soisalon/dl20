@@ -28,7 +28,7 @@ echo "training cnn for DL"
 ID=SLURM_ARRAY_TASK_ID
 # ID=2
 
-EMBS=(enc=glove)
+EMBS=(enc=word2vec enc=glove)
 KS=(300x5)
 # KS=(300x2 300x4 300x6 300x8 300x10 300x12 300x16 300x20)
 # N_KS=(1 10 50 100 200 300 400 500 600 700 800 900)
