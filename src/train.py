@@ -215,8 +215,8 @@ else:
 
         torch.save(model.state_dict(), model_path)
     else:
-        model = torch.load(model_path)
-
+        model.load_state_dict(torch.load(model_path))
+    model.eval()
     # get predictions on final test data
     preds_arr = []
     for data in dev_loader:
